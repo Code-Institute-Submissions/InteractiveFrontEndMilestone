@@ -1,4 +1,9 @@
 
+.route-wrapper{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 #map{
     height: 70vh;
     width: 100vw;

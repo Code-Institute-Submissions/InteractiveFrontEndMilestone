@@ -38,7 +38,7 @@
         </nav>
     </header>
     <main>
-        <div class="container">
+        <div class="container route-wrapper">
         
             <div class="row">
                 <div class="col-12 col-lg-4">
@@ -63,6 +63,16 @@
                     <div class="tab-pane fade" id="bike" role="tabpanel" aria-labelledby="bike-tab">...</div>
                     <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">...</div>
                     </div>
+                    <div class="container">
+                        <form class="row route-form" action="">
+                            <input type="text" class="col-7 form-control" id="startpoint" name="startpoint" placeholder="Search Destination">
+                            <!--Shrink datetime-local to just an icon or drop down when phone mode-->
+                            <input type="datetime-local" class="col-5" id="startdate" name="startdate">
+                            <input type="text" class="col-7 form-control" id="endpoint" name="endpoint" placeholder="Search Destination">
+                            <input type="datetime-local" class="col-5" id="enddate" name="enddate">
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>
