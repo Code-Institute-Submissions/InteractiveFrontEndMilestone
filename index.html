@@ -42,6 +42,27 @@
         
             <div class="row">
                 <div class="col-12 col-lg-4">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="car-tab" data-toggle="tab" href="#car" role="tab" aria-controls="home" aria-selected="true">Car</a>
+                    </li>
+                    <li class="nav-item">
+                    <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
+                        <a class="nav-link" id="walk-tab" data-toggle="tab" href="#walk" role="tab" aria-controls="walk" aria-selected="false">Walk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="bike-tab" data-toggle="tab" href="#bike" role="tab" aria-controls="bike" aria-selected="false">Bike</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" id="train-tab" data-toggle="tab" href="#train" role="tab" aria-controls="train" aria-selected="false">Train</a>
+                    </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="car" role="tabpanel" aria-labelledby="car-tab">...</div>
+                    <div class="tab-pane fade" id="walk" role="tabpanel" aria-labelledby="walk-tab">...</div>
+                    <div class="tab-pane fade" id="bike" role="tabpanel" aria-labelledby="bike-tab">...</div>
+                    <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">...</div>
+                    </div>
                 </div>
             </div>
         </div>
