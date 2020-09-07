@@ -1,5 +1,10 @@
 
 #map{
-    height: 100vh;
+    height: 70vh;
     width: 100vw;
+}
+@media (min-width: 768px){
+    #map{
+        height: 94vh;
+    }
 }
