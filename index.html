@@ -38,51 +38,70 @@
         </nav>
     </header>
     <main>
-        <div class="container route-wrapper">
-        
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="car-tab" data-toggle="tab" href="#car" role="tab" aria-controls="home" aria-selected="true">Car</a>
-                    </li>
-                    <li class="nav-item">
-                    <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
-                        <a class="nav-link" id="walk-tab" data-toggle="tab" href="#walk" role="tab" aria-controls="walk" aria-selected="false">Walk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="bike-tab" data-toggle="tab" href="#bike" role="tab" aria-controls="bike" aria-selected="false">Bike</a>
-                    </li>
-                     <li class="nav-item">
-                        <a class="nav-link" id="train-tab" data-toggle="tab" href="#train" role="tab" aria-controls="train" aria-selected="false">Train</a>
-                    </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="car" role="tabpanel" aria-labelledby="car-tab">...</div>
-                    <div class="tab-pane fade" id="walk" role="tabpanel" aria-labelledby="walk-tab">...</div>
-                    <div class="tab-pane fade" id="bike" role="tabpanel" aria-labelledby="bike-tab">...</div>
-                    <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">...</div>
+        <div class="map-canvas">
+            <div class="container route-wrapper">            
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="car-tab" data-toggle="tab" href="#car" role="tab" aria-controls="home" aria-selected="true">Car</a>
+                        </li>
+                        <li class="nav-item">
+                        <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
+                            <a class="nav-link" id="walk-tab" data-toggle="tab" href="#walk" role="tab" aria-controls="walk" aria-selected="false">Walk</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="bike-tab" data-toggle="tab" href="#bike" role="tab" aria-controls="bike" aria-selected="false">Bike</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="train-tab" data-toggle="tab" href="#train" role="tab" aria-controls="train" aria-selected="false">Train</a>
+                        </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="car" role="tabpanel" aria-labelledby="car-tab">...</div>
+                        <div class="tab-pane fade" id="walk" role="tabpanel" aria-labelledby="walk-tab">...</div>
+                        <div class="tab-pane fade" id="bike" role="tabpanel" aria-labelledby="bike-tab">...</div>
+                        <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">...</div>
+                        </div>
+                        <div class="container">
+                            <form class="row route-form" action="">
+                                <input type="text" class="col-7 form-control" id="startpoint" name="startpoint" placeholder="Search Destination">
+                                <!--Shrink datetime-local to just an icon or drop down when phone mode-->
+                                <!--Datetime-local found on mozilla developer site https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local-->
+                                <input type="datetime-local" class="col-5" id="startdate" name="startdate">
+                                <input type="text" class="col-7 form-control" id="endpoint" name="endpoint" placeholder="Search Destination">
+                                <input type="datetime-local" class="col-5" id="enddate" name="enddate">
+                                <a href="#" class="waypoint-button">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Add another waypoint
+                                </a>
+                            </form>
+                        </div>
                     </div>
-                    <div class="container">
-                        <form class="row route-form" action="">
-                            <input type="text" class="col-7 form-control" id="startpoint" name="startpoint" placeholder="Search Destination">
-                            <!--Shrink datetime-local to just an icon or drop down when phone mode-->
-                            <input type="datetime-local" class="col-5" id="startdate" name="startdate">
-                            <input type="text" class="col-7 form-control" id="endpoint" name="endpoint" placeholder="Search Destination">
-                            <input type="datetime-local" class="col-5" id="enddate" name="enddate">
-                        </form>
-                    </div>
+                </div>
+            </div>
 
+            <div id="map">
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4 d-flex justify-content-center">
+                    <p>&#169; Fare Weather Travel 2020</p>
+                </div>
+                <div class="col-6 col-md-4 d-flex justify-content-center">
+                    <p>Map data &#169; 2020</p>
+                </div>
+                <div class="col-6 col-md-4 d-flex justify-content-center">
+                    <a href="#">
+                    <!--on click open a modal/in browser window which has contact us section-->
+                        <p>Contact us</p>
+                    </a>
                 </div>
             </div>
         </div>
-
-        <div id="map">
-        </div>
-
-
-    </main>
-    <footer>
     </footer>
     <!--Scripts-->
     <!--Jquery-->

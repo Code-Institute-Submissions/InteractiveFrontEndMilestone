@@ -4,12 +4,83 @@
     margin-bottom: 1rem;
 }
 
+.waypoint-button{
+    color: #000;
+    margin-top: 0.5rem;
+}
+
+.waypoint-button i{
+    height: 1rem;
+    width: 1rem;
+    font-size: 1rem;
+    color: orangered;
+} 
+
 #map{
-    height: 70vh;
+    height: 85vh;
     width: 100vw;
 }
+
+.footer{
+    background: #fff;
+}
+
 @media (min-width: 768px){
+    .route-wrapper{
+        position: absolute;
+        z-index: 999;
+        width: 22rem;
+        top: 15%;
+        left: 1%;
+        background:#fff;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    #map{
+        height: 93vh;
+    }
+
+    .footer{
+        position: absolute;
+        z-index: 999;
+        bottom: 1.5%;
+        left: 50%;
+        transform: translate(-50%,0);
+        width: 35rem;
+        font-size: 12px;
+        color: #000;
+        height: 20px;
+    }
+
+}
+
+@media (min-width: 992px){
+    .route-wrapper{
+        position: absolute;
+        z-index: 999;
+        width: 32rem;
+        top: 15%;
+        left: 1%;
+        background:#fff;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
     #map{
         height: 94vh;
     }
+
+    .footer{
+        position: absolute;
+        z-index: 999;
+        bottom: 1.5%;
+        left: 50%;
+        transform: translate(-50%,0);
+        width: 35rem;
+        font-size: 12px;
+        color: #000;
+        height: 20px;
+    }
+
 }
