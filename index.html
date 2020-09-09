@@ -48,7 +48,7 @@
                         </li>
                         <li class="nav-item">
                         <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
-                            <a class="nav-link" id="walk-tab" data-toggle="tab" href="#walk" role="tab" aria-controls="walk" aria-selected="false">Walk</a>
+                            <a class="nav-link" id="walk-tab" data-toggle="tab" href="#walk" role="tab" aria-controls="walk" aria-selected="false" onclick="alertThing()">Walk</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="bike-tab" data-toggle="tab" href="#bike" role="tab" aria-controls="bike" aria-selected="false">Bike</a>
@@ -71,7 +71,7 @@
                                 <input type="datetime-local" class="col-5" id="startdate" name="startdate">
                                 <input type="text" class="col-7 form-control" id="endpoint" name="endpoint" placeholder="Search Destination">
                                 <input type="datetime-local" class="col-5" id="enddate" name="enddate">
-                                <a href="#" class="waypoint-button">
+                                <a href="#" id="waypointbtn" class="waypoint-button">
                                     <i class="fas fa-plus-circle"></i>
                                     Add another waypoint
                                 </a>
@@ -113,7 +113,7 @@
     <!--Font-Awesome-->
     <script src="https://kit.fontawesome.com/d57b53712b.js" crossorigin="anonymous"></script>
     <!--Google Maps-->
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhMQfdBgOh8-xwmxnFmQUDEkl871n_5MU&callback=initMap"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhMQfdBgOh8-xwmxnFmQUDEkl871n_5MU&libraries=places&callback=initMap"></script>
     <!--defer waits until page has finished loading before script is executed-->
     <script src="assets/js/maps.js"></script>
 </body>
