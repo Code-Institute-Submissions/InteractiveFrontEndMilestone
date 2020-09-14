@@ -22,6 +22,7 @@ function initMap() {
     autocompleteDestination = new google.maps.places.Autocomplete(destination, options);
 }
 
+
 /* sets start area for preference of searching for auto complete answers*/
 var defaultBounds;
     alert("huh");
@@ -44,6 +45,7 @@ var options;
 
 var waypoints = [document.getElementById("startpoint"), document.getElementById("endpoint")];
 function addWayPoint(){
+    var waypointIndex = waypoints.lastIndexOf("endpoint")
     var waypoint = document.createElement("INPUT");
     waypoint.type = "text";
     waypoint.classList.add("col-7");
