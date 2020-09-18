@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Interactive Front End Milestone Project",
   "main": "index.html",
-  "dependencies": {
-    "prettier-eslint": "^11.0.0"
-  },
   "devDependencies": {
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
