@@ -1,30 +1,30 @@
 {
-  "name": "interactivefrontendmilestone",
-  "version": "1.0.0",
-  "description": "Interactive Front End Milestone Project",
-  "main": "index.html",
-  "devDependencies": {
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "prettier": "2.1.2"
-  },
-  "scripts": {
-    "start": "npx live-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RhysPollardDevelopment/InteractiveFrontEndMilestone.git"
-  },
-  "author": "Rhys Pollard",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/RhysPollardDevelopment/InteractiveFrontEndMilestone/issues"
-  },
-  "homepage": "https://github.com/RhysPollardDevelopment/InteractiveFrontEndMilestone#readme"
+   "name": "interactivefrontendmilestone",
+   "version": "1.0.0",
+   "description": "Interactive Front End Milestone Project",
+   "main": "index.html",
+   "devDependencies": {
+      "eslint": "^7.9.0",
+      "eslint-config-prettier": "^6.11.0",
+      "eslint-config-standard": "^14.1.1",
+      "eslint-plugin-import": "^2.22.0",
+      "eslint-plugin-node": "^11.1.0",
+      "eslint-plugin-promise": "^4.2.1",
+      "eslint-plugin-standard": "^4.0.1",
+      "prettier": "2.1.2"
+   },
+   "scripts": {
+      "start": "npx live-server",
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/RhysPollardDevelopment/InteractiveFrontEndMilestone.git"
+   },
+   "author": "Rhys Pollard",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/RhysPollardDevelopment/InteractiveFrontEndMilestone/issues"
+   },
+   "homepage": "https://github.com/RhysPollardDevelopment/InteractiveFrontEndMilestone#readme"
 }
