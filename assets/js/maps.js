@@ -73,9 +73,10 @@ class WeatherRequest {
             lat +
             "&lon=" +
             lng +
-            "&appid=" +
+            "&units=metric&appid=" +
             this.openWeatherMapKey +
             "";
+         //
          const weatherRequest = new XMLHttpRequest();
          weatherRequest.open("get", weatherString);
          weatherRequest.send();
@@ -90,6 +91,13 @@ class WeatherRequest {
 $("#waypointbtn").click(function () {
    const weatherAPI = new WeatherRequest(routeData);
 });
+
+class WeatherData {
+   constructor() {
+      this.dateTime = "";
+      this.temperature = "";
+   }
+}
 
 // LocationData holds the individual input's location, date time and id values so they can be passed between the html view model and different api's without repeating.
 class LocationData {
