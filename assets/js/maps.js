@@ -60,6 +60,36 @@ function calculateAndDisplayRoute(
    });
 }
 
+class WeatherRequest {
+   constructor(wayPointsData) {
+      this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
+      this.wayPointsData = wayPointsData;
+      this.wayPointsData.locations.forEach((waypoint) => {
+         waypoint.weather = "hot";
+         const lat = waypoint.location.geometry.location.lat;
+         const lng = waypoint.location.geometry.location.lng;
+         const weatherString =
+            "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+            lat +
+            "&lon=" +
+            lng +
+            "&appid=" +
+            this.openWeatherMapKey +
+            "";
+         const weatherRequest = new XMLHttpRequest();
+         weatherRequest.onload = () => {
+            waypoint.weather = weatherRequest.responseText;
+         };
+         weatherRequest.open("get", weatherString);
+         weatherRequest.send();
+      });
+   }
+}
+
+$("#waypointbtn").click(function () {
+   const weatherAPI = new WeatherRequest(routeData);
+});
+
 // LocationData holds the individual input's location, date time and id values so they can be passed between the html view model and different api's without repeating.
 class LocationData {
    constructor() {
@@ -67,6 +97,7 @@ class LocationData {
       this.dateTime = "";
       this.state = "";
       this.id = "";
+      this.weather = "";
    }
 }
 
