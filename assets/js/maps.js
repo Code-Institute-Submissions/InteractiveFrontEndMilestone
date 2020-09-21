@@ -95,7 +95,14 @@ $("#waypointbtn").click(function () {
 class WeatherData {
    constructor() {
       this.dateTime = "";
+      this.weatherDescription = "";
       this.temperature = "";
+      this.rain = "";
+      this.clouds = "";
+      this.wind = "";
+      this.uvi = "";
+      this.realFeel = "";
+      this.humidity = "";
    }
 }
 
@@ -106,15 +113,15 @@ class LocationData {
       this.dateTime = "";
       this.state = "";
       this.id = "";
-      this.weather = "";
    }
 }
 
 // LocationView holds properties matching locationData and a references to the input element in html and acts as a way to pass data between javascript storage and the view model.
 // initialise() is called upon construction as this generates the html element which is referenced along with the auto complete associated with the specific element.
 class LocationView {
-   constructor(locationData) {
+   constructor(locationData, weatherData) {
       this.locationData = locationData;
+      this.weatherData = weatherData;
       this.initalise();
       this.marker = new google.maps.Marker({ map: map });
    }
@@ -162,8 +169,8 @@ class LocationView {
       // => used instead of function as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
       $(dateTime).on(`change`, () => {
          // check if date is inserted and after current date
-         this.locationData.dateTime = dateTime.value;
-         console.log(this.locationData);
+         this.weatherData.dateTime = dateTime.value;
+         console.log(this.weatherData);
       });
    }
 
@@ -203,13 +210,20 @@ class HTMLInputs {
       for (let i = 0; i < 2; i++) {
          this.inputArray = [];
          this.newPageLocations = new LocationData();
-         wayPointsData.locations.push(this.newPageLocations);
+         this.newPageWeather = new WeatherData();
+         wayPointsData.locations.push([
+            this.newPageLocations,
+            this.newPageWeather,
+         ]);
          if (i === 0) {
             this.newPageLocations.id = `origin`;
          } else {
             this.newPageLocations.id = `destination`;
          }
-         this.newPageInputs = new LocationView(this.newPageLocations);
+         this.newPageInputs = new LocationView(
+            this.newPageLocations,
+            this.newPageWeather
+         );
          this.inputArray.push(this.newPageInputs);
       }
    }
@@ -218,12 +232,26 @@ class HTMLInputs {
    // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
    // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later.
    addWaypoint(wayPointsData) {
-      const newWayPointData = new LocationData();
-      newWayPointData.id = `waypoint${this.inputArray.length}`;
-      wayPointsData.locations.push(newWayPointData);
-      const newWayPointHTML = new LocationView(newWayPointData);
+      const newLocationData = new LocationData();
+      const newWeatherData = new WeatherData();
+      newLocationData.id = `waypoint${this.inputArray.length}`;
+      newWeatherData.id = `waypoint${this.inputArray.length}`;
+      wayPointsData.locations.push([newLocationData, newWeatherData]);
+      const newWayPointHTML = new LocationView(newLocationData, newWeatherData);
       this.inputArray.push(newWayPointHTML);
    }
 
    removeWayPoint() {}
+}
+
+class WeatherFormatter {
+   constructor() {
+      this.filler = "";
+   }
+}
+
+class LocationFormatter {
+   constructor() {
+      this.filler = "";
+   }
 }
