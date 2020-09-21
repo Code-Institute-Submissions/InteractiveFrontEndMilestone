@@ -77,11 +77,12 @@ class WeatherRequest {
             this.openWeatherMapKey +
             "";
          const weatherRequest = new XMLHttpRequest();
-         weatherRequest.onload = () => {
-            waypoint.weather = weatherRequest.responseText;
-         };
          weatherRequest.open("get", weatherString);
          weatherRequest.send();
+         weatherRequest.onload = () => {
+            waypoint.weather = JSON.parse(weatherRequest.responseText);
+            console.log(waypoint.weather);
+         };
       });
    }
 }
