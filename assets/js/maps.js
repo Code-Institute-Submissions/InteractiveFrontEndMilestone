@@ -66,8 +66,8 @@ class WeatherRequest {
       this.wayPointsData = wayPointsData;
       this.wayPointsData.locations.forEach((waypoint) => {
          waypoint.weather = "hot";
-         const lat = waypoint.location.geometry.location.lat;
-         const lng = waypoint.location.geometry.location.lng;
+         const lat = waypoint.location.geometry.location.lat();
+         const lng = waypoint.location.geometry.location.lng();
          const weatherString =
             "https://api.openweathermap.org/data/2.5/onecall?lat=" +
             lat +
