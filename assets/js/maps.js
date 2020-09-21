@@ -65,9 +65,8 @@ class WeatherRequest {
       this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
       this.wayPointsData = wayPointsData;
       this.wayPointsData.locations.forEach((waypoint) => {
-         waypoint.weather = "hot";
-         const lat = waypoint.location.geometry.location.lat();
-         const lng = waypoint.location.geometry.location.lng();
+         const lat = waypoint[0].location.geometry.location.lat();
+         const lng = waypoint[0].location.geometry.location.lng();
          const weatherString =
             "https://api.openweathermap.org/data/2.5/onecall?lat=" +
             lat +
@@ -83,6 +82,10 @@ class WeatherRequest {
          weatherRequest.onload = () => {
             waypoint.weather = JSON.parse(weatherRequest.responseText);
             console.log(waypoint.weather);
+            const formatter = new WeatherFormatter(
+               weatherRequest.responseText,
+               wayPointsData
+            );
          };
       });
    }
@@ -245,8 +248,23 @@ class HTMLInputs {
 }
 
 class WeatherFormatter {
-   constructor() {
-      this.filler = "";
+   constructor(weatherRequest, wayPointsData) {
+      this.weatherData = wayPointsData.locations[0][1];
+      this.formatWeather(weatherRequest);
+   }
+
+   formatWeather(weatherRequest) {
+      const results = JSON.parse(weatherRequest);
+      const current = results.current;
+      console.log(current);
+      this.weatherData.weatherDescription = current.weather[0];
+      this.weatherData.temperature = current.temp;
+      this.weatherData.rain = current.rain[0];
+      this.weatherData.clouds = current.clouds;
+      this.weatherData.wind = current.wind_speed;
+      this.weatherData.uvi = current.uvi;
+      this.weatherData.realFeel = current.feels_like;
+      this.weatherData.humidity = current.humidity;
    }
 }
 
