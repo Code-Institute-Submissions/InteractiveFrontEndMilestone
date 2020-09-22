@@ -65,6 +65,7 @@ class WeatherRequest {
       this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
       this.wayPointsData = wayPointsData;
       this.wayPointsData.locations.forEach((waypoint) => {
+         // use of lat() lng() found in google maps documentation https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng
          const lat = waypoint[0].location.geometry.location.lat();
          const lng = waypoint[0].location.geometry.location.lng();
          const weatherString =
@@ -75,7 +76,8 @@ class WeatherRequest {
             "&units=metric&appid=" +
             this.openWeatherMapKey +
             "";
-         //
+         // Use of http request and passing to another class found in code institute interactive front end module and at
+         // https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/index.html
          const weatherRequest = new XMLHttpRequest();
          weatherRequest.open("get", weatherString);
          weatherRequest.send();
@@ -190,17 +192,35 @@ class WayPointsData {
       // Properties are set using arrow functions so they can be called when needed and are availavle rather than when constructed. Reference: https://www.w3schools.com/js/js_arrow_function.asp
       // Find used to select for an array element found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
       this.origin = () => {
-         const startPoint = this.locations.find((location) => {
-            return location.id === "origin";
-         });
-         return startPoint.location.formatted_address;
+         for (let d = 0; d < this.locations.length; d++) {
+            if (this.locations[d][0].id === "origin") {
+               console.log(this.locations[d][0].location.formatted_address);
+               return this.locations[d][0].location.formatted_address;
+            }
+         }
       };
+      // this.origin = () => {
+
+      //    const startPoint = this.locations.find((location) => {
+      //       return location.id === "origin";
+      //    });
+      //    return startPoint.location.formatted_address;
+      // };
       this.destination = () => {
-         const endPoint = this.locations.find((location) => {
-            return location.id === "destination";
-         });
-         return endPoint.location.formatted_address;
+         for (let d = 0; d < this.locations.length; d++) {
+            if (this.locations[d][0].id === "destination") {
+               console.log(this.locations[d][0].location.formatted_address);
+               return this.locations[d][0].location.formatted_address;
+            }
+         }
       };
+
+      // this.destination = () => {
+      //    const endPoint = this.locations.find((location) => {
+      //       return location.id === "destination";
+      //    });
+      //    return endPoint.location.formatted_address;
+      // };
       // possibel use later { address:endPoint.location.formatted_address , latlng: endPoint.location.latlng }
    } // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
    // this.waypts = this.locations.filter(function(element){return element.id !== "origin" || element.id !== "destination"});
