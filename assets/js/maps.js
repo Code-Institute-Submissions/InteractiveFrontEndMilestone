@@ -66,8 +66,8 @@ class WeatherRequest {
       this.wayPointsData = wayPointsData;
       this.wayPointsData.locations.forEach((waypoint) => {
          // use of lat() lng() found in google maps documentation https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng
-         const lat = waypoint[0].location.geometry.location.lat();
-         const lng = waypoint[0].location.geometry.location.lng();
+         const lat = waypoint.location.geometry.location.lat();
+         const lng = waypoint.location.geometry.location.lng();
          const weatherString =
             "https://api.openweathermap.org/data/2.5/onecall?lat=" +
             lat +
@@ -86,7 +86,7 @@ class WeatherRequest {
             console.log(waypoint.weather);
             const formatter = new WeatherFormatter(
                weatherRequest.responseText,
-               wayPointsData
+               waypoint
             );
          };
       });
@@ -113,20 +113,20 @@ class WeatherData {
 
 // LocationData holds the individual input's location, date time and id values so they can be passed between the html view model and different api's without repeating.
 class LocationData {
-   constructor() {
+   constructor(weatherData) {
       this.location = "";
       this.dateTime = "";
       this.state = "";
       this.id = "";
+      this.weatherData = weatherData;
    }
 }
 
 // LocationView holds properties matching locationData and a references to the input element in html and acts as a way to pass data between javascript storage and the view model.
 // initialise() is called upon construction as this generates the html element which is referenced along with the auto complete associated with the specific element.
 class LocationView {
-   constructor(locationData, weatherData) {
+   constructor(locationData) {
       this.locationData = locationData;
-      this.weatherData = weatherData;
       this.initalise();
       this.marker = new google.maps.Marker({ map: map });
    }
@@ -174,8 +174,8 @@ class LocationView {
       // => used instead of function as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
       $(dateTime).on(`change`, () => {
          // check if date is inserted and after current date
-         this.weatherData.dateTime = dateTime.value;
-         console.log(this.weatherData);
+         this.locationData.dateTime = dateTime.valueAsNumber;
+         console.log(this.locationData);
       });
    }
 
@@ -192,35 +192,24 @@ class WayPointsData {
       // Properties are set using arrow functions so they can be called when needed and are availavle rather than when constructed. Reference: https://www.w3schools.com/js/js_arrow_function.asp
       // Find used to select for an array element found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
       this.origin = () => {
-         for (let d = 0; d < this.locations.length; d++) {
-            if (this.locations[d][0].id === "origin") {
-               console.log(this.locations[d][0].location.formatted_address);
-               return this.locations[d][0].location.formatted_address;
-            }
-         }
+         const startPoint = this.locations.find((location) => {
+            return location.id === "origin";
+         });
+         return startPoint.location.formatted_address;
       };
-      // this.origin = () => {
-
-      //    const startPoint = this.locations.find((location) => {
-      //       return location.id === "origin";
-      //    });
-      //    return startPoint.location.formatted_address;
+      // this.destination = () => {
+      //    for (let d = 0; d < this.locations.length; d++) {
+      //       if (this.locations[d][0].id === "destination") {
+      //          return this.locations[d][0].location.formatted_address;
+      //       }
+      //    }
       // };
       this.destination = () => {
-         for (let d = 0; d < this.locations.length; d++) {
-            if (this.locations[d][0].id === "destination") {
-               console.log(this.locations[d][0].location.formatted_address);
-               return this.locations[d][0].location.formatted_address;
-            }
-         }
+         const startPoint = this.locations.find((location) => {
+            return location.id === "destination";
+         });
+         return startPoint.location.formatted_address;
       };
-
-      // this.destination = () => {
-      //    const endPoint = this.locations.find((location) => {
-      //       return location.id === "destination";
-      //    });
-      //    return endPoint.location.formatted_address;
-      // };
       // possibel use later { address:endPoint.location.formatted_address , latlng: endPoint.location.latlng }
    } // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
    // this.waypts = this.locations.filter(function(element){return element.id !== "origin" || element.id !== "destination"});
@@ -232,21 +221,15 @@ class HTMLInputs {
       // changing the first element's Id to origin and the second to destination so they can be passed to directionRequest instance.
       for (let i = 0; i < 2; i++) {
          this.inputArray = [];
-         this.newPageLocations = new LocationData();
          this.newPageWeather = new WeatherData();
-         wayPointsData.locations.push([
-            this.newPageLocations,
-            this.newPageWeather,
-         ]);
+         this.newPageLocations = new LocationData(this.newPageWeather);
+         wayPointsData.locations.push(this.newPageLocations);
          if (i === 0) {
             this.newPageLocations.id = `origin`;
          } else {
             this.newPageLocations.id = `destination`;
          }
-         this.newPageInputs = new LocationView(
-            this.newPageLocations,
-            this.newPageWeather
-         );
+         this.newPageInputs = new LocationView(this.newPageLocations);
          this.inputArray.push(this.newPageInputs);
       }
    }
@@ -255,12 +238,11 @@ class HTMLInputs {
    // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
    // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later.
    addWaypoint(wayPointsData) {
-      const newLocationData = new LocationData();
       const newWeatherData = new WeatherData();
+      const newLocationData = new LocationData(newWeatherData);
       newLocationData.id = `waypoint${this.inputArray.length}`;
-      newWeatherData.id = `waypoint${this.inputArray.length}`;
-      wayPointsData.locations.push([newLocationData, newWeatherData]);
-      const newWayPointHTML = new LocationView(newLocationData, newWeatherData);
+      wayPointsData.locations.push(newLocationData);
+      const newWayPointHTML = new LocationView(newLocationData);
       this.inputArray.push(newWayPointHTML);
    }
 
@@ -268,18 +250,30 @@ class HTMLInputs {
 }
 
 class WeatherFormatter {
-   constructor(weatherRequest, wayPointsData) {
-      this.weatherData = wayPointsData.locations[0][1];
+   constructor(weatherRequest, waypoint) {
+      this.weatherData = waypoint.weatherData;
       this.formatWeather(weatherRequest);
    }
 
    formatWeather(weatherRequest) {
       const results = JSON.parse(weatherRequest);
-      const current = results.current;
-      console.log(current);
-      this.weatherData.weatherDescription = current.weather[0];
-      this.weatherData.temperature = current.temp;
-      this.weatherData.rain = current.rain[0];
+      let timeframe;
+      if (this.waypoint.dateTime === "") {
+         timeframe = "current";
+      } else if (this.waypoint.dateTime > timeframe) {
+      }
+      const test = results.current;
+      console.log(test);
+
+      this.assignWeather(results, timeframe);
+   }
+
+   assignWeather(timeframe) {
+      this.timeframe = timeframe;
+      this.weatherData.dateTime = timeframe.dt;
+      this.weatherData.weatherDescription = timeframe.weather[0];
+      this.weatherData.temperature = timeframe.temp;
+      this.weatherData.rain = timeframe.rain;
       this.weatherData.clouds = current.clouds;
       this.weatherData.wind = current.wind_speed;
       this.weatherData.uvi = current.uvi;
