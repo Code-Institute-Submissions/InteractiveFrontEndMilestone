@@ -253,16 +253,20 @@ class WeatherFormatter {
    constructor(weatherRequest, waypoint) {
       this.waypoint = waypoint;
       this.weatherData = waypoint.weatherData;
-      this.weatherData.dateTime = "";
+      // Code to get new date and assess milliseconds to seconds found at https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript#:~:text=The%20value%20returned%20by%20the,00%3A00%3A00%20UTC.&text=The%20code%20Math.,new%20Date%20%2F%201E3%20%7C%200%20.
       this.twoDaysAway = () => {
          const today = new Date();
          today.setDate(today.getDate() + 2);
          const twoDays = Math.round(today.getTime() / 1000);
+         console.log(waypoint.dateTime);
+         console.log(twoDays);
          return twoDays;
       };
       this.formatWeather(weatherRequest);
    }
 
+   // formats and organises the JSON weather data and selects whether a user selected time required hourly, daily or current time selection byt measuring if within next 2 days of
+   // hourly time slots or not. Then compares time requested via input against each arrays time forecasts to select appropriate data
    formatWeather(weatherRequest) {
       const results = JSON.parse(weatherRequest);
       const waypointTime = this.waypoint.dateTime;
@@ -270,36 +274,40 @@ class WeatherFormatter {
       if (waypointTime === "") {
          timeframe = results.current;
       } else if (waypointTime > this.twoDaysAway()) {
+         // checks data for i and next index above; if [i] is smaller and [i+1] is bigger, takes [i] as closest forecast. Stops at length -1 as i+1 does not exist.
          for (var t = 0; t < results.daily.length - 1; t++) {
             if (
-               waypointTime > results.daily[t].dt &&
-               waypointTime < results.daily[t + 1].dt
+               waypointTime >= results.daily[t].dt &&
+               waypointTime <= results.daily[t + 1].dt
             ) {
                timeframe = results.daily[t];
                console.log(timeframe);
             }
          }
-         console.log("for done");
-         if (this.weatherData.dateTime === "") {
+         // If data is somehow between boundary of daily and hourly slots then data will stop befoe hitting full array length and assume last index as its forecast.
+         // This was chosen since the timestamp was obviously not suitable for the other daily/hourly intervals so takes the biggest value it can find as accurate.
+         if (timeframe === undefined) {
             timeframe = results.daily[results.daily.length - 1];
          }
       } else {
          for (var s = 0; s < results.hourly.length; s++) {
             if (
-               waypointTime > results.hourly[s].dt &&
-               waypointTime < results.hourly[s + 1].dt
+               waypointTime >= results.hourly[s].dt &&
+               waypointTime <= results.hourly[s + 1].dt
             ) {
                timeframe = results.hourly[s];
                console.log(timeframe);
+               break;
             }
          }
-         if (this.weatherData.dateTime === "") {
+         if (timeframe === undefined) {
             timeframe = results.hourly[results.hourly.length - 1];
          }
       }
       this.assignWeather(timeframe);
    }
 
+   // Assigns all values properties to the relevant time frame and its data.
    assignWeather(timeframe) {
       this.timeframe = timeframe;
       this.weatherData.dateTime = timeframe.dt;
