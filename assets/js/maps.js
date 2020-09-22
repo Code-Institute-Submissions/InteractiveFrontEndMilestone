@@ -173,8 +173,8 @@ class LocationView {
       const dateTime = document.getElementById(`${this.locationData.id}-date`);
       // => used instead of function as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
       $(dateTime).on(`change`, () => {
-         // check if date is inserted and after current date
-         this.locationData.dateTime = dateTime.valueAsNumber;
+         // check if date is inserted and after current date. Converts to unix time stamp in seconds to compared to weather JSON.
+         this.locationData.dateTime = dateTime.valueAsNumber / 1000;
          console.log(this.locationData);
       });
    }
@@ -251,34 +251,66 @@ class HTMLInputs {
 
 class WeatherFormatter {
    constructor(weatherRequest, waypoint) {
+      this.waypoint = waypoint;
       this.weatherData = waypoint.weatherData;
+      this.weatherData.dateTime = "";
+      this.twoDaysAway = () => {
+         const today = new Date();
+         today.setDate(today.getDate() + 2);
+         const twoDays = Math.round(today.getTime() / 1000);
+         return twoDays;
+      };
       this.formatWeather(weatherRequest);
    }
 
    formatWeather(weatherRequest) {
       const results = JSON.parse(weatherRequest);
+      const waypointTime = this.waypoint.dateTime;
       let timeframe;
-      if (this.waypoint.dateTime === "") {
-         timeframe = "current";
-      } else if (this.waypoint.dateTime > timeframe) {
+      if (waypointTime === "") {
+         timeframe = results.current;
+      } else if (waypointTime > this.twoDaysAway()) {
+         for (var t = 0; t < results.daily.length - 1; t++) {
+            if (
+               waypointTime > results.daily[t].dt &&
+               waypointTime < results.daily[t + 1].dt
+            ) {
+               timeframe = results.daily[t];
+               console.log(timeframe);
+            }
+         }
+         console.log("for done");
+         if (this.weatherData.dateTime === "") {
+            timeframe = results.daily[results.daily.length - 1];
+         }
+      } else {
+         for (var s = 0; s < results.hourly.length; s++) {
+            if (
+               waypointTime > results.hourly[s].dt &&
+               waypointTime < results.hourly[s + 1].dt
+            ) {
+               timeframe = results.hourly[s];
+               console.log(timeframe);
+            }
+         }
+         if (this.weatherData.dateTime === "") {
+            timeframe = results.hourly[results.hourly.length - 1];
+         }
       }
-      const test = results.current;
-      console.log(test);
-
-      this.assignWeather(results, timeframe);
+      this.assignWeather(timeframe);
    }
 
    assignWeather(timeframe) {
       this.timeframe = timeframe;
       this.weatherData.dateTime = timeframe.dt;
-      this.weatherData.weatherDescription = timeframe.weather[0];
+      this.weatherData.weatherDescription = timeframe.weather;
       this.weatherData.temperature = timeframe.temp;
       this.weatherData.rain = timeframe.rain;
-      this.weatherData.clouds = current.clouds;
-      this.weatherData.wind = current.wind_speed;
-      this.weatherData.uvi = current.uvi;
-      this.weatherData.realFeel = current.feels_like;
-      this.weatherData.humidity = current.humidity;
+      this.weatherData.clouds = timeframe.clouds;
+      this.weatherData.wind = timeframe.wind_speed;
+      this.weatherData.uvi = timeframe.uvi;
+      this.weatherData.realFeel = timeframe.feels_like;
+      this.weatherData.humidity = timeframe.humidity;
    }
 }
 
