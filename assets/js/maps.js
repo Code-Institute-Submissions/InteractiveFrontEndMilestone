@@ -1,6 +1,12 @@
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
 var map, infoWindow;
-let routeData, formInputs;
+let routeData;
+
+// Loads initial inputs for start/origin
+$(document).ready(function () {
+   routeData = new WayPointsData();
+   const formInputs = new HTMLInputs(routeData);
+});
 
 // ESLint cannot see the callback for initMap in index.html so needs next time to stop Lint complaints.
 // eslint-disable-next-line no-unused-vars
@@ -18,12 +24,14 @@ function initMap() {
       console.log(newRoute);
       calculateAndDisplayRoute(directionsService, directionsRenderer, newRoute);
    });
+
+   function weatherIcons(wayPointsData) {}
 }
 
 class DirectionsRequest {
    constructor(wayPointsData) {
-      this.origin = wayPointsData.origin();
-      this.destination = wayPointsData.destination();
+      this.origin = wayPointsData.origin().location.formatted_address;
+      this.destination = wayPointsData.destination().location.formatted_address;
       // this.waypoints = wayPointsData.waypts;
       this.travelMode = `DRIVING`;
       // // transitOptions;
@@ -32,18 +40,12 @@ class DirectionsRequest {
       // this.waypoints=[];
       // // this.optimizeWaypoints = true;
       // // this.provideRouteAlternatives = false;
-      // // this.avoidFerries="";
+      // this.avoidFerries = true;
       // // this.avoidHighways="";
       // // this.avoidTolls="";
       // // this.region="";
    }
 }
-
-// Loads initial inputs for start/origin
-$(document).ready(function () {
-   routeData = new WayPointsData();
-   formInputs = new HTMLInputs(routeData);
-});
 
 function calculateAndDisplayRoute(
    directionsService,
@@ -58,6 +60,18 @@ function calculateAndDisplayRoute(
          window.alert("Directions request failed due to " + status);
       }
    });
+}
+
+function weatherMarker(wayPointsData, map) {
+   const markerPoints = wayPointsData.locations;
+   for (const point of markerPoints) {
+      const position = point.location.geometry.location;
+      const weatherIcon = new google.maps.Marker({
+         position: position,
+         map: map,
+         icon: `/assets/img/${point.weatherData.weatherDescription[0].icon}@2x.png`,
+      });
+   }
 }
 
 class WeatherRequest {
@@ -195,7 +209,7 @@ class WayPointsData {
          const startPoint = this.locations.find((location) => {
             return location.id === "origin";
          });
-         return startPoint.location.formatted_address;
+         return startPoint;
       };
       // this.destination = () => {
       //    for (let d = 0; d < this.locations.length; d++) {
@@ -205,10 +219,10 @@ class WayPointsData {
       //    }
       // };
       this.destination = () => {
-         const startPoint = this.locations.find((location) => {
+         const endPoint = this.locations.find((location) => {
             return location.id === "destination";
          });
-         return startPoint.location.formatted_address;
+         return endPoint;
       };
       // possibel use later { address:endPoint.location.formatted_address , latlng: endPoint.location.latlng }
    } // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
