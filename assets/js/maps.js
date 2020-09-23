@@ -1,18 +1,20 @@
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
 var map, infoWindow;
-let routeData;
+let routeData, formInputs;
 
 // Loads initial inputs for start/origin
 $(document).ready(function () {
    routeData = new WayPointsData();
-   const formInputs = new HTMLInputs(routeData);
+   formInputs = new HTMLInputs(routeData);
 });
 
 // ESLint cannot see the callback for initMap in index.html so needs next time to stop Lint complaints.
 // eslint-disable-next-line no-unused-vars
 function initMap() {
    const directionsService = new google.maps.DirectionsService();
-   const directionsRenderer = new google.maps.DirectionsRenderer();
+   const directionsRenderer = new google.maps.DirectionsRenderer({
+      suppressMarkers: true,
+   });
    map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: -34.397, lng: 150.644 },
       zoom: 8,
@@ -54,11 +56,13 @@ function calculateAndDisplayRoute(
       if (status === "OK") {
          directionsRenderer.setDirections(result);
          const leg = result.routes[0].legs[0];
-         routeData.origin.googleLatLng = leg.start_location;
-         routeData.destination.googleLatLng = leg.end_location;
-         for (const point of routeData.locations) {
-            const icon = {
-               icon: `/assets/img/${point.weatherData.weatherDescription[0].icon}@2x.png`,
+         routeData.origin().googleLatLng = leg.start_location;
+         routeData.destination().googleLatLng = leg.end_location;
+
+         for (const input of formInputs.inputArray) {
+            const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
+            const latLng = input.locationData.googleLatLng;
+            input.weatherMarker(latLng, icon);
          }
          console.log(result);
       } else {
@@ -147,7 +151,10 @@ class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
       this.initalise();
-      this.marker = new google.maps.Marker({ map: map });
+      this.marker = new google.maps.Marker({
+         map: map,
+         icon: "/assets/img/blu-blank.png",
+      });
    }
 
    // Creates a new HTML input for text and date time using jquery then assigns the elements to a location and datetime variable for google autocomplete and generic value storage.
@@ -201,6 +208,12 @@ class LocationView {
    // Takes property of constructed marker and sets new position.
    addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
+      this.marker.setIcon("/assets/img/blu-blank.png");
+   }
+
+   weatherMarker(latLng, icon) {
+      this.marker.setPosition(latLng);
+      this.marker.setIcon(icon);
    }
 }
 
@@ -238,8 +251,9 @@ class HTMLInputs {
    constructor(wayPointsData) {
       // Constructor is called once when page loads and is very similar to addWayPoint(), instead using a for loop to create two new elements and
       // changing the first element's Id to origin and the second to destination so they can be passed to directionRequest instance.
+      this.wayPointsData = wayPointsData;
+      this.inputArray = [];
       for (let i = 0; i < 2; i++) {
-         this.inputArray = [];
          this.newPageWeather = new WeatherData();
          this.newPageLocations = new LocationData(this.newPageWeather);
          wayPointsData.locations.push(this.newPageLocations);
