@@ -24,8 +24,6 @@ function initMap() {
       console.log(newRoute);
       calculateAndDisplayRoute(directionsService, directionsRenderer, newRoute);
    });
-
-   function weatherIcons(wayPointsData) {}
 }
 
 class DirectionsRequest {
@@ -55,6 +53,13 @@ function calculateAndDisplayRoute(
    directionsService.route(directionsRequest, function (result, status) {
       if (status === "OK") {
          directionsRenderer.setDirections(result);
+         const leg = result.routes[0].legs[0];
+         routeData.origin.googleLatLng = leg.start_location;
+         routeData.destination.googleLatLng = leg.end_location;
+         for (const point of routeData.locations) {
+            const icon = {
+               icon: `/assets/img/${point.weatherData.weatherDescription[0].icon}@2x.png`,
+         }
          console.log(result);
       } else {
          window.alert("Directions request failed due to " + status);
@@ -62,17 +67,17 @@ function calculateAndDisplayRoute(
    });
 }
 
-function weatherMarker(wayPointsData, map) {
-   const markerPoints = wayPointsData.locations;
-   for (const point of markerPoints) {
-      const position = point.location.geometry.location;
-      const weatherIcon = new google.maps.Marker({
-         position: position,
-         map: map,
-         icon: `/assets/img/${point.weatherData.weatherDescription[0].icon}@2x.png`,
-      });
-   }
-}
+// function weatherMarker(wayPointsData, map) {
+//    const markerPoints = wayPointsData.locations;
+//    for (const point of markerPoints) {
+//       const position = point.location.geometry.location;
+//       const weatherIcon = new google.maps.Marker({
+//          position: position,
+//          map: map,
+//          icon: `/assets/img/${point.weatherData.weatherDescription[0].icon}@2x.png`,
+//       });
+//    }
+// }
 
 class WeatherRequest {
    constructor(wayPointsData) {
@@ -130,7 +135,7 @@ class LocationData {
    constructor(weatherData) {
       this.location = "";
       this.dateTime = "";
-      this.state = "";
+      this.googleLatLng = "";
       this.id = "";
       this.weatherData = weatherData;
    }
@@ -194,7 +199,7 @@ class LocationView {
    }
 
    // Takes property of constructed marker and sets new position.
-   addMarker(latLng, map) {
+   addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
    }
 }
