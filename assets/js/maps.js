@@ -23,9 +23,14 @@ function initMap() {
 
    $(`.btn`).click(function () {
       const newRoute = new DirectionsRequest(routeData);
-      const weatherAPI = new WeatherRequest(routeData);
-      console.log(newRoute);
-      calculateAndDisplayRoute(directionsService, directionsRenderer, newRoute);
+      const weatherAPI = new WeatherRequest(routeData, function () {
+         console.log(newRoute);
+         calculateAndDisplayRoute(
+            directionsService,
+            directionsRenderer,
+            newRoute
+         );
+      });
    });
 }
 
@@ -63,7 +68,8 @@ function calculateAndDisplayRoute(
          for (const input of formInputs.inputArray) {
             const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
             const latLng = input.locationData.googleLatLng;
-            input.weatherMarker(latLng, icon);
+            const info = input.locationData.weatherData;
+            input.weatherMarker(latLng, icon, info);
          }
          console.log(result);
       } else {
@@ -73,9 +79,10 @@ function calculateAndDisplayRoute(
 }
 
 class WeatherRequest {
-   constructor(wayPointsData) {
+   constructor(wayPointsData, callback) {
       this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
       this.wayPointsData = wayPointsData;
+      this.callbackCount = 1;
       this.wayPointsData.locations.forEach((waypoint) => {
          // use of lat() lng() found in google maps documentation https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng
          const lat = waypoint.location.geometry.location.lat();
@@ -85,7 +92,7 @@ class WeatherRequest {
             lat +
             "&lon=" +
             lng +
-            "&units=metric&appid=" +
+            "&exclude-minutely&units=metric&appid=" +
             this.openWeatherMapKey +
             "";
          // Use of http request and passing to another class found in code institute interactive front end module and at
@@ -94,20 +101,23 @@ class WeatherRequest {
          weatherRequest.open("get", weatherString);
          weatherRequest.send();
          weatherRequest.onload = () => {
+            this.callbackCount += 1;
             waypoint.weather = JSON.parse(weatherRequest.responseText);
             console.log(waypoint.weather);
             const formatter = new WeatherFormatter(
                weatherRequest.responseText,
                waypoint
             );
+            if (this.callbackCount === this.wayPointsData.locations.length)
+               callback();
          };
       });
    }
 }
 
-$("#waypointbtn").click(function () {
-   const weatherAPI = new WeatherRequest(routeData);
-});
+// $("#waypointbtn").click(function () {
+//    const weatherAPI = new WeatherRequest(routeData);
+// });
 
 class WeatherData {
    constructor() {
@@ -144,6 +154,7 @@ class LocationView {
          map: map,
          icon: "/assets/img/blu-blank.png",
       });
+      this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
    }
 
    // Creates a new HTML input for text and date time using jquery then assigns the elements to a location and datetime variable for google autocomplete and generic value storage.
@@ -198,11 +209,27 @@ class LocationView {
    addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
       this.marker.setIcon("/assets/img/blu-blank.png");
+      google.maps.event.clearInstanceListeners(this.marker);
    }
 
-   weatherMarker(latLng, icon) {
+   weatherMarker(latLng, icon, info) {
       this.marker.setPosition(latLng);
       this.marker.setIcon(icon);
+      const contentString = `<div class="content container">
+            <div class="row">
+               <h3 class="col-12 description">${info.weatherDescription[0].description}</h3>
+               <p class="col-6">Cloud cover: ${info.clouds}%</p>
+               <p class="col-6">Rain: ${info.rain}C</p>
+               <p class="col-6">Wind: ${info.wind}C</p>
+               <p class="col-6">Real Feel: ${info.realFeel}C</p>
+               <p class="col-6">UV Index: ${info.uvi}C</p>
+               <p class="col-6">Temperature: ${info.temperature}C</p>
+            </div>
+         </div>`;
+      this.infoWindow.setContent(contentString);
+      this.marker.addListener("click", () => {
+         this.infoWindow.open(map, this.marker);
+      });
    }
 }
 
