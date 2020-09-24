@@ -23,6 +23,7 @@ function initMap() {
 
    $(`.btn`).click(function () {
       const newRoute = new DirectionsRequest(routeData);
+      const weatherAPI = new WeatherRequest(routeData);
       console.log(newRoute);
       calculateAndDisplayRoute(directionsService, directionsRenderer, newRoute);
    });
@@ -70,18 +71,6 @@ function calculateAndDisplayRoute(
       }
    });
 }
-
-// function weatherMarker(wayPointsData, map) {
-//    const markerPoints = wayPointsData.locations;
-//    for (const point of markerPoints) {
-//       const position = point.location.geometry.location;
-//       const weatherIcon = new google.maps.Marker({
-//          position: position,
-//          map: map,
-//          icon: `/assets/img/${point.weatherData.weatherDescription[0].icon}@2x.png`,
-//       });
-//    }
-// }
 
 class WeatherRequest {
    constructor(wayPointsData) {
@@ -229,13 +218,7 @@ class WayPointsData {
          });
          return startPoint;
       };
-      // this.destination = () => {
-      //    for (let d = 0; d < this.locations.length; d++) {
-      //       if (this.locations[d][0].id === "destination") {
-      //          return this.locations[d][0].location.formatted_address;
-      //       }
-      //    }
-      // };
+
       this.destination = () => {
          const endPoint = this.locations.find((location) => {
             return location.id === "destination";
