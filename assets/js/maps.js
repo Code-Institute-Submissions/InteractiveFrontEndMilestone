@@ -219,13 +219,14 @@ class LocationView {
             <div class="row">
                <h3 class="col-12 description">${info.weatherDescription[0].description}</h3>
                <p class="col-6">Cloud cover: ${info.clouds}%</p>
-               <p class="col-6">Rain: ${info.rain}C</p>
-               <p class="col-6">Wind: ${info.wind}C</p>
-               <p class="col-6">Real Feel: ${info.realFeel}C</p>
-               <p class="col-6">UV Index: ${info.uvi}C</p>
-               <p class="col-6">Temperature: ${info.temperature}C</p>
+               <p class="col-6">Rain: ${info.rain} mm</p>
+               <p class="col-6">Wind: ${info.wind} m/s</p> 
+               <p class="col-6">Real Feel: ${info.realFeel}&#8451;</p>
+               <p class="col-6">UV Index: ${info.uvi}</p>
+               <p class="col-6">Temperature: ${info.temperature}&#8451;</p>
             </div>
          </div>`;
+      // &#8451; for degrees celsius found at https://www.w3schools.com/charsets/ref_utf_letterlike.asp
       this.infoWindow.setContent(contentString);
       this.marker.addListener("click", () => {
          this.infoWindow.open(map, this.marker);
@@ -355,13 +356,33 @@ class WeatherFormatter {
       this.timeframe = timeframe;
       this.weatherData.dateTime = timeframe.dt;
       this.weatherData.weatherDescription = timeframe.weather;
-      this.weatherData.temperature = timeframe.temp;
+      this.temperature = "";
+      if (typeof timeframe.temp === "object") {
+         this.weatherData.temperature = timeframe.temp.day;
+      } else {
+         this.weatherData.temperature = timeframe.temp;
+      }
+      this.realFeel = "";
+      if (typeof timeframe.feels_like === "object") {
+         this.weatherData.realFeel = timeframe.feels_like.day;
+      } else {
+         this.weatherData.realFeel = timeframe.feels_like;
+      }
       this.weatherData.rain = timeframe.rain;
+      if (typeof timeframe.rain === "object") {
+         this.weatherData.rain = timeframe.rain["1h"];
+      } else {
+         this.weatherData.rain = timeframe.rain;
+      }
       this.weatherData.clouds = timeframe.clouds;
       this.weatherData.wind = timeframe.wind_speed;
       this.weatherData.uvi = timeframe.uvi;
-      this.weatherData.realFeel = timeframe.feels_like;
       this.weatherData.humidity = timeframe.humidity;
+      for (const property in this.weatherData) {
+         if (this.weatherData[property] === undefined) {
+            this.weatherData[property] = "N/A";
+         }
+      }
    }
 }
 
