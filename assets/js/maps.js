@@ -38,12 +38,11 @@ class DirectionsRequest {
    constructor(wayPointsData) {
       this.origin = wayPointsData.origin().location.formatted_address;
       this.destination = wayPointsData.destination().location.formatted_address;
-      // this.waypoints = wayPointsData.waypts;
       this.travelMode = `DRIVING`;
       // // transitOptions;
       // this.drivingOptions=""
       // this.unitSystem = UnitSystem.IMPERIAL;
-      // this.waypoints=[];
+      this.waypoints = wayPointsData.waypts();
       // // this.optimizeWaypoints = true;
       // // this.provideRouteAlternatives = false;
       // this.avoidFerries = true;
@@ -267,9 +266,23 @@ class WayPointsData {
          });
          return endPoint;
       };
-      // possibel use later { address:endPoint.location.formatted_address , latlng: endPoint.location.latlng }
+      this.waypts = () => {
+         const array1 = this.locations.filter((location) => {
+            return location.id !== "destination" && location.id !== "origin";
+         });
+         const waypts = [];
+         array1.forEach((element) => {
+            waypts.push({
+               location: element.location.formatted_address,
+               stopover: false,
+            });
+         });
+         // const waypts2 = array1.map(
+         //    (value) => value.location.formatted_address
+         // );
+         return waypts;
+      };
    } // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
-   // this.waypts = this.locations.filter(function(element){return element.id !== "origin" || element.id !== "destination"});
 }
 
 class HTMLInputs {
