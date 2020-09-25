@@ -115,9 +115,9 @@ class WeatherRequest {
    }
 }
 
-// $("#waypointbtn").click(function () {
-//    const weatherAPI = new WeatherRequest(routeData);
-// });
+$("#waypointbtn").click(function () {
+   formInputs.addWaypoint(formInputs.wayPointsData);
+});
 
 class WeatherData {
    constructor() {
@@ -159,10 +159,18 @@ class LocationView {
 
    // Creates a new HTML input for text and date time using jquery then assigns the elements to a location and datetime variable for google autocomplete and generic value storage.
    initalise() {
-      $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
+      if (formInputs === undefined) {
+         $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
        <input type="datetime-local" class="col-5 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).appendTo(
-         ".route-form"
-      );
+            ".route-form"
+         );
+      } else {
+         const newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
+       <input type="datetime-local" class="col-5 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).insertBefore(
+            "#destination-input"
+         );
+      }
+
       this.setUpdateAutocomplete();
       this.setUpdateDateTime();
    }
@@ -174,7 +182,6 @@ class LocationView {
       // Arrow function => used as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
       location.addListener(`place_changed`, () => {
          // gotten from google -> where?
-         // if already one input, add location and zoom out?
          const place = location.getPlace();
          if (place.length === 0) {
             alert("Please select an appropriate Location");
@@ -211,6 +218,7 @@ class LocationView {
       this.marker.setIcon("/assets/img/blu-blank.png");
       google.maps.event.clearInstanceListeners(this.marker);
       this.infoWindow.close();
+      // remove event listener found at https://developers.google.com/maps/documentation/javascript/reference/event#event.removeListener
       if (this.infoWindow.content === true) {
          this.marker.removeListener("click");
       }
@@ -286,11 +294,12 @@ class HTMLInputs {
    // addWayPoint function creates a new instance of LocationData which is passed as a parameter to a new instance of LocationView
    // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
    // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later.
-   addWaypoint(wayPointsData) {
+   addWaypoint() {
+      const number = Math.floor(Math.random() * 100 + 1);
       const newWeatherData = new WeatherData();
       const newLocationData = new LocationData(newWeatherData);
-      newLocationData.id = `waypoint${this.inputArray.length}`;
-      wayPointsData.locations.push(newLocationData);
+      newLocationData.id = `waypoint${number}`;
+      this.wayPointsData.locations.push(newLocationData);
       const newWayPointHTML = new LocationView(newLocationData);
       this.inputArray.push(newWayPointHTML);
    }
