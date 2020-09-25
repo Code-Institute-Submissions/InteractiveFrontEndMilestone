@@ -118,6 +118,10 @@ $("#waypointbtn").click(function () {
    formInputs.addWaypoint(formInputs.wayPointsData);
 });
 
+$(".deleteButton").click(function () {
+   console.log("Icon clicked");
+   formInputs.removeWayPoint(this.id);
+});
 class WeatherData {
    constructor() {
       this.dateTime = "";
@@ -148,6 +152,7 @@ class LocationData {
 class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
+      this.newInput = "";
       this.initalise();
       this.marker = new google.maps.Marker({
          map: map,
@@ -160,13 +165,14 @@ class LocationView {
    initalise() {
       if (formInputs === undefined) {
          $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-5 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).appendTo(
+       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).appendTo(
             ".route-form"
          );
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
-         const newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-5 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).insertBefore(
+         this.newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
+       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">
+       <a role="button" id="${this.locationData.id}" class="deleteButton col-1"><i class="fas fa-times deleteIcon"></i></a>`).insertBefore(
             "#destination-input"
          );
       }
@@ -270,17 +276,18 @@ class WayPointsData {
          const array1 = this.locations.filter((location) => {
             return location.id !== "destination" && location.id !== "origin";
          });
-         const waypts = [];
-         array1.forEach((element) => {
-            waypts.push({
-               location: element.location.formatted_address,
-               stopover: false,
-            });
-         });
-         // const waypts2 = array1.map(
-         //    (value) => value.location.formatted_address
-         // );
-         return waypts;
+         // const waypts = [];
+         // array1.forEach((element) => {
+         //    waypts.push({
+         //       location: element.location.formatted_address,
+         //       stopover: false,
+         //    });
+         // });
+         const waypts2 = array1.map((value) => ({
+            location: value.location.formatted_address,
+            stopover: false,
+         }));
+         return waypts2;
       };
    } // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
 }
@@ -317,6 +324,12 @@ class HTMLInputs {
          this.wayPointsData.locations.push(newLocationData);
          const newWayPointHTML = new LocationView(newLocationData);
          this.inputArray.push(newWayPointHTML);
+         // Tutorial for basic layout found at https://www.w3schools.com/JSREF/met_element_addeventlistener.asp
+         document
+            .getElementById(newLocationData.id)
+            .addEventListener("click", () => {
+               this.removeWayPoint(newLocationData.id);
+            });
       } else {
          $('[data-toggle="popover"]').popover();
          $(".popover-dismiss").popover({
@@ -325,7 +338,24 @@ class HTMLInputs {
       }
    }
 
-   removeWayPoint() {}
+   removeWayPoint(elementId) {
+      document.getElementById(`${elementId}-input`).remove();
+      document.getElementById(`${elementId}-date`).remove();
+      document.getElementById(`${elementId}`).remove();
+      for (let d = 0; d < this.wayPointsData.locations.length; d++) {
+         if (this.wayPointsData.locations[d].id === elementId) {
+            this.wayPointsData.locations.splice(d, 1);
+            break;
+         }
+      }
+      for (let e = 0; e < this.inputArray.length; e++) {
+         if (this.inputArray[e].locationData.id === elementId) {
+            this.inputArray[e].marker.setMap(null);
+            this.inputArray.splice(e, 1);
+            break;
+         }
+      }
+   }
 }
 
 class WeatherFormatter {
