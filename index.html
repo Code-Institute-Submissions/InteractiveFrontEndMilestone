@@ -154,16 +154,21 @@
                         </div>
                         <div class="row">
                            <a
-                              href="#"
                               id="waypointbtn"
                               class="col-12 waypoint-button"
+                              tabindex="0"
+                              role="button"
+                              data-toggle="popover"
+                              data-trigger="focus"
+                              title="Maximum Waypoints Allowed"
+                              data-content="Only 10 locations at a time are available."
                            >
                               <i class="fas fa-plus-circle"></i>
                               Add another waypoint
                            </a>
                         </div>
                         <!-- button is type button to stop page refreshing. Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary route-btn">
                            Submit
                         </button>
                      </form>

@@ -21,7 +21,7 @@ function initMap() {
    });
    directionsRenderer.setMap(map);
 
-   $(`.btn`).click(function () {
+   $(`.route-btn`).click(function () {
       const newRoute = new DirectionsRequest(routeData);
       const weatherAPI = new WeatherRequest(routeData, function () {
          console.log(newRoute);
@@ -165,6 +165,7 @@ class LocationView {
             ".route-form"
          );
       } else {
+         // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
          const newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
        <input type="datetime-local" class="col-5 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).insertBefore(
             "#destination-input"
@@ -295,13 +296,20 @@ class HTMLInputs {
    // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
    // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later.
    addWaypoint() {
-      const number = Math.floor(Math.random() * 100 + 1);
-      const newWeatherData = new WeatherData();
-      const newLocationData = new LocationData(newWeatherData);
-      newLocationData.id = `waypoint${number}`;
-      this.wayPointsData.locations.push(newLocationData);
-      const newWayPointHTML = new LocationView(newLocationData);
-      this.inputArray.push(newWayPointHTML);
+      if (this.inputArray.length < 10) {
+         const number = Math.floor(Math.random() * 100 + 1);
+         const newWeatherData = new WeatherData();
+         const newLocationData = new LocationData(newWeatherData);
+         newLocationData.id = `waypoint${number}`;
+         this.wayPointsData.locations.push(newLocationData);
+         const newWayPointHTML = new LocationView(newLocationData);
+         this.inputArray.push(newWayPointHTML);
+      } else {
+         $('[data-toggle="popover"]').popover();
+         $(".popover-dismiss").popover({
+            trigger: "focus",
+         });
+      }
    }
 
    removeWayPoint() {}
