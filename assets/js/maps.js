@@ -210,14 +210,19 @@ class LocationView {
       this.marker.setPosition(latLng.geometry.location);
       this.marker.setIcon("/assets/img/blu-blank.png");
       google.maps.event.clearInstanceListeners(this.marker);
+      this.infoWindow.close();
+      if (this.infoWindow.content === true) {
+         this.marker.removeListener("click");
+      }
    }
 
    weatherMarker(latLng, icon, info) {
       this.marker.setPosition(latLng);
       this.marker.setIcon(icon);
+      this.infoWindow.close();
       const contentString = `<div class="content container">
             <div class="row">
-               <h3 class="col-12 description">${info.weatherDescription[0].description}</h3>
+               <h3 class="col-12 description text-capitalize">${info.weatherDescription[0].description}</h3>
                <p class="col-6">Cloud cover: ${info.clouds}%</p>
                <p class="col-6">Rain: ${info.rain} mm</p>
                <p class="col-6">Wind: ${info.wind} m/s</p> 
