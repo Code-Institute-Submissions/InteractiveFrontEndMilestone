@@ -118,10 +118,6 @@ $("#waypointbtn").click(function () {
    formInputs.addWaypoint(formInputs.wayPointsData);
 });
 
-$(".deleteButton").click(function () {
-   console.log("Icon clicked");
-   formInputs.removeWayPoint(this.id);
-});
 class WeatherData {
    constructor() {
       this.dateTime = "";
@@ -156,7 +152,7 @@ class LocationView {
       this.initalise();
       this.marker = new google.maps.Marker({
          map: map,
-         icon: "/assets/img/blu-blank.png",
+         icon: "/assets/img/blu-blank.PNG",
       });
       this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
    }
@@ -276,13 +272,7 @@ class WayPointsData {
          const array1 = this.locations.filter((location) => {
             return location.id !== "destination" && location.id !== "origin";
          });
-         // const waypts = [];
-         // array1.forEach((element) => {
-         //    waypts.push({
-         //       location: element.location.formatted_address,
-         //       stopover: false,
-         //    });
-         // });
+         // Use of map to find and pull values found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
          const waypts2 = array1.map((value) => ({
             location: value.location.formatted_address,
             stopover: false,
