@@ -23,6 +23,11 @@ function initMap() {
 
    $(`.route-btn`).click(function () {
       const newRoute = new DirectionsRequest(routeData);
+      if (newRoute.origin === undefined || newRoute.destination === undefined) {
+         window.alert(
+            "Please ensure all search locations have been completed."
+         );
+      }
       const weatherAPI = new WeatherRequest(routeData, function () {
          console.log(newRoute);
          calculateAndDisplayRoute(
@@ -72,10 +77,14 @@ function calculateAndDisplayRoute(
          }
          console.log(result);
       } else {
-         window.alert("Directions request failed due to " + status);
+         window.alert("Unable to find a route for your directions request.");
       }
    });
 }
+
+$("#waypointbtn").click(function () {
+   formInputs.addWaypoint(formInputs.wayPointsData);
+});
 
 class WeatherRequest {
    constructor(wayPointsData, callback) {
