@@ -1,5 +1,5 @@
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
-var map, infoWindow;
+var map;
 let routeData, formInputs;
 
 // Loads initial inputs for start/origin
@@ -38,7 +38,7 @@ class DirectionsRequest {
    constructor(wayPointsData) {
       this.origin = wayPointsData.origin().location.formatted_address;
       this.destination = wayPointsData.destination().location.formatted_address;
-      this.travelMode = `DRIVING`;
+      this.travelMode = wayPointsData.travelMode;
       // // transitOptions;
       // this.drivingOptions=""
       // this.unitSystem = UnitSystem.IMPERIAL;
@@ -113,10 +113,6 @@ class WeatherRequest {
       });
    }
 }
-
-$("#waypointbtn").click(function () {
-   formInputs.addWaypoint(formInputs.wayPointsData);
-});
 
 class WeatherData {
    constructor() {
@@ -268,6 +264,7 @@ class WayPointsData {
          });
          return endPoint;
       };
+      // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
       this.waypts = () => {
          const array1 = this.locations.filter((location) => {
             return location.id !== "destination" && location.id !== "origin";
@@ -279,7 +276,18 @@ class WayPointsData {
          }));
          return waypts2;
       };
-   } // found filter at https://stackoverflow.com/questions/7364150/find-object-by-id-in-an-array-of-javascript-objects
+      this.travelMode = "DRIVING";
+      this.travelModeListener("#changemode-walk", "WALKING");
+      this.travelModeListener("#changemode-car", "DRIVING");
+      this.travelModeListener("#changemode-transit", "TRANSIT");
+      this.travelModeListener("#changemode-bike", "BICYCLING");
+   }
+
+   travelModeListener(id, mode) {
+      $(id).on("click", () => {
+         this.travelMode = mode;
+      });
+   }
 }
 
 class HTMLInputs {
