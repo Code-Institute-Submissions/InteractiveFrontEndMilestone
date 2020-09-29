@@ -190,8 +190,8 @@ class LocationView {
       location.addListener(`place_changed`, () => {
          // gotten from google -> where?
          const place = location.getPlace();
-         if (place.length === 0) {
-            alert("Please select an appropriate Location");
+         if (!place.place_id) {
+            alert("Please select an appropriate location from dropdown list.");
          }
          this.addMarker(place, map);
          const bounds = new google.maps.LatLngBounds();
