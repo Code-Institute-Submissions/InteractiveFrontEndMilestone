@@ -110,8 +110,8 @@ class WeatherRequest {
          weatherRequest.send();
          weatherRequest.onload = () => {
             this.callbackCount += 1;
-            waypoint.weather = JSON.parse(weatherRequest.responseText);
-            console.log(waypoint.weather);
+            const weather = JSON.parse(weatherRequest.responseText);
+            console.log(weather);
             const formatter = new WeatherFormatter(
                weatherRequest.responseText,
                waypoint
@@ -157,8 +157,6 @@ class LocationView {
       this.minDate = "";
       this.maxDate = "";
       this.calculateTimeScope();
-      console.log(this.minDate);
-      console.log(this.maxDate);
       this.initalise();
       this.marker = new google.maps.Marker({
          map: map,
@@ -175,18 +173,20 @@ class LocationView {
             ".route-form"
          );
       } else {
-         // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
+         // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp, selects this for waypoint inputs not origin or destination.
          this.newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
        <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="" min="">
        <a role="button" id="${this.locationData.id}" class="deleteButton col-1"><i class="fas fa-times deleteIcon"></i></a>`).insertBefore(
             "#destination-input"
          );
       }
-
       this.setUpdateAutocomplete();
       this.setUpdateDateTime();
    }
 
+   // Calculates the current time and adds 7 days to account for openWeatherMap's latest weather data available. Turns to the correct string format and cuts the unnecessary
+   // values at end of string as found at https://stackoverflow.com/questions/952924/javascript-chop-slice-trim-off-last-character-in-string.
+   // Use of toISOString found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString .
    calculateTimeScope() {
       const today = new Date();
       const minDate = today.toISOString();
@@ -198,6 +198,7 @@ class LocationView {
       this.maxDate = maxDateStr;
    }
 
+   // Assigns the listener to each input and sets its autocomplete class to update the data with locations/geometry.
    setUpdateAutocomplete() {
       const location = new google.maps.places.Autocomplete(
          document.getElementById(`${this.locationData.id}-input`)
@@ -385,7 +386,8 @@ class WeatherFormatter {
    constructor(weatherRequest, waypoint) {
       this.waypoint = waypoint;
       this.weatherData = waypoint.weatherData;
-      // Code to get new date and assess milliseconds to seconds found at https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript#:~:text=The%20value%20returned%20by%20the,00%3A00%3A00%20UTC.&text=The%20code%20Math.,new%20Date%20%2F%201E3%20%7C%200%20.
+      // Code to get new date and assess milliseconds to seconds found at https://stackoverflow.com/questions/563406/add-days-to-javascript-date and
+      // https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript#:~:text=The%20value%20returned%20by%20the,00%3A00%3A00%20UTC.&text=The%20code%20Math.,new%20Date%20%2F%201E3%20%7C%200%20.
       this.twoDaysAway = () => {
          const today = new Date();
          today.setDate(today.getDate() + 2);
@@ -471,11 +473,5 @@ class WeatherFormatter {
             this.weatherData[property] = "N/A";
          }
       }
-   }
-}
-
-class LocationFormatter {
-   constructor() {
-      this.filler = "";
    }
 }
