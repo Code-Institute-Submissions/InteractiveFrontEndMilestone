@@ -154,6 +154,11 @@ class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
       this.newInput = "";
+      this.minDate = "";
+      this.maxDate = "";
+      this.calculateTimeScope();
+      console.log(this.minDate);
+      console.log(this.maxDate);
       this.initalise();
       this.marker = new google.maps.Marker({
          map: map,
@@ -166,13 +171,13 @@ class LocationView {
    initalise() {
       if (formInputs === undefined) {
          $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">`).appendTo(
+       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}">`).appendTo(
             ".route-form"
          );
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
          this.newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date">
+       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="" min="">
        <a role="button" id="${this.locationData.id}" class="deleteButton col-1"><i class="fas fa-times deleteIcon"></i></a>`).insertBefore(
             "#destination-input"
          );
@@ -180,6 +185,17 @@ class LocationView {
 
       this.setUpdateAutocomplete();
       this.setUpdateDateTime();
+   }
+
+   calculateTimeScope() {
+      const today = new Date();
+      const minDate = today.toISOString();
+      const minDateStr = minDate.substring(0, minDate.length - 8);
+      const sevenDays = today.setDate(today.getDate() + 7);
+      const maxDate = new Date(sevenDays).toISOString();
+      const maxDateStr = maxDate.substring(0, maxDate.length - 8);
+      this.minDate = minDateStr;
+      this.maxDate = maxDateStr;
    }
 
    setUpdateAutocomplete() {
