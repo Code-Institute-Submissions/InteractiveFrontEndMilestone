@@ -1,11 +1,25 @@
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
 var map;
-let routeData, formInputs;
+let formInputs, directionsHandler;
 
 // Loads initial inputs for start/origin
 $(document).ready(function () {
-   routeData = new WayPointsData();
+   const routeData = new WayPointsData();
    formInputs = new HTMLInputs(routeData);
+   directionsHandler = new DirectionsHandler();
+});
+
+$("#waypointbtn").click(function () {
+   formInputs.addWaypoint(formInputs.wayPointsData);
+});
+
+$(".reset-btn").click(() => {
+   formInputs.resetTrip();
+   directionsHandler.clearMap();
+});
+
+$(".route-btn").click(() => {
+   directionsHandler.routeValidation();
 });
 
 // ESLint cannot see the callback for initMap in index.html so needs next time to stop Lint complaints.
@@ -15,45 +29,26 @@ function initMap() {
       center: { lat: -34.397, lng: 150.644 },
       zoom: 8,
    });
-
-   $(`.route-btn`).click(function () {
-      const newRoute = new DirectionsHandler(formInputs.wayPointsData);
-      // if (
-      //    newRoute.directionsRequest.origin === undefined ||
-      //    newRoute.directionsRequest.destination === undefined
-      // ) {
-      //    window.alert(
-      //       "Please ensure all search locations have been completed."
-      //    );
-      // }
-      // const weatherAPI = new WeatherRequest(
-      //    formInputs.wayPointsData,
-      //    function () {
-      //       console.log(newRoute);
-      //       calculateAndDisplayRoute(
-      //          newRoute.directionsService,
-      //          newRoute.directionsRenderer,
-      //          newRoute.directionsRequest
-      //       );
-      //    }
-      // );
-   });
 }
 
 class DirectionsHandler {
-   constructor(wayPointsData) {
+   constructor() {
       this.directionsService = new google.maps.DirectionsService();
       this.directionsRenderer = new google.maps.DirectionsRenderer({
          suppressMarkers: true,
       });
       this.directionsRenderer.setMap(map);
-      this.directionsRequest = {
-         origin: wayPointsData.origin().location.formatted_address,
-         destination: wayPointsData.destination().location.formatted_address,
-         travelMode: wayPointsData.travelMode,
-         waypoints: wayPointsData.waypts(),
+   }
+
+   generateDirectionsRequest() {
+      const directionsRequest = {
+         origin: formInputs.wayPointsData.origin().location.formatted_address,
+         destination: formInputs.wayPointsData.destination().location
+            .formatted_address,
+         travelMode: formInputs.wayPointsData.travelMode,
+         waypoints: formInputs.wayPointsData.waypts(),
       };
-      this.routeValidation();
+      return directionsRequest;
    }
 
    routeValidation() {
@@ -76,12 +71,12 @@ class DirectionsHandler {
             );
          }
       }
-
+      this.directionsRenderer.setMap(map);
       const weatherAPI = new WeatherRequest(formInputs.wayPointsData, () => {
          this.calculateAndDisplayRoute(
             this.directionsService,
             this.directionsRenderer,
-            this.directionsRequest
+            this.generateDirectionsRequest()
          );
       });
    }
@@ -95,10 +90,12 @@ class DirectionsHandler {
          if (status === "OK") {
             directionsRenderer.setDirections(result);
             const leg = result.routes[0].legs[0];
-            routeData.origin().googleLatLng = leg.start_location;
-            routeData.destination().googleLatLng = leg.end_location;
-            for (let s = 0; s < routeData.waypts().length; s++) {
-               routeData.locations[s + 2].googleLatLng = leg.via_waypoints[s];
+            formInputs.wayPointsData.origin().googleLatLng = leg.start_location;
+            formInputs.wayPointsData.destination().googleLatLng =
+               leg.end_location;
+            for (let s = 0; s < formInputs.wayPointsData.waypts().length; s++) {
+               formInputs.wayPointsData.locations[s + 2].googleLatLng =
+                  leg.via_waypoints[s];
             }
 
             for (const input of formInputs.inputArray) {
@@ -146,15 +143,6 @@ class DirectionsHandler {
 //       }
 //    });
 // }
-
-$("#waypointbtn").click(function () {
-   formInputs.addWaypoint(formInputs.wayPointsData);
-});
-
-$(".reset-btn").click(() => {
-   formInputs.resetTrip();
-   DirectionsHandler.clearMap();
-});
 
 class WeatherRequest {
    constructor(wayPointsData, callback) {
