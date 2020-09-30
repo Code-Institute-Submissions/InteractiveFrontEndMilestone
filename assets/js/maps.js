@@ -11,49 +11,53 @@ $(document).ready(function () {
 // ESLint cannot see the callback for initMap in index.html so needs next time to stop Lint complaints.
 // eslint-disable-next-line no-unused-vars
 function initMap() {
-   const directionsService = new google.maps.DirectionsService();
-   const directionsRenderer = new google.maps.DirectionsRenderer({
-      suppressMarkers: true,
-   });
    map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: -34.397, lng: 150.644 },
       zoom: 8,
    });
-   directionsRenderer.setMap(map);
+   // directionsRenderer.setMap(map);
 
    $(`.route-btn`).click(function () {
-      const newRoute = new DirectionsRequest(routeData);
-      if (newRoute.origin === undefined || newRoute.destination === undefined) {
+      const newRoute = new DirectionsHandler(formInputs.wayPointsData);
+      if (
+         newRoute.directionsRequest.origin === undefined ||
+         newRoute.directionsRequest.destination === undefined
+      ) {
          window.alert(
             "Please ensure all search locations have been completed."
          );
       }
-      const weatherAPI = new WeatherRequest(routeData, function () {
-         console.log(newRoute);
-         calculateAndDisplayRoute(
-            directionsService,
-            directionsRenderer,
-            newRoute
-         );
-      });
+      const weatherAPI = new WeatherRequest(
+         formInputs.wayPointsData,
+         function () {
+            console.log(newRoute);
+            calculateAndDisplayRoute(
+               newRoute.directionsService,
+               newRoute.directionsRenderer,
+               newRoute.directionsRequest
+            );
+         }
+      );
    });
 }
 
-class DirectionsRequest {
+class DirectionsHandler {
    constructor(wayPointsData) {
-      this.origin = wayPointsData.origin().location.formatted_address;
-      this.destination = wayPointsData.destination().location.formatted_address;
-      this.travelMode = wayPointsData.travelMode;
-      // // transitOptions;
-      // this.drivingOptions=""
-      // this.unitSystem = UnitSystem.IMPERIAL;
-      this.waypoints = wayPointsData.waypts();
-      // // this.optimizeWaypoints = true;
-      // // this.provideRouteAlternatives = false;
-      // this.avoidFerries = true;
-      // // this.avoidHighways="";
-      // // this.avoidTolls="";
-      // // this.region="";
+      this.directionsService = new google.maps.DirectionsService();
+      this.directionsRenderer = new google.maps.DirectionsRenderer({
+         suppressMarkers: true,
+      });
+      this.directionsRenderer.setMap(map);
+      this.directionsRequest = {
+         origin: wayPointsData.origin().location.formatted_address,
+         destination: wayPointsData.destination().location.formatted_address,
+         travelMode: wayPointsData.travelMode,
+         waypoints: wayPointsData.waypts(),
+      };
+   }
+
+   clearMap() {
+      this.directionsRenderer.setMap(null);
    }
 }
 
@@ -91,6 +95,7 @@ $("#waypointbtn").click(function () {
 
 $(".reset-btn").click(() => {
    formInputs.resetTrip();
+   DirectionsHandler.clearMap();
 });
 
 class WeatherRequest {
@@ -395,6 +400,21 @@ class HTMLInputs {
 
    resetTrip() {
       document.getElementById("trip-form").reset();
+      this.wayPointsData.locations.forEach((element) => {
+         element.dateTime = "";
+         element.googleLatLng = "";
+         element.location = "";
+         element.dateTime = "";
+         element.weatherData.weatherDescription = "";
+         element.weatherData.dateTime = "";
+         element.weatherData.temperature = "";
+         element.weatherData.rain = "";
+         element.weatherData.clouds = "";
+         element.weatherData.wind = "";
+         element.weatherData.uvi = "";
+         element.weatherData.realFeel = "";
+         element.weatherData.humidity = "";
+      });
    }
 }
 
