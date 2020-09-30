@@ -68,6 +68,9 @@ function calculateAndDisplayRoute(
          const leg = result.routes[0].legs[0];
          routeData.origin().googleLatLng = leg.start_location;
          routeData.destination().googleLatLng = leg.end_location;
+         for (let s = 0; s < routeData.waypts().length; s++) {
+            routeData.locations[s + 2].googleLatLng = leg.via_waypoints[s];
+         }
 
          for (const input of formInputs.inputArray) {
             const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
