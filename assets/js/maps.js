@@ -86,6 +86,10 @@ $("#waypointbtn").click(function () {
    formInputs.addWaypoint(formInputs.wayPointsData);
 });
 
+$(".reset-btn").click(() => {
+   formInputs.resetTrip();
+});
+
 class WeatherRequest {
    constructor(wayPointsData, callback) {
       this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
@@ -384,6 +388,10 @@ class HTMLInputs {
             break;
          }
       }
+   }
+
+   resetTrip() {
+      document.getElementById("trip-form").reset();
    }
 }
 
