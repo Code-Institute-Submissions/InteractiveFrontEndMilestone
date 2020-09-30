@@ -182,7 +182,7 @@ class LocationView {
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp, selects this for waypoint inputs not origin or destination.
          this.newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="" min="">
+       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}">
        <a role="button" id="${this.locationData.id}" class="deleteButton col-1"><i class="fas fa-times deleteIcon"></i></a>`).insertBefore(
             "#destination-input"
          );
