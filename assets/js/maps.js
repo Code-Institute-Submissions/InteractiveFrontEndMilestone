@@ -15,29 +15,28 @@ function initMap() {
       center: { lat: -34.397, lng: 150.644 },
       zoom: 8,
    });
-   // directionsRenderer.setMap(map);
 
    $(`.route-btn`).click(function () {
       const newRoute = new DirectionsHandler(formInputs.wayPointsData);
-      if (
-         newRoute.directionsRequest.origin === undefined ||
-         newRoute.directionsRequest.destination === undefined
-      ) {
-         window.alert(
-            "Please ensure all search locations have been completed."
-         );
-      }
-      const weatherAPI = new WeatherRequest(
-         formInputs.wayPointsData,
-         function () {
-            console.log(newRoute);
-            calculateAndDisplayRoute(
-               newRoute.directionsService,
-               newRoute.directionsRenderer,
-               newRoute.directionsRequest
-            );
-         }
-      );
+      // if (
+      //    newRoute.directionsRequest.origin === undefined ||
+      //    newRoute.directionsRequest.destination === undefined
+      // ) {
+      //    window.alert(
+      //       "Please ensure all search locations have been completed."
+      //    );
+      // }
+      // const weatherAPI = new WeatherRequest(
+      //    formInputs.wayPointsData,
+      //    function () {
+      //       console.log(newRoute);
+      //       calculateAndDisplayRoute(
+      //          newRoute.directionsService,
+      //          newRoute.directionsRenderer,
+      //          newRoute.directionsRequest
+      //       );
+      //    }
+      // );
    });
 }
 
@@ -54,6 +53,65 @@ class DirectionsHandler {
          travelMode: wayPointsData.travelMode,
          waypoints: wayPointsData.waypts(),
       };
+      this.routeValidation();
+   }
+
+   routeValidation() {
+      const textInputs = document.getElementsByClassName("pac-target-input");
+      for (let i = 0; i < textInputs.length; i++) {
+         if (textInputs[i].value.length === 0) {
+            return window.alert(
+               "Please ensure all search locations have been completed."
+            );
+         }
+         const storedAddress = formInputs.inputArray.find((locationView) => {
+            return locationView.htmlId === textInputs[i].name;
+         });
+         if (
+            textInputs[i].value !==
+            storedAddress.locationData.location.formatted_address
+         ) {
+            return window.alert(
+               "Please select your destination from the dropdown list."
+            );
+         }
+      }
+
+      const weatherAPI = new WeatherRequest(formInputs.wayPointsData, () => {
+         this.calculateAndDisplayRoute(
+            this.directionsService,
+            this.directionsRenderer,
+            this.directionsRequest
+         );
+      });
+   }
+
+   calculateAndDisplayRoute(
+      directionsService,
+      directionsRenderer,
+      directionsRequest
+   ) {
+      directionsService.route(directionsRequest, function (result, status) {
+         if (status === "OK") {
+            directionsRenderer.setDirections(result);
+            const leg = result.routes[0].legs[0];
+            routeData.origin().googleLatLng = leg.start_location;
+            routeData.destination().googleLatLng = leg.end_location;
+            for (let s = 0; s < routeData.waypts().length; s++) {
+               routeData.locations[s + 2].googleLatLng = leg.via_waypoints[s];
+            }
+
+            for (const input of formInputs.inputArray) {
+               const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
+               const latLng = input.locationData.googleLatLng;
+               const info = input.locationData.weatherData;
+               input.weatherMarker(latLng, icon, info);
+            }
+            console.log(result);
+         } else {
+            window.alert("Unable to find a route for your directions request.");
+         }
+      });
    }
 
    clearMap() {
@@ -61,33 +119,33 @@ class DirectionsHandler {
    }
 }
 
-function calculateAndDisplayRoute(
-   directionsService,
-   directionsRenderer,
-   directionsRequest
-) {
-   directionsService.route(directionsRequest, function (result, status) {
-      if (status === "OK") {
-         directionsRenderer.setDirections(result);
-         const leg = result.routes[0].legs[0];
-         routeData.origin().googleLatLng = leg.start_location;
-         routeData.destination().googleLatLng = leg.end_location;
-         for (let s = 0; s < routeData.waypts().length; s++) {
-            routeData.locations[s + 2].googleLatLng = leg.via_waypoints[s];
-         }
+// function calculateAndDisplayRoute(
+//    directionsService,
+//    directionsRenderer,
+//    directionsRequest
+// ) {
+//    directionsService.route(directionsRequest, function (result, status) {
+//       if (status === "OK") {
+//          directionsRenderer.setDirections(result);
+//          const leg = result.routes[0].legs[0];
+//          routeData.origin().googleLatLng = leg.start_location;
+//          routeData.destination().googleLatLng = leg.end_location;
+//          for (let s = 0; s < routeData.waypts().length; s++) {
+//             routeData.locations[s + 2].googleLatLng = leg.via_waypoints[s];
+//          }
 
-         for (const input of formInputs.inputArray) {
-            const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
-            const latLng = input.locationData.googleLatLng;
-            const info = input.locationData.weatherData;
-            input.weatherMarker(latLng, icon, info);
-         }
-         console.log(result);
-      } else {
-         window.alert("Unable to find a route for your directions request.");
-      }
-   });
-}
+//          for (const input of formInputs.inputArray) {
+//             const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
+//             const latLng = input.locationData.googleLatLng;
+//             const info = input.locationData.weatherData;
+//             input.weatherMarker(latLng, icon, info);
+//          }
+//          console.log(result);
+//       } else {
+//          window.alert("Unable to find a route for your directions request.");
+//       }
+//    });
+// }
 
 $("#waypointbtn").click(function () {
    formInputs.addWaypoint(formInputs.wayPointsData);
@@ -165,6 +223,7 @@ class LocationData {
 class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
+      this.htmlId = `${this.locationData.id}-input`;
       this.newInput = "";
       this.minDate = "";
       this.maxDate = "";
@@ -172,7 +231,7 @@ class LocationView {
       this.initalise();
       this.marker = new google.maps.Marker({
          map: map,
-         icon: "/assets/img/blu-blank.PNG",
+         icon: "../assets/img/blu-blank.PNG",
       });
       this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
    }
