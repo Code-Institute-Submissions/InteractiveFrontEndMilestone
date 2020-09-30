@@ -322,17 +322,22 @@ class HTMLInputs {
       // changing the first element's Id to origin and the second to destination so they can be passed to directionRequest instance.
       this.wayPointsData = wayPointsData;
       this.inputArray = [];
+      this.originAndDestination();
+   }
+
+   // Generates two specific input views for origin and destination which require unique Ids and do not have remove waypoint icons to setup listeners for.
+   originAndDestination() {
       for (let i = 0; i < 2; i++) {
-         this.newPageWeather = new WeatherData();
-         this.newPageLocations = new LocationData(this.newPageWeather);
-         wayPointsData.locations.push(this.newPageLocations);
+         const newPageWeather = new WeatherData();
+         const newPageLocations = new LocationData(newPageWeather);
+         this.wayPointsData.locations.push(newPageLocations);
          if (i === 0) {
-            this.newPageLocations.id = `origin`;
+            newPageLocations.id = `origin`;
          } else {
-            this.newPageLocations.id = `destination`;
+            newPageLocations.id = `destination`;
          }
-         this.newPageInputs = new LocationView(this.newPageLocations);
-         this.inputArray.push(this.newPageInputs);
+         const newPageInputs = new LocationView(newPageLocations);
+         this.inputArray.push(newPageInputs);
       }
    }
 
