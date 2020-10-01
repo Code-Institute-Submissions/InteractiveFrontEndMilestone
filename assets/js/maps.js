@@ -116,34 +116,6 @@ class DirectionsHandler {
    }
 }
 
-// function calculateAndDisplayRoute(
-//    directionsService,
-//    directionsRenderer,
-//    directionsRequest
-// ) {
-//    directionsService.route(directionsRequest, function (result, status) {
-//       if (status === "OK") {
-//          directionsRenderer.setDirections(result);
-//          const leg = result.routes[0].legs[0];
-//          routeData.origin().googleLatLng = leg.start_location;
-//          routeData.destination().googleLatLng = leg.end_location;
-//          for (let s = 0; s < routeData.waypts().length; s++) {
-//             routeData.locations[s + 2].googleLatLng = leg.via_waypoints[s];
-//          }
-
-//          for (const input of formInputs.inputArray) {
-//             const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
-//             const latLng = input.locationData.googleLatLng;
-//             const info = input.locationData.weatherData;
-//             input.weatherMarker(latLng, icon, info);
-//          }
-//          console.log(result);
-//       } else {
-//          window.alert("Unable to find a route for your directions request.");
-//       }
-//    });
-// }
-
 class WeatherRequest {
    constructor(wayPointsData, callback) {
       this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
@@ -218,7 +190,6 @@ class LocationView {
       this.calculateTimeScope();
       this.initalise();
       this.marker = new google.maps.Marker({
-         map: map,
          icon: "../assets/img/blu-blank.PNG",
       });
       this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
@@ -299,12 +270,17 @@ class LocationView {
    addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
       this.marker.setIcon("/assets/img/blu-blank.png");
+      this.marker.setMap(map);
       google.maps.event.clearInstanceListeners(this.marker);
       this.infoWindow.close();
       // remove event listener found at https://developers.google.com/maps/documentation/javascript/reference/event#event.removeListener
       if (this.infoWindow.content === true) {
          this.marker.removeListener("click");
       }
+   }
+
+   removeMarker() {
+      this.marker.setMap(null);
    }
 
    weatherMarker(latLng, icon, info) {
@@ -445,6 +421,8 @@ class HTMLInputs {
       }
    }
 
+   // Form reset function found at https://www.w3schools.com/jsref/met_form_reset.asp#:~:text=The%20reset()%20method%20resets,method%20to%20submit%20the%20form.
+   // Resets the form values and all stored data so user cannot accidentally search for previous trip.
    resetTrip() {
       document.getElementById("trip-form").reset();
       this.wayPointsData.locations.forEach((element) => {
@@ -461,6 +439,9 @@ class HTMLInputs {
          element.weatherData.uvi = "";
          element.weatherData.realFeel = "";
          element.weatherData.humidity = "";
+      });
+      this.inputArray.forEach((locationView) => {
+         locationView.removeMarker();
       });
    }
 }
