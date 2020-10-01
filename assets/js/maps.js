@@ -252,6 +252,8 @@ class LocationView {
          map.fitBounds(bounds);
          this.locationData.location = place;
          console.log(this.locationData);
+         const searchInput = document.getElementById(this.htmlId);
+         searchInput.value = this.locationData.location.formatted_address;
       });
    }
 
