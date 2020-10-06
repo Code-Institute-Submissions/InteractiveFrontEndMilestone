@@ -238,7 +238,9 @@ class LocationView {
          // gotten from google -> where?
          const place = location.getPlace();
          if (!place.place_id) {
-            alert("Please select an appropriate location from dropdown list.");
+            return alert(
+               "Please select an appropriate location from dropdown list."
+            );
          }
          this.addMarker(place, map);
          const bounds = new google.maps.LatLngBounds();

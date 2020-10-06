@@ -11,11 +11,12 @@
       "eslint-plugin-node": "^11.1.0",
       "eslint-plugin-promise": "^4.2.1",
       "eslint-plugin-standard": "^4.0.1",
+      "jasmine": "^3.6.1",
       "prettier": "2.1.2"
    },
    "scripts": {
       "start": "npx live-server",
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "jasmine"
    },
    "repository": {
       "type": "git",
