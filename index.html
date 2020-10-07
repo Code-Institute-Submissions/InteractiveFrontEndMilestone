@@ -60,7 +60,7 @@
          <div class="map-canvas container">
             <div class="row route-wrapper">
                   <div class="col-12">
-                     <ul class="nav nav-tabs transport-tabs" id="myTab" role="tablist">
+                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                            <a
                               class="mode-tab active"
@@ -112,7 +112,7 @@
                         </li>
                      </ul>
                   </div>
-                  <form class="col-12 route-form"" id="trip-form">
+                  <form class="col-12 route-form" id="trip-form">
                         <div class="row" id="waypoint-container" >
                            <a
                               id="waypointbtn"
@@ -129,13 +129,15 @@
                            </a>
                         </div>
                         <!-- button is type button to stop page refreshing on click. Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
-                        <button type="button" class="btn btn-primary route-btn">
-                           Submit
-                        </button>
-                        <button type="button" class="btn btn-primary reset-btn">
-                           Reset Trip
-                        </button>
                      </form>
+               </div>
+               <div class="row button-container">
+                   <button type="button" class="button route-btn col-sm-6">
+                              Submit
+                   </button>
+                   <button type="button" class="button reset-btn col-sm-6">
+                              Reset Trip
+                   </button>
                </div>
             </div>
 
