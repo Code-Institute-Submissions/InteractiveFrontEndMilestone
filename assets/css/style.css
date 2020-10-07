@@ -1,11 +1,51 @@
 .route-wrapper {
    margin-top: 1rem;
    margin-bottom: 1rem;
+   background: none;
+}
+
+.route-form {
+   border: #a7291d solid;
+   padding-top: 1rem;
+   background: #fff;
+}
+
+.transport-tabs {
+}
+
+.mode-tab {
+   background-color: #d95e52;
+   color: black;
+   display: block;
+   padding: 0.5rem 1rem;
+   border-top-left-radius: 10%;
+   border-top-right-radius: 10%;
+   margin: 0 0.25rem;
+   width: 3.5rem;
+}
+
+.mode-tab i.fas {
+   font-size: 1.5rem;
+}
+
+.mode-tab.active {
+   background-color: #a7291d;
+   color: #fffffa;
+}
+
+.inputs {
+   margin-left: 0.1rem;
+}
+
+.deleteButton {
+   border: none;
+   padding: 0.5rem;
+   background: none;
 }
 
 .waypoint-button {
    color: #000;
-   margin-top: 0.5rem;
+   margin: 0.5rem 0.25rem;
 }
 
 .waypoint-button i {
@@ -31,7 +71,7 @@
       width: 22rem;
       top: 15%;
       left: 1%;
-      background: #fff;
+      background: #733049;
       padding-top: 1rem;
       padding-bottom: 1rem;
    }

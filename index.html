@@ -39,18 +39,18 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                <ul class="navbar-nav">
                   <li class="nav-item active">
-                     <a class="nav-link" href="#"
+                     <a class="mode-tab" href="#"
                         >Home <span class="sr-only">(current)</span></a
                      >
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" href="#">Features</a>
+                     <a class="mode-tab" href="#">Features</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" href="#">Pricing</a>
+                     <a class="mode-tab" href="#">Pricing</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link disabled" href="#">Disabled</a>
+                     <a class="mode-tab disabled" href="#">Disabled</a>
                   </li>
                </ul>
             </div>
@@ -60,63 +60,59 @@
          <div class="map-canvas container">
             <div class="row route-wrapper">
                   <div class="col-12">
-                     <ul class="nav nav-tabs" id="myTab" role="tablist">
+                     <ul class="nav nav-tabs transport-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                            <a
-                              class="nav-link active"
+                              class="mode-tab active"
                               id="changemode-car"
                               data-toggle="tab"
                               href="#car"
                               role="tab"
                               aria-controls="home"
                               aria-selected="true"
-                              >Car</a
+                              ><i class="fas fa-car"></i></a
                            >
                         </li>
                         <li class="nav-item" role="presentation">
                            <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
                            <a
-                              class="nav-link"
+                              class="mode-tab"
                               id="changemode-walk"
                               data-toggle="tab"
                               href="#walk"
                               role="tab"
                               aria-controls="walk"
                               aria-selected="false"
-                              >Walk</a
+                              ><i class="fas fa-shoe-prints"></i></a
                            >
                         </li>
                         <li class="nav-item" role="presentation">
                            <a
-                              class="nav-link"
+                              class="mode-tab"
                               id="changemode-bike"
                               data-toggle="tab"
                               href="#bike"
                               role="tab"
                               aria-controls="bike"
                               aria-selected="false"
-                              >Bike</a
+                              ><i class="fas fa-biking"></i></a
                            >
                         </li>
                         <li class="nav-item" role="presentation">
                            <a
-                              class="nav-link"
+                              class="mode-tab"
                               id="changemode-transit"
                               data-toggle="tab"
-                              href="#train"
+                              href="#public"
                               role="tab"
-                              aria-controls="train"
+                              aria-controls="public transport"
                               aria-selected="false"
-                              >Train</a
+                              ><i class="fas fa-bus-alt"></i></a
                            >
                         </li>
                      </ul>
                   </div>
-                  <form class="col-12 container" id="trip-form">
-                        <div class="row route-form">
-                           <!--Shrink datetime-local to just an icon or drop down when phone mode-->
-                           <!--Datetime-local found on mozilla developer site https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local-->
-                        </div>
+                  <form class="col-12 route-form"" id="trip-form">
                         <div class="row" id="waypoint-container" >
                            <a
                               id="waypointbtn"
