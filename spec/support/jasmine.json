@@ -1,6 +1,0 @@
-{
-   "spec_dir": "assets",
-   "spec_files": ["scripts/*.[sS]pec.js"],
-   "stopSpecOnExpectationFailure": false,
-   "random": false
-}
