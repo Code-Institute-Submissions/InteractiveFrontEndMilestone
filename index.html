@@ -57,9 +57,8 @@
          </nav>
       </header>
       <main>
-         <div class="map-canvas">
-            <div class="container route-wrapper">
-               <div class="row">
+         <div class="map-canvas container">
+            <div class="row route-wrapper">
                   <div class="col-12">
                      <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -112,46 +111,13 @@
                            >
                         </li>
                      </ul>
-                     <div class="tab-content" id="myTabContent">
-                        <div
-                           class="tab-pane fade show active"
-                           id="car"
-                           role="tabpanel"
-                           aria-labelledby="car-tab"
-                        >
-                           ...
-                        </div>
-                        <div
-                           class="tab-pane fade"
-                           id="walk"
-                           role="tabpanel"
-                           aria-labelledby="walk-tab"
-                        >
-                           ...
-                        </div>
-                        <div
-                           class="tab-pane fade"
-                           id="bike"
-                           role="tabpanel"
-                           aria-labelledby="bike-tab"
-                        >
-                           ...
-                        </div>
-                        <div
-                           class="tab-pane fade"
-                           id="train"
-                           role="tabpanel"
-                           aria-labelledby="train-tab"
-                        >
-                           ...
-                        </div>
-                     </div>
-                     <form class="col-12 container" id="trip-form">
+                  </div>
+                  <form class="col-12 container" id="trip-form">
                         <div class="row route-form">
                            <!--Shrink datetime-local to just an icon or drop down when phone mode-->
                            <!--Datetime-local found on mozilla developer site https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local-->
                         </div>
-                        <div class="row">
+                        <div class="row" id="waypoint-container" >
                            <a
                               id="waypointbtn"
                               class="col-12 waypoint-button"
@@ -174,7 +140,6 @@
                            Reset Trip
                         </button>
                      </form>
-                  </div>
                </div>
             </div>
 
@@ -264,7 +229,6 @@
                      <p>Contact us</p>
                   </a>
                </div>
-            </div>
          </div>
       </footer>
       <!--Scripts-->
@@ -297,7 +261,7 @@
          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhMQfdBgOh8-xwmxnFmQUDEkl871n_5MU&libraries=places&callback=initMap"
       ></script>
       <!--defer waits until page has finished loading before script is executed-->
-      <script type="text/javascript" src="assets/js/maps.js"></script>
+      <script type="text/javascript" src="assets/scripts/maps.js"></script>
       <!-- Load testing file-->
       <script type="text/javascript" src="spec/mapSpec.js"></script>
    </body>

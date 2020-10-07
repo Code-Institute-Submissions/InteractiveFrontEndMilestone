@@ -22,7 +22,7 @@ $(".route-btn").click(() => {
    directionsHandler.routeValidation();
 });
 
-// ESLint cannot see the callback for initMap in index.html so needs next time to stop Lint complaints.
+// ESLint cannot see the callback for initMap in index.html so needs next line to stop Lint complaints.
 // eslint-disable-next-line no-unused-vars
 function initMap() {
    map = new google.maps.Map(document.getElementById("map"), {
@@ -31,6 +31,8 @@ function initMap() {
    });
 }
 
+// DirectionsHandler class is a single instance which controls directions service and renderer so a directions request can be passed to the service and rendered.
+// Implemented as only a single instance of directionsRenderer was required and needed to have its map set to null or global map.
 class DirectionsHandler {
    constructor() {
       this.directionsService = new google.maps.DirectionsService();
@@ -72,6 +74,7 @@ class DirectionsHandler {
          }
       }
       this.directionsRenderer.setMap(map);
+      // Weather request does a callback for calculateAndDisplayRoute() to ensure all weather data has been returned before trying to assign waypoints/weather icons.
       const weatherAPI = new WeatherRequest(formInputs.wayPointsData, () => {
          this.calculateAndDisplayRoute(
             this.directionsService,
@@ -89,6 +92,7 @@ class DirectionsHandler {
       directionsService.route(directionsRequest, function (result, status) {
          if (status === "OK") {
             directionsRenderer.setDirections(result);
+            // Uses googlemaps legs to find the actual GPS lat lng used or the weather icons will not be placed correctly. Often on building far from travel end point/startpoint.
             const leg = result.routes[0].legs[0];
             formInputs.wayPointsData.origin().googleLatLng = leg.start_location;
             formInputs.wayPointsData.destination().googleLatLng =
@@ -198,16 +202,16 @@ class LocationView {
    // Creates a new HTML input for text and date time using jquery then assigns the elements to a location and datetime variable for google autocomplete and generic value storage.
    initalise() {
       if (formInputs === undefined) {
-         $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}">`).appendTo(
-            ".route-form"
+         $(`<div class="row" id="${this.locationData.id}-container"><input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
+       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}"></div>`).insertBefore(
+            "#waypoint-container"
          );
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp, selects this for waypoint inputs not origin or destination.
-         this.newInput = $(`<input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
+         this.newInput = $(`<div class="row" id="${this.locationData.id}-container"><input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
        <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}">
-       <a role="button" id="${this.locationData.id}" class="deleteButton col-1"><i class="fas fa-times deleteIcon"></i></a>`).insertBefore(
-            "#destination-input"
+       <a role="button" id="${this.locationData.id}" class="deleteButton col-1 form-control"><i class="fas fa-times deleteIcon"></i></a></div>`).insertBefore(
+            "#destination-container"
          );
       }
       this.setUpdateAutocomplete();
@@ -410,6 +414,7 @@ class HTMLInputs {
       document.getElementById(`${elementId}-input`).remove();
       document.getElementById(`${elementId}-date`).remove();
       document.getElementById(`${elementId}`).remove();
+      document.getElementById(`${elementId}-container`).remove();
       for (let d = 0; d < this.wayPointsData.locations.length; d++) {
          if (this.wayPointsData.locations[d].id === elementId) {
             this.wayPointsData.locations.splice(d, 1);
