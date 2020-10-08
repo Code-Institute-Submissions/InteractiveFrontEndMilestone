@@ -159,25 +159,25 @@ class WeatherRequest {
 
 class WeatherData {
    constructor() {
-      this.dateTime = "";
-      this.weatherDescription = "";
-      this.temperature = "";
-      this.rain = "";
-      this.clouds = "";
-      this.wind = "";
-      this.uvi = "";
-      this.realFeel = "";
-      this.humidity = "";
+      this.dateTime = undefined;
+      this.weatherDescription = null;
+      this.temperature = undefined;
+      this.rain = undefined;
+      this.clouds = undefined;
+      this.wind = undefined;
+      this.uvi = undefined;
+      this.realFeel = undefined;
+      this.humidity = undefined;
    }
 }
 
 // LocationData holds the individual input's location, date time and id values so they can be passed between the html view model and different api's without repeating.
 class LocationData {
    constructor(weatherData) {
-      this.location = "";
-      this.dateTime = "";
-      this.googleLatLng = "";
-      this.id = "";
+      this.location = null;
+      this.dateTime = undefined;
+      this.googleLatLng = undefined;
+      this.id = undefined;
       this.weatherData = weatherData;
    }
 }
@@ -188,14 +188,12 @@ class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
       this.htmlId = `${this.locationData.id}-input`;
-      this.newInput = "";
-      this.minDate = "";
-      this.maxDate = "";
+      this.minDate = undefined;
+      this.maxDate = undefined;
       this.calculateTimeScope();
       this.initalise();
-      this.marker = new google.maps.Marker({
-         icon: "../assets/img/blu-blank.PNG",
-      });
+      console.log("constructor");
+      this.marker = new google.maps.Marker();
       this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
    }
 
@@ -208,7 +206,7 @@ class LocationView {
          );
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp, selects this for waypoint inputs not origin or destination.
-         this.newInput = $(`<div class="row inputs" id="${this.locationData.id}-container"><input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
+         $(`<div class="row inputs" id="${this.locationData.id}-container"><input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
        <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}">
        <a role="button" id="${this.locationData.id}" class="deleteButton col-1 form-control"><i class="fas fa-times deleteIcon"></i></a></div>`).insertBefore(
             "#destination-container"
@@ -435,19 +433,19 @@ class HTMLInputs {
    resetTrip() {
       document.getElementById("trip-form").reset();
       this.wayPointsData.locations.forEach((element) => {
-         element.dateTime = "";
-         element.googleLatLng = "";
-         element.location = "";
-         element.dateTime = "";
-         element.weatherData.weatherDescription = "";
-         element.weatherData.dateTime = "";
-         element.weatherData.temperature = "";
-         element.weatherData.rain = "";
-         element.weatherData.clouds = "";
-         element.weatherData.wind = "";
-         element.weatherData.uvi = "";
-         element.weatherData.realFeel = "";
-         element.weatherData.humidity = "";
+         element.dateTime = undefined;
+         element.googleLatLng = undefined;
+         element.location = undefined;
+         element.dateTime = undefined;
+         element.weatherData.weatherDescription = undefined;
+         element.weatherData.dateTime = undefined;
+         element.weatherData.temperature = undefined;
+         element.weatherData.rain = undefined;
+         element.weatherData.clouds = undefined;
+         element.weatherData.wind = undefined;
+         element.weatherData.uvi = undefined;
+         element.weatherData.realFeel = undefined;
+         element.weatherData.humidity = undefined;
       });
       this.inputArray.forEach((locationView) => {
          locationView.removeMarker();
