@@ -275,7 +275,7 @@ class LocationView {
    // Takes property of constructed marker and sets new position.
    addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
-      this.marker.setIcon("/assets/img/blu-blank.png");
+      this.marker.setIcon("../assets/img/blu-blank.png");
       this.marker.setMap(map);
       google.maps.event.clearInstanceListeners(this.marker);
       this.infoWindow.close();
