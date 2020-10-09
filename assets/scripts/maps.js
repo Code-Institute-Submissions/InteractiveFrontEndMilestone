@@ -10,7 +10,7 @@ $(document).ready(function () {
 });
 
 $("#waypointbtn").click(function () {
-   formInputs.addWaypoint(formInputs.wayPointsData);
+   formInputs.addWayPoint(formInputs.wayPointsData);
 });
 
 $(".reset-btn").click(() => {
@@ -385,7 +385,7 @@ class HTMLInputs {
    // addWayPoint function creates a new instance of LocationData which is passed as a parameter to a new instance of LocationView
    // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
    // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later.
-   addWaypoint() {
+   addWayPoint() {
       if (this.inputArray.length < 10) {
          const number = Math.floor(Math.random() * 100 + 1);
          const newWeatherData = new WeatherData();
@@ -435,9 +435,9 @@ class HTMLInputs {
       this.wayPointsData.locations.forEach((element) => {
          element.dateTime = undefined;
          element.googleLatLng = undefined;
-         element.location = undefined;
+         element.location = null;
          element.dateTime = undefined;
-         element.weatherData.weatherDescription = undefined;
+         element.weatherData.weatherDescription = null;
          element.weatherData.dateTime = undefined;
          element.weatherData.temperature = undefined;
          element.weatherData.rain = undefined;

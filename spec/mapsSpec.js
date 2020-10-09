@@ -126,6 +126,14 @@ describe("Maps Tests", () => {
       locationDataNew = new LocationData(weatherDataNew);
    });
 
+   afterEach(() => {
+      // Use of remove suggested from https://api.jquery.com/detach/#detach-selector
+      // Use of wildcard to find all waypoint ids https://api.jquery.com/attribute-contains-selector/
+      $("div.inputs[id*='waypoint']").remove();
+      $("div.inputs[id*='undefined']").remove();
+      $("div.inputs[id*='test']").remove();
+   });
+
    describe("WeatherData class", () => {
       it("should construct weatherData class properties", () => {
          expect(weatherDataNew.dateTime).toBe(undefined);
@@ -193,8 +201,112 @@ describe("Maps Tests", () => {
             dublin.lng
          );
          expect(locationViewDublin.marker.icon).toBe(
-            "/assets/img/blu-blank.png"
+            "../assets/img/blu-blank.png"
          );
+      });
+
+      it("should set Marker map to null when removeMarker() is called", () => {
+         const locationViewNew = new LocationView(locationDataNew);
+         spyOn(locationViewNew.marker, "setMap");
+         locationViewNew.removeMarker();
+         expect(locationViewNew.marker.setMap).toHaveBeenCalledWith(null);
+      });
+
+      it("should set the marker location when weatherMarker() is called", () => {
+         const locationViewNew = new LocationView(locationDataNew);
+         const latlng = formInputs.wayPointsData.locations[0].googleLatLng;
+         const info = formInputs.wayPointsData.locations[0].weatherData;
+         const icon = `../assets/img/${formInputs.wayPointsData.locations[0].weatherData.weatherDescription[0].icon}@2x.png`;
+         spyOn(locationViewNew.marker, "setPosition").and.callThrough();
+         spyOn(locationViewNew.marker, "setIcon").and.callThrough();
+         expect(locationViewNew.marker.icon).toBe(undefined);
+         expect(locationViewNew.marker.getPosition()).toEqual(undefined);
+         locationViewNew.weatherMarker(latlng, icon, info);
+         expect(locationViewNew.marker.icon).toBe("../assets/img/01n@2x.png");
+         expect(locationViewNew.marker.getPosition().lat()).toEqual(
+            -33.8690094
+         );
+         expect(locationViewNew.marker.getPosition().lng()).toEqual(
+            151.2092614
+         );
+      });
+
+      it("should correctly set the infoWindow.setContent()", () => {
+         const locationViewNew = new LocationView(locationDataNew);
+         const latlng = formInputs.wayPointsData.locations[0].googleLatLng;
+         const info = formInputs.wayPointsData.locations[0].weatherData;
+         const icon = `../assets/img/${formInputs.wayPointsData.locations[0].weatherData.weatherDescription[0].icon}@2x.png`;
+         expect(locationViewNew.infoWindow.getContent()).toBe(undefined);
+         spyOn(locationViewNew.infoWindow, "setContent").and.callThrough();
+         locationViewNew.weatherMarker(latlng, icon, info);
+         expect(locationViewNew.infoWindow.getContent()).not.toBe(undefined);
+         expect(locationViewNew.infoWindow.setContent).toHaveBeenCalledTimes(1);
+      });
+   });
+
+   describe("WayPointsData class", () => {
+      it("should change travel mode when called", () => {
+         expect(formInputs.wayPointsData.travelMode).toBe("DRIVING");
+         // Specific term .click found at https://www.w3schools.com/jsref/met_html_click.asp
+         $("#changemode-walk").click();
+         expect(formInputs.wayPointsData.travelMode).toBe("WALKING");
+      });
+
+      it("should correctly call its property get assessors", () => {
+         const wayptTestArray = [];
+         const wayptTest = {
+            location:
+               formInputs.wayPointsData.locations[2].location.formatted_address,
+            stopover: false,
+         };
+         wayptTestArray.push(wayptTest);
+         expect(formInputs.wayPointsData.origin()).toBe(
+            formInputs.wayPointsData.locations[0]
+         );
+         expect(formInputs.wayPointsData.destination()).toBe(
+            formInputs.wayPointsData.locations[1]
+         );
+         expect(formInputs.wayPointsData.waypts()).toEqual(wayptTestArray);
+      });
+   });
+
+   describe("HTMLInputs Class", () => {
+      it("should construct new instances of locationdata and locationview", () => {
+         const dataTest = new WayPointsData();
+         const htmlTest = new HTMLInputs(dataTest);
+         expect(htmlTest.inputArray.length).toBe(2);
+         expect(htmlTest.wayPointsData.locations.length).toBe(2);
+         expect(htmlTest.wayPointsData.locations[0].id).toBe("origin");
+         expect(htmlTest.wayPointsData.locations[1].id).toBe("destination");
+      });
+
+      it("should increase number of objects in input array and waypointsData", () => {
+         const dataTest = new WayPointsData();
+         const htmlTest = new HTMLInputs(dataTest);
+         htmlTest.addWayPoint();
+         expect(htmlTest.inputArray.length).toBe(3);
+         expect(htmlTest.wayPointsData.locations.length).toBe(3);
+      });
+
+      it("should not add more waypoints when inputArray > 10", () => {
+         const dataTest = new WayPointsData();
+         const htmlTest = new HTMLInputs(dataTest);
+         let i = 0;
+         while (i < 10) {
+            htmlTest.addWayPoint();
+            i++;
+         }
+         console.log(htmlTest);
+         expect(htmlTest.inputArray.length).toBe(10);
+         expect(htmlTest.wayPointsData.locations.length).toBe(10);
+      });
+      it("should remove waypoints when removeWaypoint is called", () => {
+         const dataTest = new WayPointsData();
+         const htmlTest = new HTMLInputs(dataTest);
+         htmlTest.removeWayPoint("origin");
+         expect(htmlTest.inputArray.length).toBe(1);
+         expect(htmlTest.wayPointsData.locations.length).toBe(1);
+         expect(htmlTest.wayPointsData.locations[0].id).toBe("destination");
       });
    });
 
@@ -208,11 +320,9 @@ describe("Maps Tests", () => {
          expect(request.directionsService).toBeInstanceOf(
             google.maps.DirectionsService
          );
-         // expect(request.directionsRenderer.setMap).toHaveBeenCalledTimes(1);
       });
 
       it("should create a valid directionsRequest object using generateDirectionsRequest()", () => {
-         // spyOn(request, "generateDirectionsRequest").and.callThrough();
          expect(request.generateDirectionsRequest()).toEqual({
             origin: "Sydney NSW, Australia",
             destination: "Brisbane QLD, Australia",
@@ -223,7 +333,7 @@ describe("Maps Tests", () => {
          });
       });
 
-      it("should set map to null when removing markers", () => {
+      it("should set map to null when reset is called", () => {
          // Arrange - Prepare our test
          spyOn(request.directionsRenderer, "setMap");
          // Act - Perform the test
@@ -231,6 +341,13 @@ describe("Maps Tests", () => {
          // Assert - Check out result is what we expected
          expect(request.directionsRenderer.setMap).toHaveBeenCalledWith(null);
       });
+
+      // it("should call clearMap() when reset button is clicked", () => {
+      //    const directionsHandler = new DirectionsHandler();
+      //    spyOn(directionsHandler, "clearMap").and.callThrough();
+      //    $(".reset-btn").trigger("click");
+      //    expect(directionsHandler.clearMap).toHaveBeenCalledTimes(1);
+      // });
    });
 
    it("My Second Test", () => {
