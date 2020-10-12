@@ -436,7 +436,6 @@ class HTMLInputs {
          element.dateTime = undefined;
          element.googleLatLng = undefined;
          element.location = null;
-         element.dateTime = undefined;
          element.weatherData.weatherDescription = null;
          element.weatherData.dateTime = undefined;
          element.weatherData.temperature = undefined;

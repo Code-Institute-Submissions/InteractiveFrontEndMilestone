@@ -308,7 +308,26 @@ describe("Maps Tests", () => {
          expect(htmlTest.wayPointsData.locations.length).toBe(1);
          expect(htmlTest.wayPointsData.locations[0].id).toBe("destination");
       });
+      it("should reset the values of each locationData", () => {
+         formInputs.resetTrip();
+         const locationObject = formInputs.wayPointsData.locations[0];
+         expect(locationObject.dateTime).toBe(undefined);
+         expect(locationObject.googleLatLng).toBe(undefined);
+         expect(locationObject.location).toBe(null);
+         expect(locationObject.id).not.toBe(undefined);
+
+         for (const propName in locationObject.weatherData) {
+            console.log(propName);
+            if (propName === "weatherDescription") {
+               expect(locationObject.weatherData[propName]).toBe(null);
+            } else {
+               expect(locationObject.weatherData[propName]).toBe(undefined);
+            }
+         }
+      });
    });
+
+   describe("Weather Formatter Class", () => {});
 
    describe("DirectionsHandler Class", () => {
       it("should construct class properties upon new", () => {
