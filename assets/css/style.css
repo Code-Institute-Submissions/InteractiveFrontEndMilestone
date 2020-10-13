@@ -9,7 +9,7 @@ p {
 
 .header {
    position: relative;
-   background-color: #d4d4d2;
+   background-color: #733049;
    max-width: 100vw;
 }
 
@@ -153,9 +153,8 @@ p {
    margin: 0;
 }
 
-.social-links li {
+.social-links {
    padding: 0 0.25rem;
-   color: #733049;
    font-size: 1.25rem;
 }
 
@@ -169,6 +168,9 @@ p {
       background: none;
       padding-top: 1rem;
       padding-bottom: 1rem;
+   }
+   .header {
+      height: 7vh;
    }
 
    #map {
@@ -184,16 +186,42 @@ p {
       width: 3.5rem;
    }
 
+   .route-form {
+      border-top-right-radius: 8%;
+   }
+
+   .button-container {
+      border-bottom-right-radius: 10%;
+   }
+
+   .reset-btn {
+      border-bottom-right-radius: 10%;
+   }
+
+   .route-btn {
+      border-bottom-left-radius: 8%;
+   }
    .footer {
       position: absolute;
       z-index: 999;
-      bottom: 1.5%;
+      bottom: 1.2%;
       left: 50%;
       transform: translate(-50%, 0);
       width: 35rem;
       font-size: 12px;
       color: #000;
       height: 20px;
+   }
+
+   .footer-padding {
+      padding: 0;
+   }
+
+   .social-links li {
+      padding: 0 0.25rem;
+      color: #733049;
+      font-size: 1.25rem;
+      margin-top: -0.4rem;
    }
 }
 
@@ -207,6 +235,10 @@ p {
       background: none;
       padding-top: 1rem;
       padding-bottom: 1rem;
+   }
+
+   .header {
+      height: 6vh;
    }
 
    #map {
