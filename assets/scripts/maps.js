@@ -38,6 +38,7 @@ class DirectionsHandler {
       this.directionsService = new google.maps.DirectionsService();
       this.directionsRenderer = new google.maps.DirectionsRenderer({
          suppressMarkers: true,
+         polylineOptions: { strokeColor: "#733049" },
       });
       this.directionsRenderer.setMap(map);
    }
