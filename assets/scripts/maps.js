@@ -192,7 +192,6 @@ class LocationView {
       this.maxDate = undefined;
       this.calculateTimeScope();
       this.initalise();
-      console.log("constructor");
       this.marker = new google.maps.Marker();
       this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
    }

@@ -122,16 +122,54 @@ describe("Maps Tests", () => {
          },
       ];
       formInputs.wayPointsData = data;
+      formInputs.inputArray[0].locationData.location = {
+         formatted_address: "Sydney NSW, Australia",
+         geometry: {
+            location: { lat: -33.8688197, lng: 151.2092955 },
+            viewport: {
+               south: -34.118347,
+               west: 150.5209286,
+               north: -33.5781409,
+               east: 151.3430209,
+            },
+         },
+         place_id: "ChIJP3Sa8ziYEmsRUKgyFmh9AQM",
+         utc_offset: 660,
+         vicinity: "Sydney",
+         utc_offset_minutes: 660,
+      };
+      formInputs.inputArray[1].locationData.location = {
+         formatted_address: "Brisbane QLD, Australia",
+         geometry: {
+            location: { lat: -27.4697707, lng: 153.0251235 },
+            viewport: {
+               south: -27.7674409,
+               west: 152.6685227,
+               north: -26.9968449,
+               east: 153.3178702,
+            },
+         },
+         utc_offset: 600,
+         vicinity: "Brisbane",
+         utc_offset_minutes: 600,
+      };
       weatherDataNew = new WeatherData();
       locationDataNew = new LocationData(weatherDataNew);
+      testSearchBars = document.getElementsByClassName("pac-target-input");
+      dataTest = new WayPointsData();
+      htmlTest = new HTMLInputs(dataTest);
    });
 
    afterEach(() => {
       // Use of remove suggested from https://api.jquery.com/detach/#detach-selector
       // Use of wildcard to find all waypoint ids https://api.jquery.com/attribute-contains-selector/
+      $("div.inputs[id*='origin']").not(`:first`).remove();
+      $("div.inputs[id*='destination']").not(`:last`).remove();
       $("div.inputs[id*='waypoint']").remove();
       $("div.inputs[id*='undefined']").remove();
       $("div.inputs[id*='test']").remove();
+
+      console.log(testSearchBars);
    });
 
    describe("WeatherData class", () => {
@@ -272,8 +310,6 @@ describe("Maps Tests", () => {
 
    describe("HTMLInputs Class", () => {
       it("should construct new instances of locationdata and locationview", () => {
-         const dataTest = new WayPointsData();
-         const htmlTest = new HTMLInputs(dataTest);
          expect(htmlTest.inputArray.length).toBe(2);
          expect(htmlTest.wayPointsData.locations.length).toBe(2);
          expect(htmlTest.wayPointsData.locations[0].id).toBe("origin");
@@ -281,32 +317,26 @@ describe("Maps Tests", () => {
       });
 
       it("should increase number of objects in input array and waypointsData", () => {
-         const dataTest = new WayPointsData();
-         const htmlTest = new HTMLInputs(dataTest);
          htmlTest.addWayPoint();
          expect(htmlTest.inputArray.length).toBe(3);
          expect(htmlTest.wayPointsData.locations.length).toBe(3);
       });
 
       it("should not add more waypoints when inputArray > 10", () => {
-         const dataTest = new WayPointsData();
-         const htmlTest = new HTMLInputs(dataTest);
          let i = 0;
          while (i < 10) {
             htmlTest.addWayPoint();
             i++;
          }
-         console.log(htmlTest);
          expect(htmlTest.inputArray.length).toBe(10);
          expect(htmlTest.wayPointsData.locations.length).toBe(10);
       });
       it("should remove waypoints when removeWaypoint is called", () => {
-         const dataTest = new WayPointsData();
-         const htmlTest = new HTMLInputs(dataTest);
-         htmlTest.removeWayPoint("origin");
-         expect(htmlTest.inputArray.length).toBe(1);
-         expect(htmlTest.wayPointsData.locations.length).toBe(1);
-         expect(htmlTest.wayPointsData.locations[0].id).toBe("destination");
+         htmlTest.addWayPoint();
+         const waypointToDelete = htmlTest.inputArray[2].locationData.id;
+         htmlTest.removeWayPoint(waypointToDelete);
+         expect(htmlTest.inputArray.length).toBe(2);
+         expect(htmlTest.wayPointsData.locations.length).toBe(2);
       });
       it("should reset the values of each locationData", () => {
          formInputs.resetTrip();
@@ -317,7 +347,6 @@ describe("Maps Tests", () => {
          expect(locationObject.id).not.toBe(undefined);
 
          for (const propName in locationObject.weatherData) {
-            console.log(propName);
             if (propName === "weatherDescription") {
                expect(locationObject.weatherData[propName]).toBe(null);
             } else {
@@ -359,6 +388,36 @@ describe("Maps Tests", () => {
          request.clearMap();
          // Assert - Check out result is what we expected
          expect(request.directionsRenderer.setMap).toHaveBeenCalledWith(null);
+      });
+
+      it("should return an alert when nothing has been entered into a location input", () => {
+         spyOn(window, "alert");
+         request.routeValidation();
+         expect(window.alert).toHaveBeenCalledWith(
+            "Please ensure all search locations have been completed."
+         );
+      });
+
+      it("should return an alert autocomplete result not selected", () => {
+         testSearchBars[0].value = "Sydney";
+         spyOn(window, "alert");
+         request.routeValidation();
+         expect(window.alert).toHaveBeenCalledWith(
+            "Please select your destination from the dropdown list."
+         );
+         testSearchBars[0].value = "";
+      });
+
+      it("should set the directionsRender map when called successfully", () => {
+         testSearchBars[0].value = "Sydney NSW, Australia";
+         testSearchBars[1].value = "Brisbane QLD, Australia";
+         console.log(testSearchBars);
+         spyOn(request.directionsRenderer, "setMap");
+         request.routeValidation();
+         expect(request.directionsRenderer.setMap).toHaveBeenCalledTimes(1);
+         for (let i = 0; i < testSearchBars.length; i++) {
+            testSearchBars[i].value = "";
+         }
       });
 
       // it("should call clearMap() when reset button is clicked", () => {
