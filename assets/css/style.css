@@ -2,8 +2,26 @@
    background: none;
 }
 
-.route-wrapper {
-   margin-top: 1rem;
+p {
+   font-family: "Playfair Dispay", sans-serif;
+}
+
+.header {
+   position: relative;
+   background-color: #d4d4d2;
+   max-width: 100vw;
+}
+
+.header-title {
+   font-family: "Playfair Display", sans-serif;
+   color: #fff;
+   font-size: 1.5rem;
+   font-style: italic;
+   font-weight: 500;
+}
+
+.no-padding {
+   padding: 0;
 }
 
 .route-form {
@@ -17,14 +35,11 @@
 }
 
 .mode-tab {
-   background-color: #d95e52;
-   color: black;
+   background-color: #d4d4d2;
+   color: #a7291d;
    display: block;
-   padding: 0.5rem 1rem;
-   border-top-left-radius: 10%;
-   border-top-right-radius: 10%;
-   margin: 0 0.25rem;
-   width: 3.5rem;
+   padding: 0.75rem 1.75rem;
+   width: 25vw;
 }
 
 .mode-tab i.fas {
@@ -105,7 +120,7 @@
 }
 
 .footer {
-   background: #fff;
+   background: #d4d4d2;
 }
 
 @media (min-width: 768px) {
@@ -122,6 +137,15 @@
 
    #map {
       height: 93vh;
+   }
+
+   .mode-tab {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-top-left-radius: 10%;
+      border-top-right-radius: 10%;
+      margin: 0 0.25rem;
+      width: 3.5rem;
    }
 
    .footer {

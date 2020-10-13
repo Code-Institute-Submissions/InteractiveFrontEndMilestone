@@ -9,7 +9,14 @@ describe("Maps Tests", () => {
             location: {
                formatted_address: "Sydney NSW, Australia",
                geometry: {
-                  location: { lat: -33.8688197, lng: 151.2092955 },
+                  location: {
+                     lat: function () {
+                        return -33.8688197;
+                     },
+                     lng: function () {
+                        return 151.2092955;
+                     },
+                  },
                   viewport: {
                      south: -34.118347,
                      west: 150.5209286,
@@ -48,7 +55,14 @@ describe("Maps Tests", () => {
             location: {
                formatted_address: "Brisbane QLD, Australia",
                geometry: {
-                  location: { lat: -27.4697707, lng: 153.0251235 },
+                  location: {
+                     lat: function () {
+                        return -27.4697707;
+                     },
+                     lng: function () {
+                        return 153.0251235;
+                     },
+                  },
                   viewport: {
                      south: -27.7674409,
                      west: 152.6685227,
@@ -86,7 +100,14 @@ describe("Maps Tests", () => {
             location: {
                formatted_address: "Bundaberg QLD 4670, Australia",
                geometry: {
-                  location: { lat: -24.8660809, lng: 152.3488645 },
+                  location: {
+                     lat: function () {
+                        return -24.8660809;
+                     },
+                     lng: function () {
+                        return 152.3488645;
+                     },
+                  },
                   viewport: {
                      south: -24.9490849,
                      west: 152.233655,
@@ -163,6 +184,7 @@ describe("Maps Tests", () => {
    afterEach(() => {
       // Use of remove suggested from https://api.jquery.com/detach/#detach-selector
       // Use of wildcard to find all waypoint ids https://api.jquery.com/attribute-contains-selector/
+      // Use of :first and :last found at w3c https://stackoverflow.com/questions/18874298/jquery-remove-all-elements-except-for-first-one/18874368
       $("div.inputs[id*='origin']").not(`:first`).remove();
       $("div.inputs[id*='destination']").not(`:last`).remove();
       $("div.inputs[id*='waypoint']").remove();
@@ -420,15 +442,38 @@ describe("Maps Tests", () => {
          }
       });
 
-      // it("should call clearMap() when reset button is clicked", () => {
-      //    const directionsHandler = new DirectionsHandler();
-      //    spyOn(directionsHandler, "clearMap").and.callThrough();
-      //    $(".reset-btn").trigger("click");
-      //    expect(directionsHandler.clearMap).toHaveBeenCalledTimes(1);
-      // });
-   });
+      it("should call setDirections  in calculate and DisplayRoute if status =OK ", () => {
+         testSearchBars[0].value = "Sydney NSW, Australia";
+         testSearchBars[1].value = "Brisbane QLD, Australia";
+         spyOn(request.directionsService, "route").and.callThrough();
+         request.routeValidation();
+         expect(request.directionsService.route).toHaveBeenCalledTimes(1);
+         for (let i = 0; i < testSearchBars.length; i++) {
+            testSearchBars[i].value = "";
+         }
+      });
 
-   it("My Second Test", () => {
-      expect(true).toBe(true);
+      it("should expect alert if status not = OK", () => {
+         spyOn(window, "alert");
+         const result = ["test"];
+         const status = "404";
+         request.directionsService.route(
+            request.generateDirectionsRequest(),
+            result,
+            status
+         );
+         expect(window.alert).toHaveBeenCalledWith(
+            "Unable to find a route for your directions request."
+         );
+         for (let i = 0; i < testSearchBars.length; i++) {
+            testSearchBars[i].value = "";
+         }
+      });
+
+      it("should call clearMap() when reset button is clicked", () => {
+         spyOn(request, "clearMap").and.callThrough();
+         $(".reset-btn").trigger("click");
+         expect(request.clearMap).toHaveBeenCalledTimes(1);
+      });
    });
 });

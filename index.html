@@ -9,6 +9,7 @@
          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
          type="text/css"
       />
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
       <link
          rel="stylesheet"
          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -22,44 +23,15 @@
    </head>
 
    <body>
-      <header>
-         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button
-               class="navbar-toggler"
-               type="button"
-               data-toggle="collapse"
-               data-target="#navbarNav"
-               aria-controls="navbarNav"
-               aria-expanded="false"
-               aria-label="Toggle navigation"
-            >
-               <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-               <ul class="navbar-nav">
-                  <li class="nav-item active">
-                     <a class="mode-tab" href="#"
-                        >Home <span class="sr-only">(current)</span></a
-                     >
-                  </li>
-                  <li class="nav-item">
-                     <a class="mode-tab" href="#">Features</a>
-                  </li>
-                  <li class="nav-item">
-                     <a class="mode-tab" href="#">Pricing</a>
-                  </li>
-                  <li class="nav-item">
-                     <a class="mode-tab disabled" href="#">Disabled</a>
-                  </li>
-               </ul>
-            </div>
+      <header class="header">
+         <nav class="navbar navbar-expand-lg">
+            <a class="header-title mx-auto" href="#">Fare Weather Wanderers</a>
          </nav>
       </header>
       <main>
          <div class="map-canvas container">
             <div class="row route-wrapper">
-                  <div class="col-12">
+                  <div class="col-12 no-padding">
                      <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                            <a
