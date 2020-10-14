@@ -384,16 +384,18 @@ class HTMLInputs {
 
    // addWayPoint function creates a new instance of LocationData which is passed as a parameter to a new instance of LocationView
    // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
-   // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later.
+   // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later
+   // ID number is assigned to date in milliseconds to prevent identical ids.
    addWayPoint() {
       if (this.inputArray.length < 10) {
-         const number = Math.floor(Math.random() * 100 + 1);
+         const number = new Date().getTime();
          const newWeatherData = new WeatherData();
          const newLocationData = new LocationData(newWeatherData);
          newLocationData.id = `waypoint${number}`;
          this.wayPointsData.locations.push(newLocationData);
          const newWayPointHTML = new LocationView(newLocationData);
          this.inputArray.push(newWayPointHTML);
+         // $('[data-toggle="popover"]').popover(`hide`);
          // Tutorial for basic layout found at https://www.w3schools.com/JSREF/met_element_addeventlistener.asp
          document
             .getElementById(newLocationData.id)
@@ -401,10 +403,7 @@ class HTMLInputs {
                this.removeWayPoint(newLocationData.id);
             });
       } else {
-         $('[data-toggle="popover"]').popover();
-         $(".popover-dismiss").popover({
-            trigger: "focus",
-         });
+         $('[data-toggle="popover"]').popover(`show`);
       }
    }
 
@@ -426,6 +425,7 @@ class HTMLInputs {
             break;
          }
       }
+      $('[data-toggle="popover"]').popover(`hide`);
    }
 
    // Form reset function found at https://www.w3schools.com/jsref/met_form_reset.asp#:~:text=The%20reset()%20method%20resets,method%20to%20submit%20the%20form.
