@@ -378,8 +378,6 @@ describe("Maps Tests", () => {
       });
    });
 
-   describe("Weather Formatter Class", () => {});
-
    describe("DirectionsHandler Class", () => {
       it("should construct class properties upon new", () => {
          spyOn(request.directionsRenderer, "setMap");
@@ -428,52 +426,6 @@ describe("Maps Tests", () => {
             "Please select your destination from the dropdown list."
          );
          testSearchBars[0].value = "";
-      });
-
-      it("should set the directionsRender map when called successfully", () => {
-         testSearchBars[0].value = "Sydney NSW, Australia";
-         testSearchBars[1].value = "Brisbane QLD, Australia";
-         console.log(testSearchBars);
-         spyOn(request.directionsRenderer, "setMap");
-         request.routeValidation();
-         expect(request.directionsRenderer.setMap).toHaveBeenCalledTimes(1);
-         for (let i = 0; i < testSearchBars.length; i++) {
-            testSearchBars[i].value = "";
-         }
-      });
-
-      it("should call setDirections  in calculate and DisplayRoute if status =OK ", () => {
-         testSearchBars[0].value = "Sydney NSW, Australia";
-         testSearchBars[1].value = "Brisbane QLD, Australia";
-         spyOn(request.directionsService, "route").and.callThrough();
-         request.routeValidation();
-         expect(request.directionsService.route).toHaveBeenCalledTimes(1);
-         for (let i = 0; i < testSearchBars.length; i++) {
-            testSearchBars[i].value = "";
-         }
-      });
-
-      it("should expect alert if status not = OK", () => {
-         spyOn(window, "alert");
-         const result = ["test"];
-         const status = "404";
-         request.directionsService.route(
-            request.generateDirectionsRequest(),
-            result,
-            status
-         );
-         expect(window.alert).toHaveBeenCalledWith(
-            "Unable to find a route for your directions request."
-         );
-         for (let i = 0; i < testSearchBars.length; i++) {
-            testSearchBars[i].value = "";
-         }
-      });
-
-      it("should call clearMap() when reset button is clicked", () => {
-         spyOn(request, "clearMap").and.callThrough();
-         $(".reset-btn").trigger("click");
-         expect(request.clearMap).toHaveBeenCalledTimes(1);
       });
    });
 });
