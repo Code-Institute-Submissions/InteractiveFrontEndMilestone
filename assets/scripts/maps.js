@@ -395,7 +395,6 @@ class HTMLInputs {
          this.wayPointsData.locations.push(newLocationData);
          const newWayPointHTML = new LocationView(newLocationData);
          this.inputArray.push(newWayPointHTML);
-         // $('[data-toggle="popover"]').popover(`hide`);
          // Tutorial for basic layout found at https://www.w3schools.com/JSREF/met_element_addeventlistener.asp
          document
             .getElementById(newLocationData.id)
@@ -408,6 +407,9 @@ class HTMLInputs {
    }
 
    removeWayPoint(elementId) {
+      // Using 'dispose action for popover to prevent continuous popover even when less than 10 waypoints.
+      // Actions found at https://mdbootstrap.com/docs/jquery/javascript/popovers/#options.
+      $('[data-toggle="popover"]').popover(`dispose`);
       document.getElementById(`${elementId}-input`).remove();
       document.getElementById(`${elementId}-date`).remove();
       document.getElementById(`${elementId}`).remove();
@@ -425,7 +427,6 @@ class HTMLInputs {
             break;
          }
       }
-      $('[data-toggle="popover"]').popover(`hide`);
    }
 
    // Form reset function found at https://www.w3schools.com/jsref/met_form_reset.asp#:~:text=The%20reset()%20method%20resets,method%20to%20submit%20the%20form.
