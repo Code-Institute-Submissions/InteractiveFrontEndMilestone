@@ -261,7 +261,7 @@ describe("Maps Tests", () => {
             dublin.lng
          );
          expect(locationViewDublin.marker.icon).toBe(
-            "../assets/img/blu-blank.png"
+            "assets/img/blu-blank.png"
          );
       });
 
@@ -276,13 +276,13 @@ describe("Maps Tests", () => {
          const locationViewNew = new LocationView(locationDataNew);
          const latlng = formInputs.wayPointsData.locations[0].googleLatLng;
          const info = formInputs.wayPointsData.locations[0].weatherData;
-         const icon = `../assets/img/${formInputs.wayPointsData.locations[0].weatherData.weatherDescription[0].icon}@2x.png`;
+         const icon = `assets/img/${formInputs.wayPointsData.locations[0].weatherData.weatherDescription[0].icon}@2x.png`;
          spyOn(locationViewNew.marker, "setPosition").and.callThrough();
          spyOn(locationViewNew.marker, "setIcon").and.callThrough();
          expect(locationViewNew.marker.icon).toBe(undefined);
          expect(locationViewNew.marker.getPosition()).toEqual(undefined);
          locationViewNew.weatherMarker(latlng, icon, info);
-         expect(locationViewNew.marker.icon).toBe("../assets/img/01n@2x.png");
+         expect(locationViewNew.marker.icon).toBe("assets/img/01n@2x.png");
          expect(locationViewNew.marker.getPosition().lat()).toEqual(
             -33.8690094
          );
@@ -295,7 +295,7 @@ describe("Maps Tests", () => {
          const locationViewNew = new LocationView(locationDataNew);
          const latlng = formInputs.wayPointsData.locations[0].googleLatLng;
          const info = formInputs.wayPointsData.locations[0].weatherData;
-         const icon = `../assets/img/${formInputs.wayPointsData.locations[0].weatherData.weatherDescription[0].icon}@2x.png`;
+         const icon = `assets/img/${formInputs.wayPointsData.locations[0].weatherData.weatherDescription[0].icon}@2x.png`;
          expect(locationViewNew.infoWindow.getContent()).toBe(undefined);
          spyOn(locationViewNew.infoWindow, "setContent").and.callThrough();
          locationViewNew.weatherMarker(latlng, icon, info);

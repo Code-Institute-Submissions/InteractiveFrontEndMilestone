@@ -104,7 +104,7 @@ class DirectionsHandler {
             }
 
             for (const input of formInputs.inputArray) {
-               const icon = `/assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
+               const icon = `assets/img/${input.locationData.weatherData.weatherDescription[0].icon}@2x.png`;
                const latLng = input.locationData.googleLatLng;
                const info = input.locationData.weatherData;
                input.weatherMarker(latLng, icon, info);
@@ -275,7 +275,7 @@ class LocationView {
    // Takes property of constructed marker and sets new position.
    addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
-      this.marker.setIcon("../assets/img/blu-blank.png");
+      this.marker.setIcon("assets/img/blu-blank.png");
       this.marker.setMap(map);
       google.maps.event.clearInstanceListeners(this.marker);
       this.infoWindow.close();
