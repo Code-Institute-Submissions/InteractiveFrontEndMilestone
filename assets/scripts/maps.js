@@ -497,7 +497,7 @@ class WeatherFormatter {
             timeframe = results.daily[results.daily.length - 1];
          }
       } else {
-         for (var s = 0; s < results.hourly.length; s++) {
+         for (var s = 0; s < results.hourly.length - 1; s++) {
             if (
                waypointTime >= results.hourly[s].dt &&
                waypointTime <= results.hourly[s + 1].dt

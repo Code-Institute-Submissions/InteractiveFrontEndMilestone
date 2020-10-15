@@ -9,7 +9,10 @@
          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
          type="text/css"
       />
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+      <link
+         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700;800;900&display=swap"
+         rel="stylesheet"
+      />
       <link
          rel="stylesheet"
          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -25,171 +28,205 @@
    <body>
       <header class="header">
          <nav class="navbar navbar-expand-lg">
-            <h1 class="header-title mx-auto text-center">Fare Weather Wanderers</h1>
+            <h1 class="header-title mx-auto text-center">
+               Fare Weather Wanderers
+            </h1>
          </nav>
       </header>
       <main>
          <div class="map-canvas container-fluid">
             <div class="row route-wrapper">
-                  <div class="col-12 no-padding">
-                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                           <a
-                              class="mode-tab active"
-                              id="changemode-car"
-                              data-toggle="tab"
-                              href="#car"
-                              role="tab"
-                              aria-controls="home"
-                              aria-selected="true"
-                              ><i class="fas fa-car"></i></a
-                           >
-                        </li>
-                        <li class="nav-item" role="presentation">
-                           <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
-                           <a
-                              class="mode-tab"
-                              id="changemode-walk"
-                              data-toggle="tab"
-                              href="#walk"
-                              role="tab"
-                              aria-controls="walk"
-                              aria-selected="false"
-                              ><i class="fas fa-shoe-prints"></i></a
-                           >
-                        </li>
-                        <li class="nav-item" role="presentation">
-                           <a
-                              class="mode-tab"
-                              id="changemode-bike"
-                              data-toggle="tab"
-                              href="#bike"
-                              role="tab"
-                              aria-controls="bike"
-                              aria-selected="false"
-                              ><i class="fas fa-biking"></i></a
-                           >
-                        </li>
-                        <li class="nav-item" role="presentation">
-                           <a
-                              class="mode-tab"
-                              id="changemode-transit"
-                              data-toggle="tab"
-                              href="#public"
-                              role="tab"
-                              aria-controls="public transport"
-                              aria-selected="false"
-                              ><i class="fas fa-bus-alt"></i></a
-                           >
-                        </li>
-                     </ul>
+               <div class="col-12 no-padding">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                     <li class="nav-item" role="presentation">
+                        <a
+                           class="mode-tab active"
+                           id="changemode-car"
+                           data-toggle="tab"
+                           href="#car"
+                           role="tab"
+                           aria-controls="changemode-car"
+                           aria-selected="true"
+                           ><i class="fas fa-car"></i
+                        ></a>
+                     </li>
+                     <li class="nav-item" role="presentation">
+                        <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
+                        <a
+                           class="mode-tab"
+                           id="changemode-walk"
+                           data-toggle="tab"
+                           href="#walk"
+                           role="tab"
+                           aria-controls="changemode-walk"
+                           aria-selected="false"
+                           ><i class="fas fa-shoe-prints"></i
+                        ></a>
+                     </li>
+                     <li class="nav-item" role="presentation">
+                        <a
+                           class="mode-tab"
+                           id="changemode-bike"
+                           data-toggle="tab"
+                           href="#bike"
+                           role="tab"
+                           aria-controls="changemode-bike"
+                           aria-selected="false"
+                           ><i class="fas fa-biking"></i
+                        ></a>
+                     </li>
+                     <li class="nav-item" role="presentation">
+                        <a
+                           class="mode-tab"
+                           id="changemode-transit"
+                           data-toggle="tab"
+                           href="#public"
+                           role="tab"
+                           aria-controls="changemode-transit"
+                           aria-selected="false"
+                           ><i class="fas fa-bus-alt"></i
+                        ></a>
+                     </li>
+                  </ul>
+               </div>
+               <form class="col-12 route-form" id="trip-form">
+                  <div class="row" id="waypoint-container">
+                     <a
+                        id="waypointbtn"
+                        class="col-10 waypoint-button"
+                        tabindex="0"
+                        role="button"
+                        data-toggle="popover"
+                        data-trigger="focus"
+                        title="Maximum Waypoints Allowed"
+                        data-content="Only 10 locations at a time are available."
+                     >
+                        <i class="fas fa-plus-circle"></i>
+                        Add another waypoint
+                     </a>
                   </div>
-                  <form class="col-12 route-form" id="trip-form">
-                        <div class="row" id="waypoint-container" >
-                           <a
-                              id="waypointbtn"
-                              class="col-10 waypoint-button"
-                              tabindex="0"
-                              role="button"
-                              data-toggle="popover"
-                              data-trigger="focus"
-                              title="Maximum Waypoints Allowed"
-                              data-content="Only 10 locations at a time are available."
-                           >
-                              <i class="fas fa-plus-circle"></i>
-                              Add another waypoint
-                           </a>
-                        </div>
-                        <!-- button is type button to stop page refreshing on click. Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
-                     </form>
-               </div>
-               <div class="row button-container">
-                   <button type="button" class="button route-btn col-sm-6">
-                              Submit
-                   </button>
-                   <button type="button" class="button reset-btn col-sm-6">
-                              Reset Trip
-                   </button>
-               </div>
+                  <!-- button is type button to stop page refreshing on click. Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
+               </form>
             </div>
-
-            <div
-               class="modal fade"
-               id="contactUsModal"
-               tabindex="-1"
-               role="dialog"
-               aria-labelledby="contactUsModalLabel"
-               aria-hidden="true"
-            >
-               <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <h4 class="modal-title" id="contactUsModalLabel">
-                           Contact Us
-                        </h4>
-                        <button
-                           type="button"
-                           class="close"
-                           data-dismiss="modal"
-                           aria-label="Close"
-                        >
-                           <span aria-hidden="true">&times;</span>
-                        </button>
-                     </div>
-                     <div class="modal-body">
-                        <form>
-                           <div class="form-group">
-                              <label for="sender-email" class="col-form-label"
-                                 >Email:</label
-                              >
-                              <input
-                                 type="text"
-                                 class="form-control"
-                                 id="sender-email"
-                              />
-                           </div>
-                           <div class="form-group">
-                              <label for="message-text" class="col-form-label"
-                                 >Message:</label
-                              >
-                              <textarea
-                                 class="form-control"
-                                 id="message-text"
-                              ></textarea>
-                           </div>
-                        </form>
-                     </div>
-                     <div class="modal-footer">
-                        <button
-                           type="button"
-                           class="btn btn-secondary"
-                           data-dismiss="modal"
-                        >
-                           Close
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                           Send message
-                        </button>
-                     </div>
-                  </div>
-               </div>
+            <div class="row button-container">
+               <button type="button" class="button route-btn col-sm-6">
+                  Submit
+               </button>
+               <button type="button" class="button reset-btn col-sm-6">
+                  Reset Trip
+               </button>
             </div>
-
-            <div id="map"></div>
          </div>
+
+         <div
+            class="modal fade"
+            id="contactUsModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="contactUsModalLabel"
+            aria-hidden="true"
+         >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h4 class="modal-title" id="contactUsModalLabel">
+                        Contact Us
+                     </h4>
+                     <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                     >
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <form>
+                        <div class="form-group">
+                           <label for="sender-email" class="col-form-label"
+                              >Email:</label
+                           >
+                           <input
+                              type="text"
+                              class="form-control"
+                              id="sender-email"
+                           />
+                        </div>
+                        <div class="form-group">
+                           <label for="message-text" class="col-form-label"
+                              >Message:</label
+                           >
+                           <textarea
+                              class="form-control"
+                              id="message-text"
+                           ></textarea>
+                        </div>
+                     </form>
+                  </div>
+                  <div class="modal-footer">
+                     <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                     >
+                        Close
+                     </button>
+                     <button type="button" class="btn btn-primary">
+                        Send message
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="map"></div>
       </main>
       <footer class="footer">
          <div class="container">
             <div class="row footer-padding">
-               <div class="col-12 col-md-5 d-flex justify-content-center copyright">
+               <div
+                  class="col-12 col-md-5 d-flex justify-content-center copyright"
+               >
                   <p>&#169; Fare Weather Wanderers 2020</p>
                </div>
                <div class="col-6 col-md-3 d-flex justify-content-center">
                   <ul class="social-links">
-                     <li><a target="-blank" href="http://www.facebook.com"><i class="fab fa-facebook-square" aria-hidden="true"></i><span class="sr-only">Facebook</span></a></li> 
-                     <li><a target="-blank" href="http://www.twitter.com"><li><i class="fab fa-twitter-square" aria-hidden="true"></i><span class="sr-only">Twitter</span></a></li> 
-                     <li><a target="-blank" href="http://www.youtube.com"><li><i class="fab fa-youtube-square" aria-hidden="true"></i><span class="sr-only">Youtube</span></a></li> 
-                     <li><a target="-blank" href="http://www.instgram.com"><li><i class="fab fa-instagram-square" aria-hidden="true"></i><span class="sr-only">Instragram</span></a></li> 
+                     <li>
+                        <a target="-blank" href="http://www.facebook.com"
+                           ><i
+                              class="fab fa-facebook-square"
+                              aria-hidden="true"
+                           ></i
+                           ><span class="sr-only">Facebook</span></a
+                        >
+                     </li>
+                     <li>
+                        <a target="-blank" href="http://www.twitter.com"
+                           ><i
+                              class="fab fa-twitter-square"
+                              aria-hidden="true"
+                           ></i
+                           ><span class="sr-only">Twitter</span></a
+                        >
+                     </li>
+                     <li>
+                        <a target="-blank" href="http://www.youtube.com"
+                           ><i
+                              class="fab fa-youtube-square"
+                              aria-hidden="true"
+                           ></i
+                           ><span class="sr-only">Youtube</span></a
+                        >
+                     </li>
+                     <li>
+                        <a target="-blank" href="http://www.instgram.com"
+                           ><i
+                              class="fab fa-instagram-square"
+                              aria-hidden="true"
+                           ></i
+                           ><span class="sr-only">Instragram</span></a
+                        >
+                     </li>
                   </ul>
                </div>
                <div class="col-6 col-md-4 d-flex justify-content-center">
@@ -198,12 +235,12 @@
                      data-target="#contactUsModal"
                      data-toggle="modal"
                      href="#"
-                     ;
                   >
                      <!--on click open a modal/in browser window which has contact us section-->
                      <p>Contact us</p>
                   </a>
                </div>
+            </div>
          </div>
       </footer>
       <!--Scripts-->
@@ -236,6 +273,6 @@
          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhMQfdBgOh8-xwmxnFmQUDEkl871n_5MU&libraries=places&callback=initMap"
       ></script>
       <!--defer waits until page has finished loading before script is executed-->
-      <script type="text/javascript" src="assets/scripts/maps.js"></script>
+      <script src="assets/scripts/maps.js"></script>
    </body>
 </html>
