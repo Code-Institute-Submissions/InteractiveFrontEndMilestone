@@ -223,23 +223,47 @@ class LocationView {
    // Creates a new HTML input for text and date time using jquery then assigns the elements to a location and datetime variable for google autocomplete and generic value storage.
    initalise() {
       if (formInputs === undefined) {
-         $(`<div class="row inputs" id="${this.locationData.id}-container"><input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}"></div>`).insertBefore(
-            "#waypoint-container"
-         );
+         $(`<div class="row inputs" id="${this.locationData.id}-container">
+               <input type="text" 
+                  class="col-7 form-control" id="${this.locationData.id}-input"
+                  name="${this.locationData.id}-input" 
+                  placeholder="Search Destination" 
+                  aria-label="Location search">
+               <input type="datetime-local" class="col-4 form-control" 
+                  id="${this.locationData.id}-date" 
+                  name="${this.locationData.id}-date" 
+                  max="${this.maxDate}"
+                  min="${this.minDate}" 
+                  aria-label="Date time picker">
+            </div>`).insertBefore("#waypoint-container");
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp, selects this for waypoint inputs not origin or destination.
-         $(`<div class="row inputs" id="${this.locationData.id}-container"><input type="text" class="col-7 form-control" id="${this.locationData.id}-input" name="${this.locationData.id}-input" placeholder="Search Destination">
-       <input type="datetime-local" class="col-4 form-control" id="${this.locationData.id}-date" name="${this.locationData.id}-date" max="${this.maxDate}" min="${this.minDate}">
-       <a role="button" id="${this.locationData.id}" class="deleteButton col-1 form-control"><i class="fas fa-times deleteIcon"></i></a></div>`).insertBefore(
-            "#destination-container"
-         );
+         $(`<div class="row inputs" id="${this.locationData.id}-container">
+               <input type="text" 
+                  class="col-7 form-control" 
+                  id="${this.locationData.id}-input"
+                  name="${this.locationData.id}-input" 
+                  aria-label="Location Search" 
+                  placeholder="Search Destination">
+               <input type="datetime-local" 
+                  class="col-4 form-control" 
+                  id="${this.locationData.id}-date" 
+                  name="${this.locationData.id}-date" 
+                  max="${this.maxDate}" min="${this.minDate}" 
+                  aria-label="Date time picker">
+                  <a role="button" 
+                     id="${this.locationData.id}" 
+                     class="deleteButton col-1 form-control">
+                        <i class="fas fa-times deleteIcon"></i>
+                  </a>
+          </div>`).insertBefore("#destination-container");
       }
       this.setUpdateAutocomplete();
       this.setUpdateDateTime();
    }
 
-   // Calculates the current time and adds 7 days to account for openWeatherMap's latest weather data available. Turns to the correct string format and cuts the unnecessary
+   // Calculates the current time and adds 7 days to account for openWeatherMap's
+   // latest weather data available. Turns to the correct string format and cuts the unnecessary
    // values at end of string as found at https://stackoverflow.com/questions/952924/javascript-chop-slice-trim-off-last-character-in-string.
    // Use of toISOString found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString .
    calculateTimeScope() {
@@ -253,14 +277,14 @@ class LocationView {
       this.maxDate = maxDateStr;
    }
 
-   // Assigns the listener to each input and sets its autocomplete class to update the data with locations/geometry.
+   // Assigns autocomplete class to own input which updates locations/geometry.
    setUpdateAutocomplete() {
       const location = new google.maps.places.Autocomplete(
          document.getElementById(`${this.locationData.id}-input`)
       );
-      // Arrow function => used as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+      // Arrow function => used as it does not change the scope of this from the class.
+      // Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
       location.addListener(`place_changed`, () => {
-         // gotten from google -> where?
          const place = location.getPlace();
          if (!place.place_id) {
             return alert(
@@ -284,7 +308,7 @@ class LocationView {
       });
    }
 
-   // assigns value of datetime-local to locationData property when input is changed.
+   // assigns value of datetime-local to locationData when input is changed.
    setUpdateDateTime() {
       const dateTime = document.getElementById(`${this.locationData.id}-date`);
       // => used instead of function as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions

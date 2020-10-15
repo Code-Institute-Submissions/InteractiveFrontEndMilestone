@@ -95,14 +95,16 @@
                      <button
                         id="waypointbtn"
                         class="col-10 waypoint-button"
-                        tabindex="0"
                         type="button"
                         data-toggle="popover"
                         data-trigger="focus"
                         title="Maximum Waypoints Allowed"
                         data-content="Only 10 locations at a time are available."
                      >
-                        <i class="fas fa-plus-circle"></i>
+                        <i
+                           class="fas fa-plus-circle"
+                           alt="A plus sign in a circle"
+                        ></i>
                         Add another waypoint
                      </button>
                   </div>
@@ -111,10 +113,18 @@
                </form>
             </div>
             <div class="row button-container">
-               <button type="button" class="button route-btn col-sm-6">
+               <button
+                  type="button"
+                  class="button route-btn col-sm-6"
+                  aria-label="Submit"
+               >
                   Submit
                </button>
-               <button type="button" class="button reset-btn col-sm-6">
+               <button
+                  type="button"
+                  class="button reset-btn col-sm-6"
+                  aria-label="Reset Trip"
+               >
                   Reset Trip
                </button>
             </div>
@@ -183,6 +193,7 @@
                               type="button"
                               class="button close-btn"
                               data-dismiss="modal"
+                              aria-label="Close"
                            >
                               Close
                            </button>
@@ -190,6 +201,7 @@
                               type="submit"
                               value="submit"
                               class="button send-btn"
+                              aria-label="Send message"
                            >
                               Send message
                            </button>
@@ -205,11 +217,15 @@
             id="confirmationModal"
             tabindex="-1"
             role="dialog"
+            aria-labelledby="messageReceivedModalLabel"
+            aria-hidden="true"
          >
             <div class="modal-dialog modal-dialog-centered" role="document">
                <div class="modal-content modal-custom">
                   <div class="modal-header modal-header-custom">
-                     <h5 class="modal-title">Message Received</h5>
+                     <h5 class="modal-title" id="messageReceivedModalLabel">
+                        Message Received
+                     </h5>
                      <button
                         type="button"
                         class="close"
@@ -227,6 +243,7 @@
                         type="button"
                         class="button close-btn"
                         data-dismiss="modal"
+                        aria-label="Close"
                      >
                         Close
                      </button>
