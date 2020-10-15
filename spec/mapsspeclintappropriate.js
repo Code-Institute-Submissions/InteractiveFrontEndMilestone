@@ -1,5 +1,20 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-eval */
+/* global google, document, window */
+import {
+   DirectionsHandler,
+   WeatherData,
+   LocationData,
+   LocationView,
+   WayPointsData,
+   HTMLInputs,
+} from "scripts/maps.js";
+
+let request;
+let formInputs;
+let weatherDataNew;
+let locationDataNew;
+let testSearchBars;
+let dataTest;
+let htmlTest;
 
 describe("Maps Tests", () => {
    beforeEach(() => {

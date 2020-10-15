@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 .map-canvas {
    background: none;
 }
@@ -37,7 +44,6 @@ p {
 
 .mode-tab {
    background-color: #d4d4d2;
-   color: #a7291d;
    display: block;
    padding: 0.75rem 1.75rem;
    width: 25vw;
@@ -45,10 +51,19 @@ p {
 
 .mode-tab i.fas {
    font-size: 1.5rem;
+   color: #a7291d;
+}
+
+.mode-tab i.fas:hover {
+   color: #7f1f16;
 }
 
 .mode-tab.active {
    background-color: #a7291d;
+   color: #fffffa;
+}
+
+.mode-tab.active i.fas {
    color: #fffffa;
 }
 
@@ -95,8 +110,6 @@ p {
    padding: 0.375rem 0.75rem;
    font-size: 1rem;
    line-height: 1.5;
-   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .route-btn {
@@ -186,6 +199,8 @@ p {
 
 .close-btn:hover {
    background-color: #696969;
+   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .send-btn {
@@ -196,6 +211,8 @@ p {
 
 .send-btn:hover {
    background-color: #3a3a3a;
+   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .social-links {

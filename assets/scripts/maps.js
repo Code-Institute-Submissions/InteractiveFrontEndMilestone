@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 /* eslint-disable no-unused-vars */
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
 var map;
@@ -50,8 +51,8 @@ function contactFormValidation() {
       emailField.value = "";
       messageField.value = "";
       $(`#contactUsModal`).modal(`hide`);
+      $(`#confirmationModal`).modal(`show`);
    }
-   $(`#confirmationModal`).modal(`show`);
 }
 
 // DirectionsHandler class is a single instance which controls directions service and renderer so a directions request can be passed to the service and rendered.
@@ -99,7 +100,7 @@ class DirectionsHandler {
       }
       this.directionsRenderer.setMap(map);
       // Weather request does a callback for calculateAndDisplayRoute() to ensure all weather data has been returned before trying to assign waypoints/weather icons.
-      const weatherAPI = new WeatherRequest(formInputs.wayPointsData, () => {
+      new WeatherRequest(formInputs.wayPointsData, () => {
          this.calculateAndDisplayRoute(
             this.directionsService,
             this.directionsRenderer,
@@ -132,7 +133,6 @@ class DirectionsHandler {
                const info = input.locationData.weatherData;
                input.weatherMarker(latLng, icon, info);
             }
-            console.log(result);
          } else {
             window.alert("Unable to find a route for your directions request.");
          }
@@ -169,11 +169,7 @@ class WeatherRequest {
          weatherRequest.onload = () => {
             this.callbackCount += 1;
             const weather = JSON.parse(weatherRequest.responseText);
-            console.log(weather);
-            const formatter = new WeatherFormatter(
-               weatherRequest.responseText,
-               waypoint
-            );
+            new WeatherFormatter(weatherRequest.responseText, waypoint);
             if (this.callbackCount === this.wayPointsData.locations.length)
                callback();
          };
@@ -302,7 +298,6 @@ class LocationView {
          }
          map.fitBounds(bounds);
          this.locationData.location = place;
-         console.log(this.locationData);
          const searchInput = document.getElementById(this.htmlId);
          searchInput.value = this.locationData.location.formatted_address;
       });
@@ -315,7 +310,6 @@ class LocationView {
       $(dateTime).on(`change`, () => {
          // check if date is inserted and after current date. Converts to unix time stamp in seconds to compared to weather JSON.
          this.locationData.dateTime = dateTime.valueAsNumber / 1000;
-         console.log(this.locationData);
       });
    }
 
@@ -512,8 +506,6 @@ class WeatherFormatter {
          const today = new Date();
          today.setDate(today.getDate() + 2);
          const twoDays = Math.round(today.getTime() / 1000);
-         console.log(waypoint.dateTime);
-         console.log(twoDays);
          return twoDays;
       };
       this.formatWeather(weatherRequest);
@@ -536,7 +528,6 @@ class WeatherFormatter {
                waypointTime <= results.daily[t + 1].dt
             ) {
                timeframe = results.daily[t];
-               console.log(timeframe);
             }
          }
          // If data is somehow between boundary of daily and hourly slots then
@@ -551,7 +542,6 @@ class WeatherFormatter {
                waypointTime <= results.hourly[s + 1].dt
             ) {
                timeframe = results.hourly[s];
-               console.log(timeframe);
                break;
             }
          }
