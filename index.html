@@ -127,8 +127,8 @@
             aria-hidden="true"
          >
             <div class="modal-dialog modal-dialog-centered" role="document">
-               <div class="modal-content">
-                  <div class="modal-header">
+               <div class="modal-content modal-custom">
+                  <div class="modal-header modal-header-custom">
                      <h4 class="modal-title" id="contactUsModalLabel">
                         Contact Us
                      </h4>
@@ -141,8 +141,12 @@
                         <span aria-hidden="true">&times;</span>
                      </button>
                   </div>
-                  <div class="modal-body">
-                     <form>
+                  <div class="modal-body modal-body-custom">
+                     <form
+                        action="https://formdump.codeinstitute.net/"
+                        method="POST"
+                        target="_blank"
+                     >
                         <div class="form-group">
                            <label for="sender-email" class="col-form-label"
                               >Email:</label
@@ -151,6 +155,9 @@
                               type="text"
                               class="form-control"
                               id="sender-email"
+                              name="sender-email"
+                              placeholder="Email Address"
+                              required
                            />
                         </div>
                         <div class="form-group">
@@ -160,21 +167,28 @@
                            <textarea
                               class="form-control"
                               id="message-text"
+                              name="message-text"
+                              placeholder="We'd love to hear from you, enter your message here."
+                              required
                            ></textarea>
                         </div>
+                        <div class="modal-footer modal-footer-custom">
+                           <button
+                              type="button"
+                              class="button close-btn"
+                              data-dismiss="modal"
+                           >
+                              Close
+                           </button>
+                           <button
+                              type="submit"
+                              value="submit"
+                              class="button send-btn"
+                           >
+                              Send message
+                           </button>
+                        </div>
                      </form>
-                  </div>
-                  <div class="modal-footer">
-                     <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                     >
-                        Close
-                     </button>
-                     <button type="button" class="btn btn-primary">
-                        Send message
-                     </button>
                   </div>
                </div>
             </div>

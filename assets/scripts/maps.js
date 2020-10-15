@@ -481,7 +481,8 @@ class WeatherFormatter {
       if (waypointTime === "") {
          timeframe = results.current;
       } else if (waypointTime > this.twoDaysAway()) {
-         // checks data for i and next index above; if [i] is smaller and [i+1] is bigger, takes [i] as closest forecast. Stops at length -1 as i+1 does not exist.
+         // checks data for i and next index above; if [i] is smaller and [i+1] is bigger,
+         // takes [i] as closest forecast. Stops at length -1 as i+1 does not exist.
          for (var t = 0; t < results.daily.length - 1; t++) {
             if (
                waypointTime >= results.daily[t].dt &&
@@ -491,8 +492,8 @@ class WeatherFormatter {
                console.log(timeframe);
             }
          }
-         // If data is somehow between boundary of daily and hourly slots then data will stop befoe hitting full array length and assume last index as its forecast.
-         // This was chosen since the timestamp was obviously not suitable for the other daily/hourly intervals so takes the biggest value it can find as accurate.
+         // If data is somehow between boundary of daily and hourly slots then
+         // data will stop befoe hitting full array length and assume last index as its forecast.
          if (timeframe === undefined) {
             timeframe = results.daily[results.daily.length - 1];
          }

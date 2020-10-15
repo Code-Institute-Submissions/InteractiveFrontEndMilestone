@@ -98,7 +98,7 @@ p {
 
 .route-btn {
    background-color: #a7291d;
-   font-family: "Playfair Display";
+   font-family: "Playfair Display", sans-serif;
    text-transform: uppercase;
    font-weight: 600;
 }
@@ -111,7 +111,7 @@ p {
 
 .reset-btn {
    background-color: #733049;
-   font-family: "Playfair Display";
+   font-family: "Playfair Display", sans-serif;
    text-transform: uppercase;
    font-weight: 600;
 }
@@ -143,8 +143,49 @@ p {
    font-size: smaller;
 }
 
-.modal {
-   color: black;
+.modal-custom {
+   font-family: "Playfair Display", sans-serif;
+   border: 2px solid #733049;
+}
+
+.modal-header-custom {
+   background-color: #733049;
+   color: #fffffa;
+}
+
+.modal-body-custom {
+   padding: 0;
+   padding-top: 1rem;
+}
+
+.modal-body-custom .form-group {
+   padding: 0 1rem;
+   margin-bottom: 1rem;
+}
+
+.modal-footer-custom {
+   background-color: #afafaf;
+   color: #fffffa;
+}
+
+.close-btn {
+   background-color: #808080;
+   text-transform: uppercase;
+   border-radius: 5%;
+}
+
+.close-btn:hover {
+   background-color: #696969;
+}
+
+.send-btn {
+   background-color: #555454;
+   text-transform: uppercase;
+   border-radius: 5%;
+}
+
+.send-btn:hover {
+   background-color: #3a3a3a;
 }
 
 .social-links {
