@@ -67,6 +67,9 @@ p {
    margin: 0.5rem 0.25rem;
    font-family: "Playfair Display";
    text-transform: capitalize;
+   border: 0;
+   background: none;
+   text-align: justify;
 }
 
 .waypoint-button i {

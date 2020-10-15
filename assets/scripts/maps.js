@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
 var map;
 let formInputs, directionsHandler;
@@ -538,21 +539,22 @@ class WeatherFormatter {
    }
 
    // Assigns all values properties to the relevant time frame and its data.
+   // Math.round function found at https://www.w3schools.com/jsref/jsref_round.asp
    assignWeather(timeframe) {
       this.timeframe = timeframe;
       this.weatherData.dateTime = timeframe.dt;
       this.weatherData.weatherDescription = timeframe.weather;
       this.temperature = "";
       if (typeof timeframe.temp === "object") {
-         this.weatherData.temperature = timeframe.temp.day;
+         this.weatherData.temperature = Math.round(timeframe.temp.day);
       } else {
-         this.weatherData.temperature = timeframe.temp;
+         this.weatherData.temperature = Math.round(timeframe.temp);
       }
       this.realFeel = "";
       if (typeof timeframe.feels_like === "object") {
-         this.weatherData.realFeel = timeframe.feels_like.day;
+         this.weatherData.realFeel = Math.round(timeframe.feels_like.day);
       } else {
-         this.weatherData.realFeel = timeframe.feels_like;
+         this.weatherData.realFeel = Math.round(timeframe.feels_like);
       }
       this.weatherData.rain = timeframe.rain;
       if (typeof timeframe.rain === "object") {
@@ -561,7 +563,7 @@ class WeatherFormatter {
          this.weatherData.rain = timeframe.rain;
       }
       this.weatherData.clouds = timeframe.clouds;
-      this.weatherData.wind = timeframe.wind_speed;
+      this.weatherData.wind = Math.round(timeframe.wind_speed);
       this.weatherData.uvi = timeframe.uvi;
       this.weatherData.humidity = timeframe.humidity;
       for (const property in this.weatherData) {

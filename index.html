@@ -51,7 +51,8 @@
                         ></a>
                      </li>
                      <li class="nav-item" role="presentation">
-                        <!--Correct these, dont need href only a event to change active class and apply any rules to google maps as required (IF USED AT ALL)-->
+                        <!--Correct these, dont need href only a event to change 
+                        active class and apply any rules to google maps as required (IF USED AT ALL)-->
                         <a
                            class="mode-tab"
                            id="changemode-walk"
@@ -91,11 +92,11 @@
                </div>
                <form class="col-12 route-form" id="trip-form">
                   <div class="row" id="waypoint-container">
-                     <a
+                     <button
                         id="waypointbtn"
                         class="col-10 waypoint-button"
                         tabindex="0"
-                        role="button"
+                        type="button"
                         data-toggle="popover"
                         data-trigger="focus"
                         title="Maximum Waypoints Allowed"
@@ -103,9 +104,10 @@
                      >
                         <i class="fas fa-plus-circle"></i>
                         Add another waypoint
-                     </a>
+                     </button>
                   </div>
-                  <!-- button is type button to stop page refreshing on click. Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
+                  <!-- button is type button to stop page refreshing on click. 
+                  Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
                </form>
             </div>
             <div class="row button-container">
@@ -162,6 +164,8 @@
                               required
                            />
                         </div>
+                        <!-- Email pattern attribute found at 
+                        https://www.w3schools.com/jsref/prop_email_pattern.asp-->
                         <div class="form-group">
                            <label for="message-text" class="col-form-label"
                               >Message:</label
