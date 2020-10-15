@@ -158,6 +158,13 @@ p {
    padding-top: 1rem;
 }
 
+.modal-body-custom p {
+   padding: 1.5rem;
+   font-size: large;
+   font-family: "Playfair Display";
+   text-align: center;
+}
+
 .modal-body-custom .form-group {
    padding: 0 1rem;
    margin-bottom: 1rem;

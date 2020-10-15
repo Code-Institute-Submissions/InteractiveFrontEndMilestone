@@ -22,6 +22,11 @@ $(".route-btn").click(() => {
    directionsHandler.routeValidation();
 });
 
+// Checks fields entered and closes modal/reset values when form submitted.
+$(".send-btn").click(() => {
+   contactFormValidation();
+});
+
 // ESLint cannot see the callback for initMap in index.html so needs next line to stop Lint complaints.
 // eslint-disable-next-line no-unused-vars
 function initMap() {
@@ -29,6 +34,23 @@ function initMap() {
       center: { lat: -34.397, lng: 150.644 },
       zoom: 8,
    });
+}
+
+function contactFormValidation() {
+   const emailField = document.getElementById("sender-email");
+   const messageField = document.getElementById("message-text");
+   const contactForm = document.getElementById("contactForm");
+   if (
+      emailField.value !== "" &&
+      messageField.value !== "" &&
+      emailField.checkValidity()
+   ) {
+      contactForm.submit();
+      emailField.value = "";
+      messageField.value = "";
+      $(`#contactUsModal`).modal(`hide`);
+   }
+   $(`#confirmationModal`).modal(`show`);
 }
 
 // DirectionsHandler class is a single instance which controls directions service and renderer so a directions request can be passed to the service and rendered.
