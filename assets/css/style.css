@@ -38,6 +38,13 @@ p {
    background: #fff;
 }
 
+.page-info p {
+   font-family: "Playfair Display", sans-serif;
+   font-size: 0.85rem;
+   padding-left: 0.5rem;
+   padding-bottom: 0.5rem;
+}
+
 .nav-tabs {
    border: none;
 }
