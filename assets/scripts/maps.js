@@ -11,15 +11,18 @@ $(document).ready(function () {
    directionsHandler = new DirectionsHandler();
 });
 
+// Calls Addwaypoint on button click
 $("#waypointbtn").click(function () {
    formInputs.addWayPoint(formInputs.wayPointsData);
 });
 
+// Reset button clears trip data in form inputs and clears route from map.
 $(".reset-btn").click(() => {
    formInputs.resetTrip();
    directionsHandler.clearMap();
 });
 
+// Validates route for completed fields and valid locations.
 $(".route-btn").click(() => {
    directionsHandler.routeValidation();
 });
@@ -38,6 +41,8 @@ function initMap() {
    });
 }
 
+// Checks both input fields for empty strings and checkes email is valid style.
+// If correct, submits message and opens new modal confirmining.
 function contactFormValidation() {
    const emailField = document.getElementById("sender-email");
    const messageField = document.getElementById("message-text");
@@ -58,8 +63,9 @@ function contactFormValidation() {
    }
 }
 
-// DirectionsHandler class is a single instance which controls directions service and renderer so a directions request can be passed to the service and rendered.
-// Implemented as only a single instance of directionsRenderer was required and needed to have its map set to null or global map.
+// DirectionsHandler class is a single instance which controls directions service
+// and renderer which is passed a new directions request.
+// Implemented as needed to be able to set or remove one map to same instance.
 class DirectionsHandler {
    constructor() {
       this.directionsService = new google.maps.DirectionsService();
@@ -70,6 +76,7 @@ class DirectionsHandler {
       this.directionsRenderer.setMap(map);
    }
 
+   // Searches for start and end based on form id and rest are stored in array.
    generateDirectionsRequest() {
       const directionsRequest = {
          origin: formInputs.wayPointsData.origin().location.formatted_address,
@@ -81,6 +88,9 @@ class DirectionsHandler {
       return directionsRequest;
    }
 
+   // Checks all inputs and searches for empty strings which won't get results.
+   // Checks autocomplete is chosen by matching string to location info.
+   // SetsMap and calls for weather data/route data if all correct.
    routeValidation() {
       const textInputs = document.getElementsByClassName("pac-target-input");
       for (let i = 0; i < textInputs.length; i++) {
@@ -112,6 +122,8 @@ class DirectionsHandler {
       });
    }
 
+   // Based on google's function, if status is OK then returns a result to map.
+   // Uses legs data to update each waypoint icon to map-used latlng.
    calculateAndDisplayRoute(
       directionsService,
       directionsRenderer,
@@ -147,6 +159,8 @@ class DirectionsHandler {
    }
 }
 
+// Uses google derived lat and lng values to create weather request string.
+// On return of data from all waypoints (callbackCount), calls the calculateroute.
 class WeatherRequest {
    constructor(wayPointsData, callback) {
       this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
@@ -180,6 +194,7 @@ class WeatherRequest {
    }
 }
 
+// Holds weatherdata collected from weather request, linked to locationdata.
 class WeatherData {
    constructor() {
       this.dateTime = undefined;
@@ -194,7 +209,8 @@ class WeatherData {
    }
 }
 
-// LocationData holds the individual input's location, date time and id values so they can be passed between the html view model and different api's without repeating.
+// LocationData holds the individual location, datetime and id values so they
+// can be passed between the htmlview model and api's without repeating.
 class LocationData {
    constructor(weatherData) {
       this.location = null;
@@ -205,8 +221,10 @@ class LocationData {
    }
 }
 
-// LocationView holds properties matching locationData and a references to the input element in html and acts as a way to pass data between javascript storage and the view model.
-// initialise() is called upon construction as this generates the html element which is referenced along with the auto complete associated with the specific element.
+// LocationView holds properties matching locationData and a references to the
+// input element in html. Passes data between data storage and the view model.
+// initialise() is called upon construction as this generates the html element
+// along with the auto complete associated with the specific element.
 class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
@@ -219,7 +237,8 @@ class LocationView {
       this.infoWindow = new google.maps.InfoWindow({ maxWidth: 300 });
    }
 
-   // Creates a new HTML input for text and date time using jquery then assigns the elements to a location and datetime variable for google autocomplete and generic value storage.
+   // Creates a new HTML input for text and date time using jquery then assigns
+   // the elements to a location/datetime variable for google autocomplete data storage.
    initalise() {
       if (formInputs === undefined) {
          $(`<div class="row inputs" id="${this.locationData.id}-container">
@@ -236,7 +255,8 @@ class LocationView {
                   aria-label="Date time picker">
             </div>`).insertBefore("#waypoint-container");
       } else {
-         // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp, selects this for waypoint inputs not origin or destination.
+         // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
+         //, selects this for waypoint inputs not origin or destination.
          $(`<div class="row inputs" id="${this.locationData.id}-container">
                <input type="text" 
                   class="col-7 form-control" 
@@ -261,8 +281,8 @@ class LocationView {
       this.setUpdateDateTime();
    }
 
-   // Calculates the current time and adds 7 days to account for openWeatherMap's
-   // latest weather data available. Turns to the correct string format and cuts the unnecessary
+   // Calculates the current time and adds 7 days to account for openWeatherMap
+   // furthest weather data available. Turns to correct string format and cuts unnecessary
    // values at end of string as found at https://stackoverflow.com/questions/952924/javascript-chop-slice-trim-off-last-character-in-string.
    // Use of toISOString found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString .
    calculateTimeScope() {
@@ -291,6 +311,7 @@ class LocationView {
             );
          }
          this.addMarker(place, map);
+         // Updates map viewport with one from location chosen.
          const bounds = new google.maps.LatLngBounds();
          if (!place.geometry) {
             return;
@@ -309,9 +330,11 @@ class LocationView {
    // assigns value of datetime-local to locationData when input is changed.
    setUpdateDateTime() {
       const dateTime = document.getElementById(`${this.locationData.id}-date`);
-      // => used instead of function as it does not change the scope of this from the class. Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+      // => used instead of function as it does not change the scope of this.
+      // Found explanation at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
       $(dateTime).on(`change`, () => {
-         // check if date is inserted and after current date. Converts to unix time stamp in seconds to compared to weather JSON.
+         // check if date is inserted and after current date.
+         // Converts to unix time stamp in seconds to match to weather JSON.
          this.locationData.dateTime = dateTime.valueAsNumber / 1000;
       });
    }
@@ -319,8 +342,9 @@ class LocationView {
    // Takes property of constructed marker and sets new position.
    addMarker(latLng) {
       this.marker.setPosition(latLng.geometry.location);
-      // Use of assets instead of ../ or / found on stack overflow. https://stackoverflow.com/questions/24254127/html-image-wont-display
-      // needs to be bare to alllow it to find any file named assets instead of from root or same directory.
+      // Use of assets instead of ../ or / found on stack overflow.
+      // https://stackoverflow.com/questions/24254127/html-image-wont-display
+      // needs to be bare to alllow it to find any file named assets.
       this.marker.setIcon("assets/img/blu-blank.png");
       this.marker.setMap(map);
       google.maps.event.clearInstanceListeners(this.marker);
@@ -335,6 +359,9 @@ class LocationView {
       this.marker.setMap(null);
    }
 
+   // Sets marker position and icon to match direction location
+   // Changes icon to openweathermap api icons provided.
+   // Also sets content for infor window and adds click listender.
    weatherMarker(latLng, icon, info) {
       this.marker.setPosition(latLng);
       this.marker.setIcon(icon);
@@ -358,12 +385,16 @@ class LocationView {
    }
 }
 
-// WaypointData holds an array of locationData classes and all the subsequent information. Used to pass to apis in a group per form submission rather than individual instances.
+// WaypointData holds an array of locationData classes and all the subsequent
+// information. Passed to apis as one stored array which can be defined to points.
 class WayPointsData {
    constructor() {
       this.locations = [];
-      // Properties are set using arrow functions so they can be called when needed and are availavle rather than when constructed. Reference: https://www.w3schools.com/js/js_arrow_function.asp
-      // Find used to select for an array element found at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+      // Properties are set using arrow functions so they can be called when
+      // needed and are available rather than when constructed.
+      // Reference: https://www.w3schools.com/js/js_arrow_function.asp
+      // Find used to select for an array element found at
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
       this.origin = () => {
          const startPoint = this.locations.find((location) => {
             return location.id === "origin";
@@ -396,6 +427,7 @@ class WayPointsData {
       this.travelModeListener("#changemode-bike", "BICYCLING");
    }
 
+   // Multiple istances of this listener so it can use the specific id and "mode"
    travelModeListener(id, mode) {
       $(id).on("click", () => {
          this.travelMode = mode;
@@ -403,16 +435,18 @@ class WayPointsData {
    }
 }
 
+// Toptier container for information. Has reference to data and HTML elements.
 class HTMLInputs {
    constructor(wayPointsData) {
-      // Constructor is called once when page loads and is very similar to addWayPoint(), instead using a for loop to create two new elements and
-      // changing the first element's Id to origin and the second to destination so they can be passed to directionRequest instance.
+      // Constructor is called once when page loads and is very similar to
+      // addWayPoint(), instead using a for loop to create two new elements.
       this.wayPointsData = wayPointsData;
       this.inputArray = [];
       this.originAndDestination();
    }
 
-   // Generates two specific input views for origin and destination which require unique Ids and do not have remove waypoint icons to setup listeners for.
+   // Generates two specific input views for origin and destination which
+   // require unique Ids and do not have remove waypoint icons to setup listeners for.
    originAndDestination() {
       for (let i = 0; i < 2; i++) {
          const newPageWeather = new WeatherData();
@@ -428,12 +462,13 @@ class HTMLInputs {
       }
    }
 
-   // addWayPoint function creates a new instance of LocationData which is passed as a parameter to a new instance of LocationView
-   // The new LocationView instances create the required HTML and autocomplete instances for index.HTML which user interacts with.
-   // The wayPointsData class and inputArray[] store locationData and LocationView respectively so they can be accessed and manipulated later
-   // ID number is assigned to date in milliseconds to prevent identical ids.
+   // addWayPoint function creates a new instance of LocationData.
+   // This is used for new instance of LocationView which makes HTML and autocomplete.
+   // The wayPointsData class and inputArray[] store locationData and LocationView
+   // if >= 10 input sets, then popover warns the user instead and none added.
    addWayPoint() {
       if (this.inputArray.length < 10) {
+         // I is assigned to date in milliseconds to prevent identical ids.
          const number = new Date().getTime();
          const newWeatherData = new WeatherData();
          const newLocationData = new LocationData(newWeatherData);
@@ -452,8 +487,9 @@ class HTMLInputs {
       }
    }
 
+   // removes all inputs linked to that id, splices out of both arrays.
    removeWayPoint(elementId) {
-      // Using 'dispose action for popover to prevent continuous popover even when less than 10 waypoints.
+      // Using 'dispose` action for popover to prevent popover even when < 10 waypoints.
       // Actions found at https://mdbootstrap.com/docs/jquery/javascript/popovers/#options.
       $('[data-toggle="popover"]').popover(`dispose`);
       document.getElementById(`${elementId}-input`).remove();
@@ -475,8 +511,9 @@ class HTMLInputs {
       }
    }
 
-   // Form reset function found at https://www.w3schools.com/jsref/met_form_reset.asp#:~:text=The%20reset()%20method%20resets,method%20to%20submit%20the%20form.
-   // Resets the form values and all stored data so user cannot accidentally search for previous trip.
+   // Form reset function found at
+   // https://www.w3schools.com/jsref/met_form_reset.asp#:~:text=The%20reset()%20method%20resets,method%20to%20submit%20the%20form.
+   // Resets the form values and all stored data.
    resetTrip() {
       document.getElementById("trip-form").reset();
       this.wayPointsData.locations.forEach((element) => {
@@ -499,12 +536,15 @@ class HTMLInputs {
    }
 }
 
+// Selects for correct timeframe of weather: current, hourly or daily.
+// Assigns selection to weatherdata for storage. Clears rest.
 class WeatherFormatter {
    constructor(weatherRequest, waypoint) {
       this.waypoint = waypoint;
       this.weatherData = waypoint.weatherData;
-      // Code to get new date and assess milliseconds to seconds found at https://stackoverflow.com/questions/563406/add-days-to-javascript-date and
-      // https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript#:~:text=The%20value%20returned%20by%20the,00%3A00%3A00%20UTC.&text=The%20code%20Math.,new%20Date%20%2F%201E3%20%7C%200%20.
+      // Code to get new date and assess milliseconds to seconds found at
+      // https://stackoverflow.com/questions/563406/add-days-to-javascript-date
+      // and https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript#:~:text=The%20value%20returned%20by%20the,00%3A00%3A00%20UTC.&text=The%20code%20Math.,new%20Date%20%2F%201E3%20%7C%200%20.
       this.twoDaysAway = () => {
          const today = new Date();
          today.setDate(today.getDate() + 2);
@@ -514,8 +554,8 @@ class WeatherFormatter {
       this.formatWeather(weatherRequest);
    }
 
-   // formats and organises the JSON weather data and selects whether a user selected time required hourly, daily or current time selection byt measuring if within next 2 days of
-   // hourly time slots or not. Then compares time requested via input against each arrays time forecasts to select appropriate data
+   // uses measurement of date and time two days away to decide if should be
+   // hourly or daily data. If no time inserted it chooses current.
    formatWeather(weatherRequest) {
       const results = JSON.parse(weatherRequest);
       const waypointTime = this.waypoint.dateTime;
@@ -534,7 +574,7 @@ class WeatherFormatter {
             }
          }
          // If data is somehow between boundary of daily and hourly slots then
-         // data will stop befoe hitting full array length and assume last index as its forecast.
+         // data will stop early and assume last index as its forecast.
          if (timeframe === undefined) {
             timeframe = results.daily[results.daily.length - 1];
          }
