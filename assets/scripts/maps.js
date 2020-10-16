@@ -7,6 +7,10 @@ $(document).ready(function () {
    const routeData = new WayPointsData();
    formInputs = new HTMLInputs(routeData);
    directionsHandler = new DirectionsHandler();
+   $("#browserInfo").popover({
+      title: "For users on firefox and safari:",
+      trigger: "click",
+   });
 });
 
 // Calls Addwaypoint on button click
@@ -246,7 +250,7 @@ class LocationView {
                   max="${this.maxDate}"
                   min="${this.minDate}" 
                   aria-label="Date time picker"
-                  placeholder="MM/DD/YYY">
+                  placeholder="MM/DD/YYYY hh:mm">
             </div>`).insertBefore("#waypoint-container");
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
@@ -264,7 +268,7 @@ class LocationView {
                   name="${this.locationData.id}-date" 
                   max="${this.maxDate}" min="${this.minDate}" 
                   aria-label="Date time picker"
-                  placeholder="MM/DD/YYYY">
+                  placeholder="MM/DD/YYYY hh:mm">
                   <a role="button" 
                      id="${this.locationData.id}" 
                      class="deleteButton col-1 form-control">
@@ -331,12 +335,22 @@ class LocationView {
          // check if date is inserted and after current date.
          // Converts to unix time stamp in seconds to match to weather JSON.
          if (isNaN(dateTime.valueAsNumber)) {
-            const datePattern = /^(?:(0[1-9]|1[012])[\/.](0[1-9]|[12][0-9]|3[01])[\/.](19|20)[0-9]{2})$/;
-            if (datePattern.test(dateTime.value)) {
+            // regex found at
+            // https://stackoverflow.com/questions/23360599/regular-expression-for-dd-mm-yyyy-hhmm
+            // and https://www.regextester.com/
+            const datePattern = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}$/;
+            const dateTimePattern = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/;
+            const testValue = dateTime.value;
+            if (
+               testValue.match(datePattern) ||
+               testValue.match(dateTimePattern)
+            ) {
                const textDate = new Date(dateTime.value);
                this.locationData.dateTime = textDate.getTime() / 1000;
             } else {
-               window.alert("Please enter your date in the MM/DD/YYYY format.");
+               window.alert(
+                  "Please enter your date in the MM/DD/YYYY or MM/DD/YYYY hh:mm:ss format."
+               );
             }
          } else {
             this.locationData.dateTime = dateTime.valueAsNumber / 1000;

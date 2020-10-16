@@ -52,6 +52,10 @@ p {
    padding-bottom: 0.5rem;
 }
 
+#browserInfo {
+   padding-left: 0.5rem;
+}
+
 /*-------- Transport tabs/links-----*/
 
 .nav-tabs {
@@ -102,6 +106,7 @@ p {
    font-family: "Playfair Display";
    text-transform: capitalize;
    border: 0;
+   max-width: 15rem;
    background: none;
    text-align: justify;
 }
