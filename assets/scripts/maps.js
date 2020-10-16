@@ -245,7 +245,8 @@ class LocationView {
                   name="${this.locationData.id}-date" 
                   max="${this.maxDate}"
                   min="${this.minDate}" 
-                  aria-label="Date time picker">
+                  aria-label="Date time picker"
+                  placeholder="MM/DD/YYY">
             </div>`).insertBefore("#waypoint-container");
       } else {
          // Insert before method found on w3c website tutorial https://www.w3schools.com/jquery/html_insertbefore.asp
@@ -262,7 +263,8 @@ class LocationView {
                   id="${this.locationData.id}-date" 
                   name="${this.locationData.id}-date" 
                   max="${this.maxDate}" min="${this.minDate}" 
-                  aria-label="Date time picker">
+                  aria-label="Date time picker"
+                  placeholder="MM/DD/YYY">
                   <a role="button" 
                      id="${this.locationData.id}" 
                      class="deleteButton col-1 form-control">
