@@ -575,7 +575,7 @@ function formatWeather(weatherFile, waypoint) {
          timeframe = results.hourly[results.hourly.length - 1];
       }
    }
-   this.assignWeather(timeframe, waypoint);
+   assignWeather(timeframe, waypoint);
 }
 
 // Assigns all values properties to the relevant time frame and its data.
@@ -584,13 +584,11 @@ function assignWeather(timeframe, waypoint) {
    const weatherData = waypoint.weatherData;
    weatherData.dateTime = timeframe.dt;
    weatherData.weatherDescription = timeframe.weather;
-   const temperature = "";
    if (typeof timeframe.temp === "object") {
       weatherData.temperature = Math.round(timeframe.temp.day);
    } else {
       weatherData.temperature = Math.round(timeframe.temp);
    }
-   const realFeel = "";
    if (typeof timeframe.feels_like === "object") {
       weatherData.realFeel = Math.round(timeframe.feels_like.day);
    } else {
