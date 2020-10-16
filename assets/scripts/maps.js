@@ -113,7 +113,7 @@ class DirectionsHandler {
       }
       this.directionsRenderer.setMap(map);
       // Weather request does a callback for calculateAndDisplayRoute() to ensure all weather data has been returned before trying to assign waypoints/weather icons.
-      new WeatherRequest(formInputs.wayPointsData, () => {
+      weatherRequest(formInputs.wayPointsData, () => {
          this.calculateAndDisplayRoute(
             this.directionsService,
             this.directionsRenderer,
@@ -161,37 +161,32 @@ class DirectionsHandler {
 
 // Uses google derived lat and lng values to create weather request string.
 // On return of data from all waypoints (callbackCount), calls the calculateroute.
-class WeatherRequest {
-   constructor(wayPointsData, callback) {
-      this.openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
-      this.wayPointsData = wayPointsData;
-      this.callbackCount = 1;
-      this.wayPointsData.locations.forEach((waypoint) => {
-         // use of lat() lng() found in google maps documentation https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng
-         const lat = waypoint.location.geometry.location.lat();
-         const lng = waypoint.location.geometry.location.lng();
-         const weatherString =
-            "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-            lat +
-            "&lon=" +
-            lng +
-            "&exclude-minutely&units=metric&appid=" +
-            this.openWeatherMapKey +
-            "";
-         // Use of http request and passing to another class found in code institute interactive front end module and at
-         // https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/index.html
-         const weatherRequest = new XMLHttpRequest();
-         weatherRequest.open("get", weatherString);
-         weatherRequest.send();
-         weatherRequest.onload = () => {
-            this.callbackCount += 1;
-            const weather = JSON.parse(weatherRequest.responseText);
-            new WeatherFormatter(weatherRequest.responseText, waypoint);
-            if (this.callbackCount === this.wayPointsData.locations.length)
-               callback();
-         };
-      });
-   }
+function weatherRequest(wayPointsData, callback) {
+   const openWeatherMapKey = "56d76261127ba6fda7f5aeed21fd5ffd";
+   let callbackCount = 1;
+   wayPointsData.locations.forEach((waypoint) => {
+      // use of lat() lng() found in google maps documentation https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng
+      const lat = waypoint.location.geometry.location.lat();
+      const lng = waypoint.location.geometry.location.lng();
+      const weatherString =
+         "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+         lat +
+         "&lon=" +
+         lng +
+         "&exclude-minutely&units=metric&appid=" +
+         openWeatherMapKey +
+         "";
+      // Use of http request and passing to another class found in code institute interactive front end module and at
+      // https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/index.html
+      const weatherRequest = new XMLHttpRequest();
+      weatherRequest.open("get", weatherString);
+      weatherRequest.send();
+      weatherRequest.onload = () => {
+         callbackCount += 1;
+         formatWeather(weatherRequest.responseText, waypoint);
+         if (callbackCount === wayPointsData.locations.length) callback();
+      };
+   });
 }
 
 // Holds weatherdata collected from weather request, linked to locationdata.
@@ -536,97 +531,84 @@ class HTMLInputs {
    }
 }
 
-// Selects for correct timeframe of weather: current, hourly or daily.
-// Assigns selection to weatherdata for storage. Clears rest.
-class WeatherFormatter {
-   constructor(weatherRequest, waypoint) {
-      this.waypoint = waypoint;
-      this.weatherData = waypoint.weatherData;
-      // Code to get new date and assess milliseconds to seconds found at
-      // https://stackoverflow.com/questions/563406/add-days-to-javascript-date
-      // and https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript#:~:text=The%20value%20returned%20by%20the,00%3A00%3A00%20UTC.&text=The%20code%20Math.,new%20Date%20%2F%201E3%20%7C%200%20.
-      this.twoDaysAway = () => {
-         const today = new Date();
-         today.setDate(today.getDate() + 2);
-         const twoDays = Math.round(today.getTime() / 1000);
-         return twoDays;
-      };
-      this.formatWeather(weatherRequest);
+// uses measurement of date and time two days away to decide if should be
+// hourly or daily data. If no time inserted it chooses current.
+function formatWeather(weatherFile, waypoint) {
+   const results = JSON.parse(weatherFile);
+   const waypointTime = waypoint.dateTime;
+   const twoDaysAway = () => {
+      const today = new Date();
+      today.setDate(today.getDate() + 2);
+      const twoDays = Math.round(today.getTime() / 1000);
+      return twoDays;
+   };
+   let timeframe;
+   if (waypointTime === "") {
+      timeframe = results.current;
+   } else if (waypointTime > twoDaysAway()) {
+      // checks data for i and next index above; if [i] is smaller and [i+1] is bigger,
+      // takes [i] as closest forecast. Stops at length -1 as i+1 does not exist.
+      for (var t = 0; t < results.daily.length - 1; t++) {
+         if (
+            waypointTime >= results.daily[t].dt &&
+            waypointTime <= results.daily[t + 1].dt
+         ) {
+            timeframe = results.daily[t];
+         }
+      }
+      // If data is somehow between boundary of daily and hourly slots then
+      // data will stop early and assume last index as its forecast.
+      if (timeframe === undefined) {
+         timeframe = results.daily[results.daily.length - 1];
+      }
+   } else {
+      for (var s = 0; s < results.hourly.length - 1; s++) {
+         if (
+            waypointTime >= results.hourly[s].dt &&
+            waypointTime <= results.hourly[s + 1].dt
+         ) {
+            timeframe = results.hourly[s];
+            break;
+         }
+      }
+      if (timeframe === undefined) {
+         timeframe = results.hourly[results.hourly.length - 1];
+      }
    }
+   this.assignWeather(timeframe, waypoint);
+}
 
-   // uses measurement of date and time two days away to decide if should be
-   // hourly or daily data. If no time inserted it chooses current.
-   formatWeather(weatherRequest) {
-      const results = JSON.parse(weatherRequest);
-      const waypointTime = this.waypoint.dateTime;
-      let timeframe;
-      if (waypointTime === "") {
-         timeframe = results.current;
-      } else if (waypointTime > this.twoDaysAway()) {
-         // checks data for i and next index above; if [i] is smaller and [i+1] is bigger,
-         // takes [i] as closest forecast. Stops at length -1 as i+1 does not exist.
-         for (var t = 0; t < results.daily.length - 1; t++) {
-            if (
-               waypointTime >= results.daily[t].dt &&
-               waypointTime <= results.daily[t + 1].dt
-            ) {
-               timeframe = results.daily[t];
-            }
-         }
-         // If data is somehow between boundary of daily and hourly slots then
-         // data will stop early and assume last index as its forecast.
-         if (timeframe === undefined) {
-            timeframe = results.daily[results.daily.length - 1];
-         }
-      } else {
-         for (var s = 0; s < results.hourly.length - 1; s++) {
-            if (
-               waypointTime >= results.hourly[s].dt &&
-               waypointTime <= results.hourly[s + 1].dt
-            ) {
-               timeframe = results.hourly[s];
-               break;
-            }
-         }
-         if (timeframe === undefined) {
-            timeframe = results.hourly[results.hourly.length - 1];
-         }
-      }
-      this.assignWeather(timeframe);
+// Assigns all values properties to the relevant time frame and its data.
+// Math.round function found at https://www.w3schools.com/jsref/jsref_round.asp
+function assignWeather(timeframe, waypoint) {
+   const weatherData = waypoint.weatherData;
+   weatherData.dateTime = timeframe.dt;
+   weatherData.weatherDescription = timeframe.weather;
+   const temperature = "";
+   if (typeof timeframe.temp === "object") {
+      weatherData.temperature = Math.round(timeframe.temp.day);
+   } else {
+      weatherData.temperature = Math.round(timeframe.temp);
    }
-
-   // Assigns all values properties to the relevant time frame and its data.
-   // Math.round function found at https://www.w3schools.com/jsref/jsref_round.asp
-   assignWeather(timeframe) {
-      this.timeframe = timeframe;
-      this.weatherData.dateTime = timeframe.dt;
-      this.weatherData.weatherDescription = timeframe.weather;
-      this.temperature = "";
-      if (typeof timeframe.temp === "object") {
-         this.weatherData.temperature = Math.round(timeframe.temp.day);
-      } else {
-         this.weatherData.temperature = Math.round(timeframe.temp);
-      }
-      this.realFeel = "";
-      if (typeof timeframe.feels_like === "object") {
-         this.weatherData.realFeel = Math.round(timeframe.feels_like.day);
-      } else {
-         this.weatherData.realFeel = Math.round(timeframe.feels_like);
-      }
-      this.weatherData.rain = timeframe.rain;
-      if (typeof timeframe.rain === "object") {
-         this.weatherData.rain = timeframe.rain["1h"];
-      } else {
-         this.weatherData.rain = timeframe.rain;
-      }
-      this.weatherData.clouds = timeframe.clouds;
-      this.weatherData.wind = Math.round(timeframe.wind_speed);
-      this.weatherData.uvi = timeframe.uvi;
-      this.weatherData.humidity = timeframe.humidity;
-      for (const property in this.weatherData) {
-         if (this.weatherData[property] === undefined) {
-            this.weatherData[property] = "N/A";
-         }
+   const realFeel = "";
+   if (typeof timeframe.feels_like === "object") {
+      weatherData.realFeel = Math.round(timeframe.feels_like.day);
+   } else {
+      weatherData.realFeel = Math.round(timeframe.feels_like);
+   }
+   weatherData.rain = timeframe.rain;
+   if (typeof timeframe.rain === "object") {
+      weatherData.rain = timeframe.rain["1h"];
+   } else {
+      weatherData.rain = timeframe.rain;
+   }
+   weatherData.clouds = timeframe.clouds;
+   weatherData.wind = Math.round(timeframe.wind_speed);
+   weatherData.uvi = timeframe.uvi;
+   weatherData.humidity = timeframe.humidity;
+   for (const property in weatherData) {
+      if (weatherData[property] === undefined) {
+         weatherData[property] = "N/A";
       }
    }
 }
