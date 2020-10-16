@@ -345,7 +345,7 @@ class LocationView {
       // Use of assets instead of ../ or / found on stack overflow.
       // https://stackoverflow.com/questions/24254127/html-image-wont-display
       // needs to be bare to alllow it to find any file named assets.
-      this.marker.setIcon("assets/img/blu-blank.png");
+      this.marker.setIcon("assets/img/marker.png");
       this.marker.setMap(map);
       google.maps.event.clearInstanceListeners(this.marker);
       this.infoWindow.close();

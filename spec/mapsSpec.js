@@ -264,9 +264,7 @@ describe("Maps Tests", () => {
          expect(locationViewDublin.marker.getPosition().lng()).toEqual(
             dublin.lng
          );
-         expect(locationViewDublin.marker.icon).toBe(
-            "assets/img/blu-blank.png"
-         );
+         expect(locationViewDublin.marker.icon).toBe("assets/img/marker.png");
       });
 
       it("should set Marker map to null when removeMarker() is called", () => {
