@@ -21,11 +21,28 @@
       <!--Favicon stylesheets-->
       <!--CSS External Stylesheet-->
       <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
-      <!--Page Title-->
-      <title>Fare Weather Wanderers</title>
+      <!--Page Title and meta data-->
+      <title>
+         Fare Weather Wanderers - Wander about the world, not the weather.
+      </title>
+      <meta
+         name="description"
+         content="Plan your next big trip or day out, whatever the weather
+          with the best route planning weather site around."
+      />
+      <meta
+         name="copyright"
+         content="Fare Weather Wanderers is copyright of RhysPollardDevelopment."
+      />
+      <meta
+         name="keywords"
+         content="Weather Planning, trip planning, maps, fare
+      weather wanderers, weather map, road trip, day out."
+      />
    </head>
 
    <body>
+      <!-- Title and header -->
       <header class="header">
          <nav class="navbar navbar-expand-lg">
             <h1 class="header-title mx-auto text-center">
@@ -34,9 +51,11 @@
          </nav>
       </header>
       <main>
+         <!-- Main container-->
          <div class="map-canvas container-fluid">
             <div class="row route-wrapper">
                <div class="col-12 no-padding">
+                  <!-- Transport Options Selection Tabs -->
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                      <li class="nav-item" role="presentation">
                         <a
@@ -50,8 +69,6 @@
                         ></a>
                      </li>
                      <li class="nav-item" role="presentation">
-                        <!--Correct these, dont need href only a event to change 
-                        active class and apply any rules to google maps as required (IF USED AT ALL)-->
                         <a
                            class="mode-tab"
                            id="changemode-walk"
@@ -86,19 +103,22 @@
                      </li>
                   </ul>
                </div>
-               <form class="col-12 route-form" id="trip-form">
+               <!-- Route selection Form with inserted inputs -->
+               <form
+                  class="col-12 route-form"
+                  id="trip-form"
+                  aria-describedby="formdescription"
+               >
                   <div class="row">
                      <div class="col-12 page-info">
-                        <p>
+                        <p id="formdescription">
                            Select location and desired time below to find the
                            weather on your trip.
                         </p>
-                        <p>
-                           Weather icons can be clicked to display extra
-                           information.
-                        </p>
+                        <p>Click weather icons to display extra information.</p>
                      </div>
                   </div>
+                  <!-- Add waypoint search button -->
                   <div class="row" id="waypoint-container">
                      <button
                         id="waypointbtn"
@@ -120,6 +140,7 @@
                   Solution found at https://stackoverflow.com/questions/33465557/how-to-stop-page-reload-on-button-click-jquery/33467054-->
                </form>
             </div>
+            <!-- Submit and reset trip buttons -->
             <div class="row button-container">
                <button
                   type="button"
@@ -137,7 +158,7 @@
                </button>
             </div>
          </div>
-
+         <!-- Contact Us Modal-->
          <div
             class="modal fade"
             id="contactUsModal"
@@ -162,6 +183,7 @@
                      </button>
                   </div>
                   <div class="modal-body modal-body-custom">
+                     <!-- Modal contact form -->
                      <form
                         id="contactForm"
                         action="https://formdump.codeinstitute.net/"
@@ -196,6 +218,7 @@
                               required
                            ></textarea>
                         </div>
+                        <!-- Modal buttons -->
                         <div class="modal-footer modal-footer-custom">
                            <button
                               type="button"
@@ -219,7 +242,9 @@
                </div>
             </div>
          </div>
+         <!--  Google Map Container-->
          <div id="map"></div>
+         <!-- Message confirmation Modal -->
          <div
             class="modal fade"
             id="confirmationModal"
@@ -260,6 +285,7 @@
             </div>
          </div>
       </main>
+      <!-- Footer and social links -->
       <footer class="footer">
          <div class="container">
             <div class="row footer-padding">

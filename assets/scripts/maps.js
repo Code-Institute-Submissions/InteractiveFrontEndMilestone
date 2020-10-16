@@ -52,6 +52,9 @@ function contactFormValidation() {
       messageField.value = "";
       $(`#contactUsModal`).modal(`hide`);
       $(`#confirmationModal`).modal(`show`);
+      return true;
+   } else {
+      return false;
    }
 }
 

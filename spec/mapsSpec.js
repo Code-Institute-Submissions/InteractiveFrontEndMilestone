@@ -5,6 +5,7 @@ describe("Maps Tests", () => {
    beforeEach(() => {
       request = new DirectionsHandler();
       const data = new WayPointsData();
+      // Generated known data which can be tested against
       data.locations = [
          {
             location: {
@@ -193,6 +194,7 @@ describe("Maps Tests", () => {
       $("div.inputs[id*='test']").remove();
    });
 
+   // Testing for WeatherData Class
    describe("WeatherData class", () => {
       it("should construct weatherData class properties", () => {
          expect(weatherDataNew.dateTime).toBe(undefined);
@@ -206,6 +208,8 @@ describe("Maps Tests", () => {
          expect(weatherDataNew.humidity).toBe(undefined);
       });
    });
+
+   // Testing for LocationDataClass
    describe("LocationData Class", () => {
       it("should construct LocationData Class properties", () => {
          expect(locationDataNew.location).toBe(null);
@@ -216,6 +220,7 @@ describe("Maps Tests", () => {
       });
    });
 
+   // Testing for LocationView Class
    describe("LocationView Class and its methods", () => {
       it("should construct ids assigned to HTML and properties", () => {
          locationDataNew.id = "test";
@@ -303,6 +308,7 @@ describe("Maps Tests", () => {
       });
    });
 
+   // Testing for WayPointsData Class
    describe("WayPointsData class", () => {
       it("should change travel mode when called", () => {
          expect(formInputs.wayPointsData.travelMode).toBe("DRIVING");
@@ -329,6 +335,7 @@ describe("Maps Tests", () => {
       });
    });
 
+   // Testing for HTMLInputs Class
    describe("HTMLInputs Class", () => {
       it("should construct new instances of locationdata and locationview", () => {
          expect(htmlTest.inputArray.length).toBe(2);
@@ -377,6 +384,7 @@ describe("Maps Tests", () => {
       });
    });
 
+   // Testing for ther DirectionsHandler Class
    describe("DirectionsHandler Class", () => {
       it("should construct class properties upon new", () => {
          spyOn(request.directionsRenderer, "setMap");
@@ -425,6 +433,32 @@ describe("Maps Tests", () => {
             "Please select your destination from the dropdown list."
          );
          testSearchBars[0].value = "";
+      });
+   });
+
+   // Testing for Contact Us Modal
+   describe("Contact us Modal", () => {
+      it("should not send message if form is not complete", () => {
+         expect(contactFormValidation()).toBe(false);
+      });
+      it("should not send message if email is incorrectly completed", () => {
+         const emailTest = document.getElementById("sender-email");
+         const messageTest = document.getElementById("message-text");
+         emailTest.value = "testemail@email.couk";
+         messageTest.value = "Test Message";
+         expect(contactFormValidation()).toBe(false);
+         emailTest.value = "";
+         messageTest.value = "";
+      });
+      it("should send message if all information entered correctly", () => {
+         const emailTest = document.getElementById("sender-email");
+         const messageTest = document.getElementById("message-text");
+         emailTest.value = "testemail@email.co.uk";
+         messageTest.value = "Test Message";
+         expect(contactFormValidation()).toBe(true);
+         emailTest.value = "";
+         messageTest.value = "";
+         $(`#confirmationModal`).modal(`hide`);
       });
    });
 });
