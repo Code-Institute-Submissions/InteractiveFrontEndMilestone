@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-/* eslint-disable no-unused-vars */
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
 var map;
 let formInputs, directionsHandler;
