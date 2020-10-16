@@ -264,7 +264,7 @@ class LocationView {
                   name="${this.locationData.id}-date" 
                   max="${this.maxDate}" min="${this.minDate}" 
                   aria-label="Date time picker"
-                  placeholder="MM/DD/YYY">
+                  placeholder="MM/DD/YYYY">
                   <a role="button" 
                      id="${this.locationData.id}" 
                      class="deleteButton col-1 form-control">
@@ -330,7 +330,17 @@ class LocationView {
       $(dateTime).on(`change`, () => {
          // check if date is inserted and after current date.
          // Converts to unix time stamp in seconds to match to weather JSON.
-         this.locationData.dateTime = dateTime.valueAsNumber / 1000;
+         if (isNaN(dateTime.valueAsNumber)) {
+            const datePattern = /^(?:(0[1-9]|1[012])[\/.](0[1-9]|[12][0-9]|3[01])[\/.](19|20)[0-9]{2})$/;
+            if (datePattern.test(dateTime.value)) {
+               const textDate = new Date(dateTime.value);
+               this.locationData.dateTime = textDate.getTime() / 1000;
+            } else {
+               window.alert("Please enter your date in the MM/DD/YYYY format.");
+            }
+         } else {
+            this.locationData.dateTime = dateTime.valueAsNumber / 1000;
+         }
       });
    }
 
