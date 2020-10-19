@@ -128,22 +128,40 @@ Modal Contact Us Form:
 The majority of testing of performed throughout development of this website, primarily through the use of the Chrome DevTools. Devtools allowed for any obvious errors to be tweaked, edited or corrected and then a solution identified and implemented into the main code where it could effectively solve most issues. This opportunity to trial the website changes was not only useful visually but also programatically for javascript.
 Being able to debug code and follow the scripts running through their sequences and logic was crucial for highlighting when code was not performing the task as expected or if logic had been incorrectly used. For example, the use of being able to check variables and their values made it possible to see why some verifications or true false statements were not matching their target response or whether the data being received was in the correct format/type for the function which required it. 
 
-Testing was also performed using jasmine in the head of a seperate index page called index testing which can be found [here](testing.html.html)
-
 ### W3C CSS validator
-The CSS code was parsed by the W3C CSS validator with these errors or warnings.
-
+The CSS code was parsed by the W3C CSS validator with not warnings or errors.
+* An issue was found with overflow-y: overlay when websites such as reponsinator force input scroll bars for phones, etc. This causes the screen to overflow its travel tabs. Found by validator and corrected using percentages.
 
 ### HTML validator
-All HTML pages were parsed through the W3C HTML validator with these errors and warnings.
+All HTML pages were parsed through the W3C HTML validator with no errors or warnings.
 
 ### JSHint
-Maps.js and the jasmine testing suite mapsspec.js were parsed through JS Hint
+Maps.js and the jasmine testing suite mapsspec.js were parsed through JS Hint:
+* One warning is still present: "Functions declared within loops referencing an outer scoped variable may lead to confusing semantics." However this is not an actual error and with such short code less of a concern.
+* One unused variable for initMap, however as the page is called from the html I feel this is not necessarily true.
 
+### Unit Testing
+Testing was also performed using jasmine in the head of a seperate index page called index testing which can be found [here](testing.html.html).
+This suite was useful for creating test data and ensuring that the outcomes I expected were achieved. Testing should have followed a more TDD (Test Driven Development) manner, however due to the lack of experience with javascript it was not always possible to manage my work flow in such a way. There are some parts which were not tested in this suite:
 
+* `routeValidations()`, `formatWeather(`) and `calculatedAndDisplayRoute()` were not tested in this suite as their use of external dependencies and my inexperience meant it was not possible
+to write adequate tests which proved anything effectively.
+* The test for `"should set map when completed the route validation"` was removed as the AJAX request return was asynchronous and would break random tests.
+* Cannot test `formatWeather()` as the functions and constructor rely on the current datetime being generated and cannot be easily compared to created data. Since data is also taken from external sources this is beyond my capabilities to test.
+* WeatherRequest is also not reliable for me to test as it requires multiple ajax requests which are not easily accessible outside the class and are difficult to assess.
+
+Besides the above testing the webpage was also run through the following tools or sites to compare and identify any issues:
 1. [AmIResponsive?](http://ami.responsivedesign.is/): A page which runs four instances of the project at difference sizes.
 2. [Responsinator](https://www.responsinator.com/): A tool which tests the responsiveness of your page on a range of pseudo-devices.
 3. [Browserstack](https://www.browserstack.com/): This tool lets you use your project across all forms of browsers (including versions) and a range of phones and tablets.
+
+Key findings from testing on all possible browsers and emulated safari and mobile devices found the majority of site features worked as intended. Only two major issues have arisen:
+First, the datetime-local input which is used along side location text is not supported on firefox and safari for browsers, but is for phones, as the input degrades into a text input. To combat this I have put a placeholder text suggesting the correct format for firefox/safari users along with an information i button to also offer the specific information required. Validation and transformation of text type value to a correct date time has been inserted.
+
+Second, as this was written entirely in ECMAScript 6, this website does not work properly on Internet Explorer. This is because IE does not work with ECMAScript 6 or above it seems. As Internet explorer is not commonly used and has officially been replaced with microsoft Edge, I have not considered this a high priority issue.
+
+### Known Bugs:
+* Landscape mode on long phones has the unfortunate effect of setting the screen to a tablet or even laptop width and editing the mode to match. Due to the way the map is set up then
 
 ## Deployment
 ---

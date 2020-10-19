@@ -149,6 +149,7 @@ class DirectionsHandler {
                const latLng = input.locationData.googleLatLng;
                const info = input.locationData.weatherData;
                input.weatherMarker(latLng, icon, info);
+               $(`#map`)[0].scrollIntoView();
             }
          } else {
             window.alert("Unable to find a route for your directions request.");
@@ -502,7 +503,7 @@ class HTMLInputs {
                this.removeWayPoint(newLocationData.id);
             });
       } else {
-         $('[data-toggle="popover"]').popover(`show`);
+         $("#waypointbtn").popover(`show`);
       }
    }
 
@@ -510,7 +511,7 @@ class HTMLInputs {
    removeWayPoint(elementId) {
       // Using 'dispose` action for popover to prevent popover even when < 10 waypoints.
       // Actions found at https://mdbootstrap.com/docs/jquery/javascript/popovers/#options.
-      $('[data-toggle="popover"]').popover(`dispose`);
+      $("#waypointbtn").popover(`dispose`);
       document.getElementById(`${elementId}-input`).remove();
       document.getElementById(`${elementId}-date`).remove();
       document.getElementById(`${elementId}`).remove();

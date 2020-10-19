@@ -256,71 +256,26 @@ p {
 
 /*For tablets and small laptops*/
 @media (min-width: 768px) {
-   body {
-      height: 100vh;
-   }
-
    /*Moves the search form from the top of the screen to the left*/
-   .map-canvas {
-      position: absolute;
-      z-index: 999;
-      width: 22rem;
-      top: 15%;
-      left: 1%;
-      background: none;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-   }
-   .header {
-      height: 7vh;
+
+   .header-title {
+      font-size: 5vh;
    }
 
    #map {
       height: 93vh;
    }
 
-   .mode-tab {
-      display: block;
-      padding: 0.5rem 1rem;
-      border-top-left-radius: 10%;
-      border-top-right-radius: 10%;
-      margin: 0 0.25rem;
-      width: 3.5rem;
-   }
-
-   .route-form {
-      border-top-right-radius: 8%;
-   }
-
-   .button-container {
-      border-bottom-right-radius: 10%;
-   }
-
-   .reset-btn {
-      border-bottom-right-radius: 10%;
-   }
-
-   .route-btn {
-      border-bottom-left-radius: 8%;
+   .mode-tab i.fas {
+      font-size: 2rem;
+      color: #a7291d;
    }
 
    /*Changes the footer from entire block to a small sections across the bottom of the page*/
    .footer {
-      position: absolute;
-      z-index: 999;
-      bottom: 1.2%;
-      left: 50%;
-      transform: translate(-50%, 0);
-      width: 35rem;
       font-size: 12px;
       color: #000;
-      height: 20px;
    }
-
-   .footer-padding {
-      padding: 0;
-   }
-
    .social-links li {
       padding: 0 0.25rem;
       color: #733049;
@@ -342,12 +297,45 @@ p {
       padding-bottom: 1rem;
    }
 
+   .mode-tab {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-top-left-radius: 10%;
+      border-top-right-radius: 10%;
+      margin: 0 0.25rem;
+      width: 3.5rem;
+   }
+
+   .mode-tab i.fas {
+      font-size: 1.5rem;
+      color: #a7291d;
+   }
+
    .nav-position {
       margin-right: -20px;
    }
 
+   .route-form {
+      border-top-right-radius: 8%;
+   }
+
+   .button-container {
+      border-bottom-right-radius: 10%;
+   }
+
+   .reset-btn {
+      border-bottom-right-radius: 10%;
+   }
+
+   .route-btn {
+      border-bottom-left-radius: 8%;
+   }
+
    .header {
       height: 6vh;
+   }
+   .header-title {
+      font-size: 4vh;
    }
 
    #map {
@@ -364,5 +352,16 @@ p {
       font-size: 12px;
       color: #000;
       height: 20px;
+   }
+
+   .footer-padding {
+      padding: 0;
+   }
+
+   .social-links li {
+      padding: 0 0.25rem;
+      color: #733049;
+      font-size: 1.25rem;
+      margin-top: -0.4rem;
    }
 }
