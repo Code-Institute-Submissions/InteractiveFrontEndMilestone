@@ -35,7 +35,7 @@ p {
    color: #fff;
    font-style: italic;
    font-weight: 500;
-   font-size: 2rem;
+   font-size: 4vh;
 }
 
 /*------ Route form side panel--------*/
@@ -60,6 +60,9 @@ p {
 
 .nav-tabs {
    border: none;
+}
+.nav-position {
+   width: auto;
 }
 
 .mode-tab {
@@ -337,6 +340,10 @@ p {
       background: none;
       padding-top: 1rem;
       padding-bottom: 1rem;
+   }
+
+   .nav-position {
+      margin-right: -20px;
    }
 
    .header {
