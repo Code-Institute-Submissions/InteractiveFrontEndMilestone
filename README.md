@@ -128,6 +128,32 @@ Modal Contact Us Form:
 The majority of testing of performed throughout development of this website, primarily through the use of the Chrome DevTools. Devtools allowed for any obvious errors to be tweaked, edited or corrected and then a solution identified and implemented into the main code where it could effectively solve most issues. This opportunity to trial the website changes was not only useful visually but also programatically for javascript.
 Being able to debug code and follow the scripts running through their sequences and logic was crucial for highlighting when code was not performing the task as expected or if logic had been incorrectly used. For example, the use of being able to check variables and their values made it possible to see why some verifications or true false statements were not matching their target response or whether the data being received was in the correct format/type for the function which required it. 
 
+### User story testing
+
+1.	As a customer, I want to be see the weather along my driving route so I can know how to prepare for my walk/activity.
+    This is achieved by the submission button once all required locations and searches have been completed
+
+2.	As a user, I am planning a multi-day trip and need to be able to select dates for my route.
+    There are datetime-local inputs for every waypoint so that time of day or days may be selected across the trip upto 7 days away.
+
+3.	As a user, I want to be able to expand on the simple information for more information and times.
+    Weather icons presented upon submission of a route can be select5ed by a click to display more information than is originally available.
+
+4.	As a user, I need to be able to add waypoints for my trip and set times of day.
+    It is possible to add more waypoints upto a total of 10, including the starting two locations. This is done by a waypoint button below the search locations.
+
+5.	As a mobile user, the information needs to be easy to read and manipulated as I have limited space.
+    I have tried to achieve this by seperating the page into two parts ideally, a selection/search area and large screen section devoted to the map.
+
+6.	As a mobile user, the map and weather needs to be well proportioned on the screen.
+    To make sure the map is well sized, I have desginated a large slot of space for it with minimal distractions on mobile an tablet devices. Plus the map takes up a large portion of the screen so should be easy to read and select.
+
+7.	As a laptop user, the map needs to be visible at all times so it does not get covered by the search bar.
+    To ensure visibility, the location search and date time have been offset to ensure that the map has the maximum space available.
+
+8.	As a user, I would like the option to change the weather metrics to my preferred values.
+    Sadly this has not been possible so far, but ideally is something the website can provide at a later date.
+
 ### W3C CSS validator
 The CSS code was parsed by the W3C CSS validator with not warnings or errors.
 * An issue was found with overflow-y: overlay when websites such as reponsinator force input scroll bars for phones, etc. This causes the screen to overflow its travel tabs. Found by validator and corrected using percentages.
@@ -141,7 +167,7 @@ Maps.js and the jasmine testing suite mapsspec.js were parsed through JS Hint:
 * One unused variable for initMap, however as the page is called from the html I feel this is not necessarily true.
 
 ### Unit Testing
-Testing was also performed using jasmine in the head of a seperate index page called index testing which can be found [here](testing.html.html).
+[Testing was also performed using jasmine in the head of a seperate index page called index testing which can be found here](https://rhyspollarddevelopment.github.io/InteractiveFrontEndMilestone/testing).
 
 This suite was useful for creating test data and ensuring that the outcomes I expected were achieved. Testing should have followed a more TDD (Test Driven Development) manner, however due to the lack of experience with javascript it was not always possible to manage my work flow in such a way. There are some parts which were not tested in this suite:
 
@@ -229,3 +255,6 @@ Inspiration for this website was found from the following sources.
 * [Morecast](https://morecast.com/en/plan-your-route)
 * [RoadTrippers](https://roadtrippers.com/)
 * [Highway Weather](https://www.weatherroute.io/)
+
+### Disclaimer
+This project has been made for purely academic purposes.
