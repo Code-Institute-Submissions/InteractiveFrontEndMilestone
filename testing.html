@@ -37,7 +37,6 @@
          href="assets/img/favicons/favicon-16x16.png"
       />
       <link rel="manifest" href="assets/img/favicons/site.webmanifest" />
-
       <!--Load Jasmine Framework-->
       <script
          src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.js"
@@ -62,8 +61,24 @@
       />
       <!--CSS External Stylesheet-->
       <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
-      <!--Page Title-->
-      <title>Fare Weather Travels</title>
+      <!--Page Title and meta data-->
+      <title>
+         Fare Weather Wanderers - Wander about the world, not the weather.
+      </title>
+      <meta
+         name="description"
+         content="Plan your next big trip or day out, whatever the weather
+          with the best route planning weather site around."
+      />
+      <meta
+         name="copyright"
+         content="Fare Weather Wanderers is copyright of RhysPollardDevelopment."
+      />
+      <meta
+         name="keywords"
+         content="Weather Planning, trip planning, maps, fare
+      weather wanderers, weather map, road trip, day out."
+      />
    </head>
 
    <body>
@@ -81,8 +96,15 @@
             <div class="row route-wrapper">
                <div class="col-12 no-padding">
                   <!-- Transport Options Selection Tabs -->
-                  <ul class="nav nav-tabs" id="myTab" role="tablist">
-                     <li class="nav-item" role="presentation">
+                  <ul
+                     class="nav nav-tabs row no-gutters"
+                     id="myTab"
+                     role="tablist"
+                  >
+                     <li
+                        class="nav-item nav-position col-sm-3 col-md-3 col-lg-2"
+                        role="presentation"
+                     >
                         <a
                            class="mode-tab active"
                            id="changemode-car"
@@ -93,7 +115,10 @@
                            ><i class="fas fa-car"></i
                         ></a>
                      </li>
-                     <li class="nav-item" role="presentation">
+                     <li
+                        class="nav-item nav-position col-sm-3 col-md-3 col-lg-2"
+                        role="presentation"
+                     >
                         <a
                            class="mode-tab"
                            id="changemode-walk"
@@ -104,7 +129,10 @@
                            ><i class="fas fa-shoe-prints"></i
                         ></a>
                      </li>
-                     <li class="nav-item" role="presentation">
+                     <li
+                        class="nav-item nav-position col-sm- col-md-3 col-lg-2"
+                        role="presentation"
+                     >
                         <a
                            class="mode-tab"
                            id="changemode-bike"
@@ -115,7 +143,10 @@
                            ><i class="fas fa-biking"></i
                         ></a>
                      </li>
-                     <li class="nav-item" role="presentation">
+                     <li
+                        class="nav-item nav-position col-sm-3 col-md-3 col-lg-2"
+                        role="presentation"
+                     >
                         <a
                            class="mode-tab"
                            id="changemode-transit"
@@ -137,10 +168,17 @@
                   <div class="row">
                      <div class="col-12 page-info">
                         <p id="formdescription">
-                           Select location and desired time below to find the
-                           weather on your trip.
+                           Select location and desired time upto 7 days to find
+                           the weather on your trip.
                         </p>
-                        <p>Click weather icons to display extra information.</p>
+                        <p>
+                           Click weather icons to display extra information.<i
+                              class="fas fa-info-circle"
+                              id="browserInfo"
+                              data-toggle="popover"
+                              data-content="Please enter your date in the MM/DD/YYYY hh:mm format for best results."
+                           ></i>
+                        </p>
                      </div>
                   </div>
                   <!-- Add waypoint search button -->
@@ -154,10 +192,7 @@
                         title="Maximum Waypoints Allowed"
                         data-content="Only 10 locations at a time are available."
                      >
-                        <i
-                           class="fas fa-plus-circle"
-                           alt="A plus sign in a circle"
-                        ></i>
+                        <i class="fas fa-plus-circle"></i>
                         Add another waypoint
                      </button>
                   </div>
@@ -224,8 +259,8 @@
                               class="form-control"
                               id="sender-email"
                               name="sender-email"
-                              placeholder="Email Address"
-                              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                              placeholder="Username@email.com"
+                              pattern=".+@[a-z0-9.-]+\.[a-z]{2,3}$"
                               required
                            />
                         </div>
@@ -403,7 +438,7 @@
          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhMQfdBgOh8-xwmxnFmQUDEkl871n_5MU&libraries=places&callback=initMap"
       ></script>
       <!--defer waits until page has finished loading before script is executed-->
-      <script type="text/javascript" src="assets/scripts/maps.js"></script>
+      <script src="assets/scripts/maps.js"></script>
       <script type="text/javascript" src="spec/mapsspec.js"></script>
    </body>
 </html>

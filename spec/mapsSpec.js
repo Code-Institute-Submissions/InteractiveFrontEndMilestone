@@ -2,9 +2,6 @@
 /* eslint-disable no-eval */
 
 describe("Maps Tests", () => {
-   beforeAll(() => {
-      $("map").height = 300;
-   });
    beforeEach(() => {
       request = new DirectionsHandler();
       const data = new WayPointsData();

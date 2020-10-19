@@ -1,6 +1,6 @@
 # Fare Weather Wanderers
 ---
-## Code Institute = Interactive Frontend Development Milestone Project Two
+## Code Institute - Interactive Frontend Development Milestone Project Two
 ---
 [Live Project can be viewed here.](https://rhyspollarddevelopment.github.io/InteractiveFrontEndMilestone/)
 
@@ -89,13 +89,13 @@ Modal Contact Us Form:
 * Email Validation
 
 ### Features to Implement:
-⦁	Rearranging of waypoints.
-⦁	Conversion of weather values such as temperature and wind speed.
-⦁	Automatic route/weather update when searching locations
+* Rearranging of waypoints.
+* Conversion of weather values such as temperature and wind speed.
+* Automatic route/weather update when searching locations.
 
 ## Technologies
 ---
-### Languages
+#### Languages
 * [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
 * [CSS3](https://developer.mozilla.org/en-US/docs/Archive/CSS3)
 * [Javascript 6](https://developer.mozilla.org/en-US/docs/Web/JavaScript) Specifically ECMAScript 6/2015
@@ -142,6 +142,7 @@ Maps.js and the jasmine testing suite mapsspec.js were parsed through JS Hint:
 
 ### Unit Testing
 Testing was also performed using jasmine in the head of a seperate index page called index testing which can be found [here](testing.html.html).
+
 This suite was useful for creating test data and ensuring that the outcomes I expected were achieved. Testing should have followed a more TDD (Test Driven Development) manner, however due to the lack of experience with javascript it was not always possible to manage my work flow in such a way. There are some parts which were not tested in this suite:
 
 * `routeValidations()`, `formatWeather(`) and `calculatedAndDisplayRoute()` were not tested in this suite as their use of external dependencies and my inexperience meant it was not possible
@@ -160,7 +161,7 @@ First, the datetime-local input which is used along side location text is not su
 
 Second, Landscape mode on long phones had the unfortunate effect of setting the screen to a tablet or even laptop width and editing the mode to match. Due to the way the map is set up then the input container stretches beyond the length of the page as the map is linked to viewport size. Media queries were tried but a more sensible option was to 
 
-### Known Bugs:
+#### Known Bugs:
 * As this was written entirely in ECMAScript 6, this website does not work properly on Internet Explorer. This is because IE does not work with ECMAScript 6 or above. As Internet explorer is not commonly used and has officially been replaced with microsoft Edge, I have not considered this a high priority issue.
 * The use of a text input instead of datetime-local (the recommended input) on safari and firefox for browser.
 * Limited to certain measurements for weather api as is required in the call and is an extra goal to include in this project in future.
