@@ -4,6 +4,13 @@
 * Autoprefixer: v9.7.6
 * Browsers: last 4 version
 */
+
+/*---------HTML: style overlay-------------*/
+html {
+   overflow-x: overlay;
+   overflow-y: overlay;
+}
+
 /*------ Map and general style--------*/
 .map-canvas {
    background: none;
