@@ -125,3 +125,84 @@ Modal Contact Us Form:
 
 ## Testing
 ---
+The majority of testing of performed throughout development of this website, primarily through the use of the Chrome DevTools. Devtools allowed for any obvious errors to be tweaked, edited or corrected and then a solution identified and implemented into the main code where it could effectively solve most issues. This opportunity to trial the website changes was not only useful visually but also programatically for javascript.
+Being able to debug code and follow the scripts running through their sequences and logic was crucial for highlighting when code was not performing the task as expected or if logic had been incorrectly used. For example, the use of being able to check variables and their values made it possible to see why some verifications or true false statements were not matching their target response or whether the data being received was in the correct format/type for the function which required it. 
+
+Testing was also performed using jasmine in the head of a seperate index page called index testing which can be found [here](testing.html.html)
+
+### W3C CSS validator
+The CSS code was parsed by the W3C CSS validator with these errors or warnings.
+
+
+### HTML validator
+All HTML pages were parsed through the W3C HTML validator with these errors and warnings.
+
+### JSHint
+Maps.js and the jasmine testing suite mapsspec.js were parsed through JS Hint
+
+
+1. [AmIResponsive?](http://ami.responsivedesign.is/): A page which runs four instances of the project at difference sizes.
+2. [Responsinator](https://www.responsinator.com/): A tool which tests the responsiveness of your page on a range of pseudo-devices.
+3. [Browserstack](https://www.browserstack.com/): This tool lets you use your project across all forms of browsers (including versions) and a range of phones and tablets.
+
+## Deployment
+---
+For my projects development, changes were committed to Git and pushed to GitHub. To deploy this website, GitHub Pages was used by the following procedure:
+
+### GitHub Pages
+* On the Github website, navigate to the relevant repository.
+* Under the repository name (just above the green buttons for code and Gitpod), click the Settings” button.
+* Scroll down the new page until you find the “GitHub Pages” heading.
+* Under the “Source” subheading, used the dropdown to select the master branch to run the page from.
+* Click the save button to the right, the screen with auto refresh.
+* A new highlighted ribbon will appear with the projects url for you to access saying **Your site is published at https://rhyspollarddevelopment.github.io/InteractiveFrontEndMilestone/**.
+* How to clone the repository:
+* Navigate to the correct repository from the GitHub dashboard.
+* Above the list of files, click the green “Code” button.
+* From the dropdown, select the “Clone with HTTPS” by selecting the clipboard icon.
+* Open Git Bash and change the working directory to the location you would like the clone to be.
+* Type git clone, and past the URL you have copied. (Should be in the format $ git clone https://github.com/username/repository.)
+* Press "Enter" to create your local clone.
+
+### How to clone the repository:
+
+1.	Navigate to the correct repository from the GitHub dashboard.
+2.	Above the list of files, click the green “Code” button.
+3.	From the dropdown, select the “Clone with HTTPS” by selecting the clipboard icon.
+4.	Open Git Bash and change the working directory to the location you would like the clone to be.
+5.	Type `git clone`, and past the URL you have copied. (Should be in the format `$ git clone https://github.com/username/repository`.)
+6.	Press "Enter" to create your local clone.
+
+## Credits
+---
+### Content
+The website, brand and styling are all copyright to RhysPollardDevelopment. 
+The map, route displayed and blue icon are all property of Google, while the weather information and weather icons are property of Open Weather Maps.
+
+### Media
+All map based media (excluding icons) are property of Google/Google Maps.
+Weather based icon pngs are property of [Open Weather Map](https://openweathermap.org/api), these have been edited slightly to make them easier to see for accessiblity.
+
+## Acknowledgements:
+---
+Special thanks to my mentor Brian Macharia for his help and advice in development this project.
+
+Libraries for google fonts, bootstrap, jQuery and font-awesome were used throughout my project.
+
+W3C was frequently used for tutorials and examples of how to write or structure code.
+
+Stack Overflow was also frequently referenced for fixes to problems during in-development testing.
+
+While many external resources and guides have been referenced in code comments, almost the entirity of this code pertaining to the initialisation of the map, directions request, use of markers and infor windows was found on google maps documentation.
+Key documentation can be found below:
+* [Google Maps JS markers](https://developers.google.com/maps/documentation/javascript/reference/marker)
+* [Google Maps JS info Window](https://developers.google.com/maps/documentation/javascript/reference/info-window)
+* [Autocomplete and travel tabs](https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-directions#maps_places_autocomplete_directions-javascript)
+* [Directions Handling](https://developers.google.com/maps/documentation/javascript/examples/directions-simple)
+
+Inspiration for this website was found from the following sources.
+
+* [WeatherCast](http://www.weathercast.co.uk/services/travel-weather.html)
+* [Morecast](https://morecast.com/en/plan-your-route)
+* [RoadTrippers](https://roadtrippers.com/)
+* [Highway Weather](https://www.weatherroute.io/)
