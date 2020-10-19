@@ -158,10 +158,14 @@ Besides the above testing the webpage was also run through the following tools o
 Key findings from testing on all possible browsers and emulated safari and mobile devices found the majority of site features worked as intended. Only two major issues have arisen:
 First, the datetime-local input which is used along side location text is not supported on firefox and safari for browsers, but is for phones, as the input degrades into a text input. To combat this I have put a placeholder text suggesting the correct format for firefox/safari users along with an information i button to also offer the specific information required. Validation and transformation of text type value to a correct date time has been inserted.
 
-Second, as this was written entirely in ECMAScript 6, this website does not work properly on Internet Explorer. This is because IE does not work with ECMAScript 6 or above it seems. As Internet explorer is not commonly used and has officially been replaced with microsoft Edge, I have not considered this a high priority issue.
+Second, Landscape mode on long phones had the unfortunate effect of setting the screen to a tablet or even laptop width and editing the mode to match. Due to the way the map is set up then the input container stretches beyond the length of the page as the map is linked to viewport size. Media queries were tried but a more sensible option was to 
 
 ### Known Bugs:
-* Landscape mode on long phones has the unfortunate effect of setting the screen to a tablet or even laptop width and editing the mode to match. Due to the way the map is set up then
+* As this was written entirely in ECMAScript 6, this website does not work properly on Internet Explorer. This is because IE does not work with ECMAScript 6 or above. As Internet explorer is not commonly used and has officially been replaced with microsoft Edge, I have not considered this a high priority issue.
+* The use of a text input instead of datetime-local (the recommended input) on safari and firefox for browser.
+* Limited to certain measurements for weather api as is required in the call and is an extra goal to include in this project in future.
+* Google maps does not correctly adjust the map viewport to fit all markers, instead updating viewport with newest selection unless route is called.
+
 
 ## Deployment
 ---

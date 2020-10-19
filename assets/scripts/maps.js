@@ -149,6 +149,8 @@ class DirectionsHandler {
                const latLng = input.locationData.googleLatLng;
                const info = input.locationData.weatherData;
                input.weatherMarker(latLng, icon, info);
+               // scroll to view found at
+               // https://www.w3schools.com/jsref/met_element_scrollintoview.asp
                $(`#map`)[0].scrollIntoView();
             }
          } else {
