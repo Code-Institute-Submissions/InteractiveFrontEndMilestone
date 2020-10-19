@@ -118,6 +118,7 @@ Modal Contact Us Form:
 16. [Visual Studio Code](https://code.visualstudio.com/): A programming environment for developing which allows for extensions and testing.
 17. [Prettier](https://prettier.io/): A tool used in combination with VS Code to format and style code.
 18. [Jasmine](https://jasmine.github.io/): A tool used in combination with VS code to perform unit testing.
+19. [ESLint](https://eslint.org/): Linting tool installed in visual studio code.
 
 ### APIs
 1. [Google Maps Javascript API v3](https://developers.google.com/maps/documentation/javascript/overview): An API for the use of google maps on a website requiring the use of Javascript.
@@ -130,35 +131,35 @@ Being able to debug code and follow the scripts running through their sequences 
 
 ### User story testing
 
-1.	As a customer, I want to be see the weather along my driving route so I can know how to prepare for my walk/activity.
+1.	##### As a customer, I want to be see the weather along my driving route so I can know how to prepare for my walk/activity.
 
     This is achieved by the submission button once all required locations and searches have been completed
 
-2.	As a user, I am planning a multi-day trip and need to be able to select dates for my route.
+2.	##### As a user, I am planning a multi-day trip and need to be able to select dates for my route.
 
-    There are datetime-local inputs for every waypoint so that time of day or days may be selected across the trip upto 7 days away.
+    ##### There are datetime-local inputs for every waypoint so that time of day or days may be selected across the trip upto 7 days away.
 
-3.	As a user, I want to be able to expand on the simple information for more information and times.
+3.	##### As a user, I want to be able to expand on the simple information for more information and times.
 
     Weather icons presented upon submission of a route can be select5ed by a click to display more information than is originally available.
 
-4.	As a user, I need to be able to add waypoints for my trip and set times of day.
+4.	##### As a user, I need to be able to add waypoints for my trip and set times of day.
 
     It is possible to add more waypoints upto a total of 10, including the starting two locations. This is done by a waypoint button below the search locations.
 
-5.	As a mobile user, the information needs to be easy to read and manipulated as I have limited space.
+5.	#####  a mobile user, the information needs to be easy to read and manipulated as I have limited space.
 
     I have tried to achieve this by seperating the page into two parts ideally, a selection/search area and large screen section devoted to the map.
 
-6.	As a mobile user, the map and weather needs to be well proportioned on the screen.
+6.	##### As a mobile user, the map and weather needs to be well proportioned on the screen.
 
     To make sure the map is well sized, I have desginated a large slot of space for it with minimal distractions on mobile an tablet devices. Plus the map takes up a large portion of the screen so should be easy to read and select.
 
-7.	As a laptop user, the map needs to be visible at all times so it does not get covered by the search bar.
+7. ##### As a laptop user, the map needs to be visible at all times so it does not get covered by the search bar.
 
     To ensure visibility, the location search and date time have been offset to ensure that the map has the maximum space available.
 
-8.	As a user, I would like the option to change the weather metrics to my preferred values.
+8.	##### As a user, I would like the option to change the weather metrics to my preferred values.
 
     Sadly this has not been possible so far, but ideally is something the website can provide at a later date.
 
