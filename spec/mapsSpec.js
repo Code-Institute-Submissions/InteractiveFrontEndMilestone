@@ -2,6 +2,9 @@
 /* eslint-disable no-eval */
 
 describe("Maps Tests", () => {
+   beforeAll(() => {
+      $("map").height = 300;
+   });
    beforeEach(() => {
       request = new DirectionsHandler();
       const data = new WayPointsData();
@@ -444,6 +447,7 @@ describe("Maps Tests", () => {
          const messageTest = document.getElementById("message-text");
          emailTest.value = "testemail@email.couk";
          messageTest.value = "Test Message";
+         expect(emailTest.checkValidity()).toBe(false);
          expect(contactFormValidation()).toBe(false);
          emailTest.value = "";
          messageTest.value = "";

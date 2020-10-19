@@ -338,8 +338,8 @@ class LocationView {
             // regex found at
             // https://stackoverflow.com/questions/23360599/regular-expression-for-dd-mm-yyyy-hhmm
             // and https://www.regextester.com/
-            const datePattern = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}$/;
-            const dateTimePattern = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/;
+            const datePattern = /^(0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])[/-]\d{4}$/;
+            const dateTimePattern = /^(0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])[/-]\d{4}\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/;
             const testValue = dateTime.value;
             if (
                testValue.match(datePattern) ||
