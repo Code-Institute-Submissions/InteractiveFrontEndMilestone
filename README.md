@@ -92,6 +92,7 @@ Modal Contact Us Form:
 * Rearranging of waypoints.
 * Conversion of weather values such as temperature and wind speed.
 * Automatic route/weather update when searching locations.
+* Updated visuals for date-time picker on smaller devices.
 
 ## Technologies
 ---
@@ -128,6 +129,8 @@ Modal Contact Us Form:
 ---
 The majority of testing of performed throughout development of this website, primarily through the use of the Chrome DevTools. Devtools allowed for any obvious errors to be tweaked, edited or corrected and then a solution identified and implemented into the main code where it could effectively solve most issues. This opportunity to trial the website changes was not only useful visually but also programatically for javascript.
 Being able to debug code and follow the scripts running through their sequences and logic was crucial for highlighting when code was not performing the task as expected or if logic had been incorrectly used. For example, the use of being able to check variables and their values made it possible to see why some verifications or true false statements were not matching their target response or whether the data being received was in the correct format/type for the function which required it. 
+
+Following a final discussion with my mentor Brian, it is possible to find the user-agent and determine which type of browser is being used. With this information I can specify the type of input required dependent on the browser in the future.
 
 ### User story testing
 
@@ -185,6 +188,7 @@ to write adequate tests which proved anything effectively.
 * The test for `"should set map when completed the route validation"` was removed as the AJAX request return was asynchronous and would break random tests.
 * Cannot test `formatWeather()` as the functions and constructor rely on the current datetime being generated and cannot be easily compared to created data. Since data is also taken from external sources this is beyond my capabilities to test.
 * WeatherRequest is also not reliable for me to test as it requires multiple ajax requests which are not easily accessible outside the class and are difficult to assess.
+* For future projects the use of async-wait and other code will be useful to control the flow of data from AJAX requests.
 
 Besides the above testing the webpage was also run through the following tools or sites to compare and identify any issues:
 1. [AmIResponsive?](http://ami.responsivedesign.is/): A page which runs four instances of the project at difference sizes.
