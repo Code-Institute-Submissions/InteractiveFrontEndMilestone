@@ -1,5 +1,5 @@
 /* global google */ // defines google as a global value for ESLint without effecting google's API code.
-var map;
+let map;
 let formInputs, directionsHandler;
 
 // Loads initial inputs for start/origin
@@ -197,15 +197,15 @@ function weatherRequest(wayPointsData, callback) {
 // Holds weatherdata collected from weather request, linked to locationdata.
 class WeatherData {
    constructor() {
-      this.dateTime = undefined;
+      this.dateTime = null;
       this.weatherDescription = null;
-      this.temperature = undefined;
-      this.rain = undefined;
-      this.clouds = undefined;
-      this.wind = undefined;
-      this.uvi = undefined;
-      this.realFeel = undefined;
-      this.humidity = undefined;
+      this.temperature = null;
+      this.rain = null;
+      this.clouds = null;
+      this.wind = null;
+      this.uvi = null;
+      this.realFeel = null;
+      this.humidity = null;
    }
 }
 
@@ -214,9 +214,9 @@ class WeatherData {
 class LocationData {
    constructor(weatherData) {
       this.location = null;
-      this.dateTime = undefined;
-      this.googleLatLng = undefined;
-      this.id = undefined;
+      this.dateTime = null;
+      this.googleLatLng = null;
+      this.id = null;
       this.weatherData = weatherData;
    }
 }
@@ -229,8 +229,8 @@ class LocationView {
    constructor(locationData) {
       this.locationData = locationData;
       this.htmlId = `${this.locationData.id}-input`;
-      this.minDate = undefined;
-      this.maxDate = undefined;
+      this.minDate = null;
+      this.maxDate = null;
       this.calculateTimeScope();
       this.initalise();
       this.marker = new google.maps.Marker();
@@ -539,18 +539,18 @@ class HTMLInputs {
    resetTrip() {
       document.getElementById("trip-form").reset();
       this.wayPointsData.locations.forEach((element) => {
-         element.dateTime = undefined;
-         element.googleLatLng = undefined;
+         element.dateTime = null;
+         element.googleLatLng = null;
          element.location = null;
          element.weatherData.weatherDescription = null;
-         element.weatherData.dateTime = undefined;
-         element.weatherData.temperature = undefined;
-         element.weatherData.rain = undefined;
-         element.weatherData.clouds = undefined;
-         element.weatherData.wind = undefined;
-         element.weatherData.uvi = undefined;
-         element.weatherData.realFeel = undefined;
-         element.weatherData.humidity = undefined;
+         element.weatherData.dateTime = null;
+         element.weatherData.temperature = null;
+         element.weatherData.rain = null;
+         element.weatherData.clouds = null;
+         element.weatherData.wind = null;
+         element.weatherData.uvi = null;
+         element.weatherData.realFeel = null;
+         element.weatherData.humidity = null;
       });
       this.inputArray.forEach((locationView) => {
          locationView.removeMarker();
