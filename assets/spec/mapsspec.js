@@ -190,7 +190,7 @@ describe("Maps Tests", () => {
       $("div.inputs[id*='origin']").not(`:first`).remove();
       $("div.inputs[id*='destination']").not(`:last`).remove();
       $("div.inputs[id*='waypoint']").remove();
-      $("div.inputs[id*='undefined']").remove();
+      $("div.inputs[id*='null']").remove();
       $("div.inputs[id*='test']").remove();
    });
 
