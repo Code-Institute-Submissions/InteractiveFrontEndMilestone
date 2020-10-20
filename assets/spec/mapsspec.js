@@ -197,15 +197,15 @@ describe("Maps Tests", () => {
    // Testing for WeatherData Class
    describe("WeatherData class", () => {
       it("should construct weatherData class properties", () => {
-         expect(weatherDataNew.dateTime).toBe(undefined);
+         expect(weatherDataNew.dateTime).toBe(null);
          expect(weatherDataNew.weatherDescription).toBe(null);
-         expect(weatherDataNew.temperature).toBe(undefined);
-         expect(weatherDataNew.rain).toBe(undefined);
-         expect(weatherDataNew.clouds).toBe(undefined);
-         expect(weatherDataNew.wind).toBe(undefined);
-         expect(weatherDataNew.uvi).toBe(undefined);
-         expect(weatherDataNew.realFeel).toBe(undefined);
-         expect(weatherDataNew.humidity).toBe(undefined);
+         expect(weatherDataNew.temperature).toBe(null);
+         expect(weatherDataNew.rain).toBe(null);
+         expect(weatherDataNew.clouds).toBe(null);
+         expect(weatherDataNew.wind).toBe(null);
+         expect(weatherDataNew.uvi).toBe(null);
+         expect(weatherDataNew.realFeel).toBe(null);
+         expect(weatherDataNew.humidity).toBe(null);
       });
    });
 
@@ -213,9 +213,9 @@ describe("Maps Tests", () => {
    describe("LocationData Class", () => {
       it("should construct LocationData Class properties", () => {
          expect(locationDataNew.location).toBe(null);
-         expect(locationDataNew.dateTime).toBe(undefined);
-         expect(locationDataNew.googleLatLng).toBe(undefined);
-         expect(locationDataNew.id).toBe(undefined);
+         expect(locationDataNew.dateTime).toBe(null);
+         expect(locationDataNew.googleLatLng).toBe(null);
+         expect(locationDataNew.id).toBe(null);
          expect(locationDataNew.weatherData).toEqual(weatherDataNew);
       });
    });
@@ -232,8 +232,8 @@ describe("Maps Tests", () => {
             google.maps.InfoWindow
          );
          expect(locationViewNew.infoWindow.maxWidth).toBe(300);
-         expect(locationViewNew.minDate).not.toBe(undefined);
-         expect(locationViewNew.maxDate).not.toBe(undefined);
+         expect(locationViewNew.minDate).not.toBe(null);
+         expect(locationViewNew.maxDate).not.toBe(null);
       });
 
       it("should add a marker by setting its properties and icon.", () => {
@@ -367,16 +367,16 @@ describe("Maps Tests", () => {
       it("should reset the values of each locationData", () => {
          formInputs.resetTrip();
          const locationObject = formInputs.wayPointsData.locations[0];
-         expect(locationObject.dateTime).toBe(undefined);
-         expect(locationObject.googleLatLng).toBe(undefined);
+         expect(locationObject.dateTime).toBe(null);
+         expect(locationObject.googleLatLng).toBe(null);
          expect(locationObject.location).toBe(null);
-         expect(locationObject.id).not.toBe(undefined);
+         expect(locationObject.id).not.toBe(null);
 
          for (const propName in locationObject.weatherData) {
             if (propName === "weatherDescription") {
                expect(locationObject.weatherData[propName]).toBe(null);
             } else {
-               expect(locationObject.weatherData[propName]).toBe(undefined);
+               expect(locationObject.weatherData[propName]).toBe(null);
             }
          }
       });
